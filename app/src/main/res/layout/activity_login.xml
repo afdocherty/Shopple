@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kathu228.shoplog.LoginActivity">
+    tools:context="com.example.kathu228.shoplog.Activities.LoginActivity">
 
     <Button
         android:background="@color/com_facebook_blue"
