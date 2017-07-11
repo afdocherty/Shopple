@@ -37,5 +37,6 @@ dependencies {
     compile 'com.parse:parsefacebookutils-v4-android:1.10.4@aar'
     compile 'com.parse:parse-android:1.14.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
 }
