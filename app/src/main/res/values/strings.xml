@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Shoplog</string>
+    <string name="fragment_friendlist_text">Test</string>
 </resources>
