@@ -10,17 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
 
-public class ShoplistActivity extends AppCompatActivity implements ItemlistFragment.OnFragmentInteractionListener{
+import java.util.ArrayList;
 
+public class ShoplistActivity extends AppCompatActivity implements ItemlistFragment.OnFragmentInteractionListener{
+    ArrayList<Item> items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoplist);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
 
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
