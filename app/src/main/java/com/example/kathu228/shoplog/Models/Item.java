@@ -8,8 +8,10 @@ import android.os.Parcelable;
  */
 
 public class Item implements Parcelable{
+
     public String body;
     public boolean  checked;
+
     protected Item(Parcel in) {
         this.body = in.readString();
         this.checked = in.readByte() != 0;
