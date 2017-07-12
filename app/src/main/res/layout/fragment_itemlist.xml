@@ -15,7 +15,7 @@
         android:fitsSystemWindows="true" >
 
         <ImageButton
-            android:id="@+id/ibAdd"
+            android:id="@+id/ibAddItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_add" />
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/ibAdd"
+            android:layout_toEndOf="@+id/ibAddItem"
             android:hint="Add Item"
             android:inputType="text" />
 

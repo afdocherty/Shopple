@@ -11,9 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
+import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,11 +28,15 @@ import com.example.kathu228.shoplog.R;
  * Use the {@link ItemlistFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ItemlistFragment extends Fragment {
+public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapterListener{
+    // parameters
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
     RecyclerView rvItems;
     EditText etAddItem;
+    ImageButton ibAddItem;
+    ItemAdapter itemAdapter;
+    ArrayList<Item> items;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,11 +84,18 @@ public class ItemlistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                             @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = (R.layout.fragment_itemlist, container, false);
+        View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
         // find the RecyclerView
         rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
         // find the edittext to add item
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
+        // find the add button
+        ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
+        // initialize the array of items
+        items = new ArrayList<>();
+        // construct the adapter
+        itemAdapter = new ItemAdapter(items, this);
+        // TODO: setup recycler and adapter
 
         return v;
     }
@@ -113,6 +129,11 @@ public class ItemlistFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onItemSelected(View view, int position) {
+
     }
 
     /**

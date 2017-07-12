@@ -1,15 +1,17 @@
 package com.example.kathu228.shoplog.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.R;
 
-public class ShoplistActivity extends AppCompatActivity {
+public class ShoplistActivity extends AppCompatActivity implements ItemlistFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,5 +42,10 @@ public class ShoplistActivity extends AppCompatActivity {
             //Code to be executed after you come back from the add people activity
             //(Maybe refresh the shopping list?)
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
