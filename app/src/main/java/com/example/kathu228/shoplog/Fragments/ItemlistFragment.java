@@ -3,11 +3,16 @@ package com.example.kathu228.shoplog.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.R;
 
 /**
@@ -19,6 +24,11 @@ import com.example.kathu228.shoplog.R;
  * create an instance of this fragment.
  */
 public class ItemlistFragment extends Fragment {
+    private SwipeRefreshLayout swipeContainer;
+    private ShoplogClient client;
+    RecyclerView rvItems;
+    EditText etAddItem;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,13 +70,26 @@ public class ItemlistFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                            @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_itemlist, container, false);
+        View v = (R.layout.fragment_itemlist, container, false);
+        // find the RecyclerView
+        rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
+        // find the edittext to add item
+        etAddItem = (EditText) v.findViewById(R.id.etAddItem);
+
+        return v;
     }
+
+    // add item to list
+//    public void addItem(Item item){
+//        items.add(0, item);
+//        // itemAdapter.notifyItemInserted(0);
+//        rvItems.scrollToPosition(0);
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
