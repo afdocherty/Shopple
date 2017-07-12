@@ -1,13 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.kathu228.shoplog.Fragments.FriendlistFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/people_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/fragment_friendlist_text" />
+        android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>
