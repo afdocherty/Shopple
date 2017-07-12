@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.example.kathu228.shoplog.R;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
@@ -25,13 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(getResources().getString(R.string.parse_app_id))
-                .clientKey(null)
-                .server(getResources().getString(R.string.server) + "/parse").build());
-
-        ParseFacebookUtils.initialize(this);
 
         loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                                             .show();
+
                                     Log.d("MyApp", "User logged in through Facebook!");
                                 }
                             }
@@ -65,5 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        Intent intent = new Intent(LoginActivity.this, ShoplistActivity.class);
+        startActivity(intent);
     }
 }

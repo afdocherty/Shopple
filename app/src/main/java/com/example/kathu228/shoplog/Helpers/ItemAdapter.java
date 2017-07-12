@@ -41,29 +41,30 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.Viewholder> {
     @Override
     public void onBindViewHolder(final Viewholder holder, int position) {
         // get position of item for data
-        final Item item = mItems.get(position);
+        Item item = mItems.get(position);
 
         // populate the item views with data
-        holder.cbItem.setText(item.body);
-        holder.cbItem.setPressed(item.checked);
+        holder.cbItem.setText(item.getBody());
+        holder.cbItem.setPressed(true); // TODO - get checked boolean from item instance
 
-        // puts onclicklistener onto checkbox for each item
-        // unchecks if checked and checks if unchecked
-        holder.cbItem.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                if (item.checked){
-                    item.checked = false;
-                    holder.cbItem.setPressed(false);
-                }
-                else{
-                    item.checked = true;
-                    holder.cbItem.setPressed(true);
-                }
-
-            }
-        });
+        // TODO - handle click event to change item instance
+//        // puts onclicklistener onto checkbox for each item
+//        // unchecks if checked and checks if unchecked
+//        holder.cbItem.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (item.checked){
+//                    item.checked = false;
+//                    holder.cbItem.setPressed(false);
+//                }
+//                else{
+//                    item.checked = true;
+//                    holder.cbItem.setPressed(true);
+//                }
+//
+//            }
+//        });
     }
 
     @Override

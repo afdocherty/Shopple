@@ -16,9 +16,16 @@ import android.widget.ImageButton;
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +44,10 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
     ImageButton ibAddItem;
     ItemAdapter itemAdapter;
     ArrayList<Item> items;
+
+    // TODO - Temporary for MVP
+    com.example.kathu228.shoplog.Models.List list1; // Be careful to import the correct List!
+    Segment seg1;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,7 +108,50 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
         itemAdapter = new ItemAdapter(items, this);
         // TODO: setup recycler and adapter
 
+        addItems();
+
         return v;
+    }
+
+    public void addItems() {
+
+        // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
+        ParseUser user = ParseUser.getCurrentUser();
+
+        ParseRelation<ParseObject> relationUserToList = user.getRelation("lists");
+        relationUserToList.getQuery().findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    list1 = (com.example.kathu228.shoplog.Models.List) results.get(0);
+                }
+            }
+        });
+
+        ParseRelation<ParseObject> relationListToSegment = list1.getRelation("segments");
+        relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    seg1 = (Segment) results.get(0);
+                }
+            }
+        });
+
+        ParseRelation<ParseObject> relationSegmentToItem = list1.getRelation("items");
+        relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    for (ParseObject parseObject : results) {
+                        items.add((Item) parseObject);
+                    }
+                }
+            }
+        });
     }
 
     // add item to list
