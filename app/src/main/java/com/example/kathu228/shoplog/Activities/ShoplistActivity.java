@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.kathu228.shoplog.Fragments.FriendlistFragment;
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.R;
 
@@ -26,7 +25,7 @@ public class ShoplistActivity extends AppCompatActivity implements ItemlistFragm
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
-        ft.replace(R.id.add_people_frame, new FriendlistFragment());
+        ft.replace(R.id.itemlist_frame, new ItemlistFragment());
         // Complete the changes added above
         ft.commit();
 
