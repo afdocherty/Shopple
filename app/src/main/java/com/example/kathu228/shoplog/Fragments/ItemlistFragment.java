@@ -177,6 +177,7 @@ public class ItemlistFragment extends Fragment{
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
+                                                Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
                                             }
 //                                            itemTest = items.get(0);
 //                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
