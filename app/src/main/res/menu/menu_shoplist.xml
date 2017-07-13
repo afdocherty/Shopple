@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/info_btn"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_person_outline"
         android:title="Info"
         app:showAsAction="always"
         android:onClick="onListInfo"/>
