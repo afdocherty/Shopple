@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,31 +14,26 @@
         android:fitsSystemWindows="true" >
 
         <ImageButton
-            android:id="@+id/ibAddItem"
+            android:id="@+id/ibAddList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/rvItem"
-            android:layout_alignParentTop="true"
-            android:background="@null"
-            android:gravity="center"
-            android:tint="@color/colorAccent"
             app:srcCompat="@drawable/ic_add" />
 
         <EditText
-            android:id="@+id/etAddItem"
+            android:id="@+id/etAddList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/ibAddItem"
-            android:hint="Add Item"
+            android:layout_toEndOf="@+id/ibAddList"
+            android:hint="Add List"
             android:inputType="text" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvItem"
+            android:id="@+id/rvList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/etAddItem"
+            android:layout_below="@+id/etAddList"
             android:layout_marginStart="5dp"/>
 
     </RelativeLayout>
