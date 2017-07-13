@@ -18,6 +18,11 @@
             android:id="@+id/ibAddItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/rvItem"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:gravity="center"
+            android:tint="@color/colorAccent"
             app:srcCompat="@drawable/ic_add" />
 
         <EditText
