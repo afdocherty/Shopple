@@ -122,7 +122,8 @@ public class ItemlistFragment extends Fragment{
                 Item addedItem = new Item();
                 addedItem.setBody(body);
                 etAddItem.setText("");
-                addItem(addedItem);
+                //addItem(addedItem);
+                addItemToList(addedItem);
             }
         });
 

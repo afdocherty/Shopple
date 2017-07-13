@@ -7,9 +7,9 @@
         android:id="@+id/cbItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:text="Item"
-        app:buttonTint="?attr/colorAccent" />
+        android:textColor="@color/colorAccent"
+        app:buttonTint="?attr/colorAccent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
