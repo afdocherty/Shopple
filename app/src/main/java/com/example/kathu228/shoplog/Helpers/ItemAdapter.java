@@ -34,7 +34,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
 
         // populate the item views with data
         holder.cbItem.setText(item.getBody());
-        holder.cbItem.setPressed(true); // TODO - get checked boolean from item instance
+        holder.cbItem.setChecked(false); // TODO - get checked boolean from item instance
 
         // TODO - handle click event to change item instance
 //        // puts onclicklistener onto checkbox for each item

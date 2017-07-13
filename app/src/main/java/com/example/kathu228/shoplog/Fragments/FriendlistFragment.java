@@ -47,9 +47,11 @@ public class FriendlistFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_friendlist,container,false);
-
+        //find recycler view
         rvPeople= (RecyclerView) v.findViewById(R.id.people_list);
         //init the ArrayList (data source)
         people = Arrays.asList(ShoplogClient.getPeople());

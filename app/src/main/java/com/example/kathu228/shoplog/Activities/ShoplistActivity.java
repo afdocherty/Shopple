@@ -1,7 +1,6 @@
 package com.example.kathu228.shoplog.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,7 @@ import com.example.kathu228.shoplog.R;
 
 import java.util.ArrayList;
 
-public class ShoplistActivity extends AppCompatActivity implements ItemlistFragment.OnFragmentInteractionListener{
+public class ShoplistActivity extends AppCompatActivity{
     ArrayList<Item> items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,5 @@ public class ShoplistActivity extends AppCompatActivity implements ItemlistFragm
             ArrayList<String> peopleAdded = data.getStringArrayListExtra("people_added");
             Toast.makeText(this,String.valueOf(peopleAdded.size()),Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

@@ -7,7 +7,7 @@ package com.example.kathu228.shoplog.Helpers;
 public class ShoplogClient {
 
     public static String[] getPeople(){
-        String[] names = {"Felipe", "Kathleen", "Foster", "Daniel", "Vivian", "Brent", "Anya"};
+        String[] names = {"Felipe", "Kathleen", "Foster", "Daniel", "Vivian", "Brent", "Anya", "Andrea", "Greg", "Melissa"};
         return names;
     }
 

@@ -14,33 +14,39 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true" >
 
-        <ImageButton
-            android:id="@+id/ibAddItem"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/rvItem"
+            android:id="@+id/add_new"
             android:layout_alignParentTop="true"
-            android:background="@null"
-            android:gravity="center"
-            android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_add" />
+            android:layout_alignParentStart="true">
 
-        <EditText
-            android:id="@+id/etAddItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/ibAddItem"
-            android:hint="Add Item"
-            android:inputType="text" />
+            <ImageButton
+                android:id="@+id/ibAddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/etAddItem"
+                android:background="@null"
+                android:gravity="center"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/ic_add" />
+
+            <EditText
+                android:id="@+id/etAddItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ibAddItem"
+                android:hint="Add Item"
+                android:inputType="text" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/etAddItem"
-            android:layout_marginStart="5dp"/>
+            android:layout_below="@+id/add_new" />
 
     </RelativeLayout>
+
 </android.support.v4.widget.SwipeRefreshLayout>
