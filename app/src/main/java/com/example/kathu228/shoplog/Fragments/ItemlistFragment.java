@@ -91,10 +91,6 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Nullable
@@ -113,6 +109,18 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
         items = new ArrayList<>();
         // construct the adapter
         itemAdapter = new ItemAdapter(items, this);
+
+        ibAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String body = etAddItem.getText().toString();
+                Item addedItem = new Item();
+                addedItem.setBody(body);
+                etAddItem.setText("");
+                addItem(addedItem);
+            }
+        });
+
         // TODO: setup recycler and adapter
 
         addItems();
@@ -182,17 +190,9 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
     }
 
     // add item to list
-//    public void addItem(Item item){
-//        items.add(0, item);
-//        // itemAdapter.notifyItemInserted(0);
-//        rvItems.scrollToPosition(0);
-//    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void addItem(Item item){
+        items.add(0, item);
+        itemAdapter.notifyItemInserted(0);
     }
 
     @Override
