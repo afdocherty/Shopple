@@ -29,7 +29,7 @@
                 android:layout_alignBottom="@+id/etAddItem"
                 android:background="@null"
                 android:gravity="center"
-                android:tint="@color/colorAccent"
+                android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add" />
 
             <EditText
@@ -38,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/ibAddItem"
                 android:hint="Add Item"
-                android:inputType="text"
-                android:textColorHint="@color/colorAccent" />
+                android:inputType="text" />
 
         </RelativeLayout>
 

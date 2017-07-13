@@ -8,8 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:editTextColor">@color/secondary_text</item>
-        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
-        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorHint">@color/colorPrimaryLight</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
 </resources>

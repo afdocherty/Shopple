@@ -18,7 +18,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="3dp"
         android:onClick="onSubmit"
         android:text="Confirm"
         android:textColor="@color/white" />
