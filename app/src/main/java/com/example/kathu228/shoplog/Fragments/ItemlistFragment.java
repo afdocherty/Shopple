@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,11 @@ import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +36,7 @@ import java.util.List;
  * Use the {@link ItemlistFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapterListener{
+public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapterListener {
     // parameters
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
@@ -46,8 +47,13 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
     ArrayList<Item> items;
 
     // TODO - Temporary for MVP
-    com.example.kathu228.shoplog.Models.List list1; // Be careful to import the correct List!
+    com.example.kathu228.shoplog.Models.List list1;
+    com.example.kathu228.shoplog.Models.List listTest;
     Segment seg1;
+    Segment segTest;
+    Item item1;
+    Item itemTest;
+    ParseUser userTest;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,10 +96,11 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
         // find the RecyclerView
@@ -118,40 +125,60 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
         // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
         ParseUser user = ParseUser.getCurrentUser();
 
-        ParseRelation<ParseObject> relationUserToList = user.getRelation("lists");
-        relationUserToList.getQuery().findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> results, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    list1 = (com.example.kathu228.shoplog.Models.List) results.get(0);
-                }
-            }
-        });
+        queryListForItem();
+    }
 
-        ParseRelation<ParseObject> relationListToSegment = list1.getRelation("segments");
-        relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> results, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    seg1 = (Segment) results.get(0);
-                }
-            }
-        });
+    private void queryListForItem() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("List");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(java.util.List<ParseObject> results, ParseException e) {
+                if (e == null) {
+                    Log.d("LoginActivity", "List found");
+                    listTest = (com.example.kathu228.shoplog.Models.List) results.get(0);
+                    Log.d("LoginActivity", "listTest name: " + listTest.getName());
 
-        ParseRelation<ParseObject> relationSegmentToItem = list1.getRelation("items");
-        relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> results, ParseException e) {
-                if (e != null) {
-                    // There was an error
-                } else {
-                    for (ParseObject parseObject : results) {
-                        items.add((Item) parseObject);
-                    }
+                    ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
+                    relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
+                        public void done(java.util.List<ParseObject> results, ParseException e) {
+                            if (e != null) {
+                                // There was an error
+                            } else {
+                                // results have all the segments in the list
+                                segTest = (Segment) results.get(0);
+                                Log.d("LoginActivity", "listTest segment name: " + segTest.getName());
+                                ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
+                                relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(java.util.List<ParseObject> results, ParseException e) {
+                                        if (e != null) {
+                                            // There was an error
+                                        } else {
+                                            // results have all the items in the segment
+                                            for (ParseObject parseObject : results) {
+                                                items.add((Item) parseObject);
+                                            }
+                                            itemTest = items.get(0);
+                                            Log.d("LoginActivity", "segTest item name: " + itemTest.getBody());
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
                 }
             }
         });
+    }
+
+    // Add an item to the MVP list
+    private void addItemToList () {
+        // TODO - Foster
+    }
+
+    // Remove an item from the MVP list
+    private void removeItemFromList () {
+        // TODO - Foster
     }
 
     // add item to list

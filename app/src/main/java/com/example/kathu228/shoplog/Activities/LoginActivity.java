@@ -1,75 +1,76 @@
 package com.example.kathu228.shoplog.Activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Models.Item;
-import com.example.kathu228.shoplog.Models.List;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.R;
-import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
 
-    List list1;
-    List listTest;
+    // Init variables for MVP
+    com.example.kathu228.shoplog.Models.List list1;
+    com.example.kathu228.shoplog.Models.List listTest;
     Segment seg1;
     Segment segTest;
     Item item1;
     Item itemTest;
+    ParseUser userTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        generateKeyHash();
-
+        final Context context = this;
         loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ParseUser user = ParseUser.getCurrentUser();
 
-                ArrayList<String> permissions = new ArrayList();
-                permissions.add("email");
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions,
-                        new LogInCallback() {
-                            @Override
-                            public void done(ParseUser user, ParseException err) {
-                                if (err != null) {
-                                    Log.d("MyApp", "Uh oh. Error occurred" + err.toString());
-                                } else if (user == null) {
-                                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
-                                } else if (user.isNew()) {
-                                    Log.d("MyApp", "User signed up and logged in through Facebook!");
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
-                                            .show();
-
-                                    Log.d("MyApp", "User logged in through Facebook!");
+                // If there is already a user logged in
+                if (user != null) {
+                    Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
+                    launchAppWithUser();
+                }
+                // Otherwise initiate login
+                else {
+                    ArrayList<String> permissions = new ArrayList();
+                    permissions.add("email");
+                    ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions,
+                            new LogInCallback() {
+                                @Override
+                                public void done(ParseUser user, ParseException err) {
+                                    if (err != null) {
+                                        Log.d("MyApp", "Uh oh. Error occurred " + err.toString());
+                                    } else if (user == null) {
+                                        Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                                    } else if (user.isNew()) {
+                                        Log.d("MyApp", "User signed up and logged in through Facebook!");
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
+                                                .show();
+                                        Log.d("MyApp", "User logged in through Facebook!");
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }
@@ -79,156 +80,118 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
 
-        mvpInit();
-
-//        Intent intent = new Intent(LoginActivity.this, ShoplistActivity.class);
-//        startActivity(intent);
+        launchAppWithUser();
+        //mvpInit();
     }
 
-    private void generateKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.packagename",
-                    PackageManager.GET_SIGNATURES);
-            for (android.content.pm.Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d("KeyHash:", "PackageManager.NameNotFoundException");
-        } catch (NoSuchAlgorithmException e) {
-            Log.d("KeyHash:", "NoSuchAlgorithmException");
-        }
+    private void launchAppWithUser() {
+        Intent intent = new Intent(LoginActivity.this, ShoplistActivity.class);
+        startActivity(intent);
     }
 
-    private void addItem() {
-        seg1.put("item", item1);
-        seg1.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Log.d("LoginActivity", "Item added to Segment!");
-                addSegment();
-            }
-        });
-    }
-
-    private void addSegment() {
-        list1.put("segment", seg1);
-        list1.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Log.d("LoginActivity", "Segment added to List!");
-                addList();
-            }
-        });
-    }
-
-    private void addList() {
-        ParseUser user = ParseUser.getCurrentUser();
-        user.put("list", list1);
-        user.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Log.d("LoginActivity", "List added to User!");
-                fetchList();
-            }
-        });
-    }
-
-    private void fetchList() {
-
-
-//        ParseUser user = ParseUser.getCurrentUser();
-//        user.getParseObject("list").fetchInBackground(new GetCallback<ParseObject>() {
+    // Initialize data for MVP
+//    private void mvpInit() {
+////        Intent intent = new Intent(LoginActivity.this, ShoplistActivity.class);
+////        startActivity(intent);
+//
+////        ParseQuery<ParseUser> query = ParseUser.getQuery();
+////        query.findInBackground(new FindCallback<ParseUser>() {
+////            public void done(java.util.List<ParseUser> objects, ParseException e) {
+////                if (e == null) {
+////                    userTest = objects.get(0);
+////                    Log.d("LoginActivity", "User found");
+////                } else {
+////                    Log.d("LoginActivity", "User not found");
+////                    e.printStackTrace();
+////                }
+////            }
+////        });
+//        item1 = new Item();
+//        item1.setBody("French Toast");
+//        item1.saveInBackground(new SaveCallback() {
 //            @Override
-//            public void done(ParseObject object, ParseException e) {
-//                if (object != null) {
-//                    listTest = (List) object;
-//                    Log.d("LoginActivity", "List exists!");
-//                    fetchSegment();
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Log.d("LoginActivity", "Item saved");
+//                    seg1 = new Segment();
+//                    seg1.setName("Segment 1");
+//                    ParseRelation<ParseObject> relationSegmentToItem = seg1.getRelation("items");
+//                    relationSegmentToItem.add(item1);
+//                    seg1.saveInBackground(new SaveCallback() {
+//                        @Override
+//                        public void done(ParseException e) {
+//                            if (e == null) {
+//                                Log.d("LoginActivity", "Segment saved");
+//                                list1 = new List();
+//                                list1.setName("List 1");
+//                                ParseRelation<ParseObject> relationListToSegment = list1.getRelation("segments");
+//                                relationListToSegment.add(seg1);
+//                                list1.saveInBackground(new SaveCallback() {
+//                                    @Override
+//                                    public void done(ParseException e) {
+//                                        if (e == null) {
+//                                            Log.d("LoginActivity", "List saved");
+//                                            queryList();
+//                                        } else {
+//                                            Log.d("LoginActivity", "List not saved");
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                });
+//                            } else {
+//                                Log.d("LoginActivity", "Segment not saved");
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
 //                } else {
-//                    Log.d("LoginActivity", "List Nope!");
+//                    Log.d("LoginActivity", "Item not saved");
+//                    e.printStackTrace();
 //                }
 //            }
 //        });
-    }
+//    }
 
-    private void fetchSegment() {
-        listTest.getParseObject("segment").fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                if (object != null) {
-                    segTest = (Segment) object;
-                    Log.d("LoginActivity", "Segment exists!");
-                    fetchItem();
-                } else {
-                    Log.d("LoginActivity", "Segment Nope!");
-                }
-            }
-        });
-    }
-
-    private void fetchItem() {
-        segTest.getParseObject("item").fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                if (object != null) {
-                    itemTest = (Item) object;
-                    Log.d("LoginActivity", "Item is: " + itemTest.getBody());
-                } else {
-                    Log.d("LoginActivity", "Item Nope!");
-                }
-            }
-        });
-    }
-
-
-    private void mvpInit() {
-        item1 = new Item();
-        seg1 = new Segment();
-        list1 = new List();
-        item1.setBody("French Toast");
-        addItem();
-
-
-//        ParseRelation<ParseObject> relationSegmentToItem = seg1.getRelation("items");
-//        relationSegmentToItem.add(item1);
-//        seg1.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                Log.d("LoginActivity", "Item added to Segment!");
+//    private void queryList() {
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("List");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(java.util.List<ParseObject> results, ParseException e) {
+//                if (e == null) {
+//                    Log.d("LoginActivity", "List found");
+//                    listTest = (List) results.get(0);
+//                    Log.d("LoginActivity", "listTest name: " + listTest.getName());
+//
+//                    ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
+//                    relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//                        public void done(java.util.List<ParseObject> results, ParseException e) {
+//                            if (e != null) {
+//                                // There was an error
+//                            } else {
+//                                // results have all the segments in the list
+//                                segTest = (Segment) results.get(0);
+//                                Log.d("LoginActivity", "listTest segment name: " + segTest.getName());
+//                                ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
+//                                relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//                                    @Override
+//                                    public void done(java.util.List<ParseObject> results, ParseException e) {
+//                                        if (e != null) {
+//                                            // There was an error
+//                                        } else {
+//                                            // results have all the items in the segment
+//                                            itemTest = (Item) results.get(0);
+//                                            Log.d("LoginActivity", "segTest item name: " + itemTest.getBody());
+//                                        }
+//                                    }
+//                                });
+//
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    Log.d("LoginActivity", "List not found");
+//                    e.printStackTrace();
+//                }
 //            }
 //        });
-//
-//        ParseRelation<ParseObject> relationListToSegment = list1.getRelation("segments");
-//        relationListToSegment.add(seg1);
-//        list1.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                Log.d("LoginActivity", "Segment added to List!");
-//            }
-//        });
-//
-//        ParseRelation<ParseObject> relationUserToList = user.getRelation("lists");
-//        relationUserToList.add(list1);
-//        user.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                Log.d("LoginActivity", "List added to User!");
-//            }
-//        });
-//
-//        relationUserToList.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//                                                           @Override
-//                                                           public void done(java.util.List<ParseObject> objects, ParseException e) {
-//                                                               listTest = (com.example.kathu228.shoplog.Models.List) objects.get(0);
-//                                                               if (listTest != null) {
-//                                                                   Log.d("LoginActivity", "List exists!");
-//                                                               } else {
-//                                                                   Log.d("LoginActivity", "Nope!");
-//                                                               }
-//                                                           }
-//                                                       });
-    }
+//    }
 }
