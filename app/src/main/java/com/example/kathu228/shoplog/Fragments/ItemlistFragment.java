@@ -35,7 +35,7 @@ import java.util.List;
  * Use the {@link ItemlistFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapterListener{
+public class ItemlistFragment extends Fragment{
     // parameters
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
@@ -105,7 +105,7 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, this);
+        itemAdapter = new ItemAdapter(items, R.layout.item);
         // TODO: setup recycler and adapter
 
         addItems();
@@ -183,11 +183,6 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onItemSelected(View view, int position) {
-
     }
 
     /**
