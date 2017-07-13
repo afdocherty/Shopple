@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,9 +112,13 @@ public class ItemlistFragment extends Fragment{
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
         // initialize the array of items
         items = new ArrayList<>();
+
         // construct the adapter
         itemAdapter = new ItemAdapter(items, R.layout.item);
-
+        // Attach the adapter to the recyclerview to populate items
+        rvItems.setAdapter(itemAdapter);
+        // Set layout manager to position the items
+        rvItems.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
