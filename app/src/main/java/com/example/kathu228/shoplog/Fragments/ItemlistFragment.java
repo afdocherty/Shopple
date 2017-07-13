@@ -112,7 +112,6 @@ public class ItemlistFragment extends Fragment{
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
         // initialize the array of items
         items = new ArrayList<>();
-
         // construct the adapter
         itemAdapter = new ItemAdapter(items, R.layout.item);
         // Attach the adapter to the recyclerview to populate items
@@ -120,6 +119,10 @@ public class ItemlistFragment extends Fragment{
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        // Populate??
+        addItems();
+
+        // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +135,7 @@ public class ItemlistFragment extends Fragment{
             }
         });
 
-        addItems();
+
 
         return v;
     }
