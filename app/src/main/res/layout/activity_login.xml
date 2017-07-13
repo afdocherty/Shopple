@@ -7,13 +7,14 @@
     tools:context="com.example.kathu228.shoplog.Activities.LoginActivity">
 
     <Button
-        android:background="@color/com_facebook_blue"
-        android:text="@string/login_button_message"
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:padding="8dp" />
+        android:layout_centerVertical="true"
+        android:background="@color/com_facebook_blue"
+        android:padding="8dp"
+        android:text="@string/login_button_message"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
