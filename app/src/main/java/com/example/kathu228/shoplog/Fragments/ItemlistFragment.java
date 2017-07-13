@@ -151,8 +151,11 @@ public class ItemlistFragment extends Fragment{
                         public void done(java.util.List<ParseObject> results, ParseException e) {
                             if (e != null) {
                                 // There was an error
+                                Log.d("LoginActivity", "Segment not found");
+                                e.printStackTrace();
                             } else {
                                 // results have all the segments in the list
+                                Log.d("LoginActivity", "Segment found");
                                 segTest = (Segment) results.get(0);
                                 Log.d("LoginActivity", "listTest segment name: " + segTest.getName());
                                 ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
@@ -161,8 +164,13 @@ public class ItemlistFragment extends Fragment{
                                     public void done(java.util.List<ParseObject> results, ParseException e) {
                                         if (e != null) {
                                             // There was an error
+                                            Log.d("LoginActivity", "Items not found");
+                                            e.printStackTrace();
                                         } else {
                                             // results have all the items in the segment
+                                            Log.d("LoginActivity", "Items found");
+                                            
+                                            // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
                                             }
