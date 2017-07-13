@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,30 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/people_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/confirmBtn"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Confirm"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:onClick="onSubmit"/>
+
+    <TextView
+        android:id="@+id/tvPeopleAdded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/confirmBtn"
+        android:layout_alignBottom="@+id/confirmBtn"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+</RelativeLayout>

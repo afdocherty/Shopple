@@ -8,4 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name" />
+
+    <CheckBox
+        android:id="@+id/cbName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name" />
 </LinearLayout>
