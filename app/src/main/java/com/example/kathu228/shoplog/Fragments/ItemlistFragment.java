@@ -25,8 +25,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -141,40 +143,42 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(java.util.List<ParseObject> results, ParseException e) {
                 if (e == null) {
-                    Log.d("LoginActivity", "List found");
+                    Log.d("ItemListFragment", "List found");
+                    // Grab the first list (for MVP) - TODO change
                     listTest = (com.example.kathu228.shoplog.Models.List) results.get(0);
-                    Log.d("LoginActivity", "listTest name: " + listTest.getName());
+                    Log.d("ItemListFragment", "listTest name: " + listTest.getName());
 
                     ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
                     relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
                         public void done(java.util.List<ParseObject> results, ParseException e) {
                             if (e != null) {
                                 // There was an error
-                                Log.d("LoginActivity", "Segment not found");
+                                Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
                                 e.printStackTrace();
                             } else {
                                 // results have all the segments in the list
-                                Log.d("LoginActivity", "Segment found");
+                                Log.d("ItemListFragment", "Segment found");
+                                // Grab the first segment (for MVP) - TODO change
                                 segTest = (Segment) results.get(0);
-                                Log.d("LoginActivity", "listTest segment name: " + segTest.getName());
+                                Log.d("ItemListFragment", "listTest segment name: " + segTest.getName());
                                 ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
                                 relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(java.util.List<ParseObject> results, ParseException e) {
                                         if (e != null) {
                                             // There was an error
-                                            Log.d("LoginActivity", "Items not found");
+                                            Log.d("ItemListFragment", "Items not found. Error: " + e.toString());
                                             e.printStackTrace();
                                         } else {
                                             // results have all the items in the segment
-                                            Log.d("LoginActivity", "Items found");
-                                            
+                                            Log.d("ItemListFragment", "Items found");
+
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
                                             }
-                                            itemTest = items.get(0);
-                                            Log.d("LoginActivity", "segTest item name: " + itemTest.getBody());
+//                                            itemTest = items.get(0);
+//                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
                                         }
                                     }
                                 });
@@ -182,19 +186,71 @@ public class ItemlistFragment extends Fragment implements ItemAdapter.ItemAdapte
                             }
                         }
                     });
+                } else {
+                    Log.d("ItemListFragment", "List not found. Error: " + e.toString());
                 }
             }
         });
     }
 
     // Add an item to the MVP list
-    private void addItemToList () {
-        // TODO - Foster
+    private void addItemToList (final Item item) {
+        // MVP Hack to jump straight to Segment - TODO change
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    Log.d("ItemListFragment", "Segment found");
+                    // Grab the first segment (for MVP) - TODO change
+                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
+                    relationSegmentToItem.add(item);
+                    objects.get(0).saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("ItemListFragment", "Item added!");
+                            } else {
+                                Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+                }
+            }
+        });
     }
 
     // Remove an item from the MVP list
-    private void removeItemFromList () {
-        // TODO - Foster
+    private void removeItemFromList (final Item item) {
+        // MVP Hack to jump straight to Segment - TODO change
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    Log.d("ItemListFragment", "Segment found");
+                    // Grab the first segment (for MVP) - TODO change
+                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
+                    relationSegmentToItem.remove(item);
+                    objects.get(0).saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("ItemListFragment", "Item removed!");
+                            } else {
+                                Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+                }
+            }
+        });
     }
 
     // add item to list

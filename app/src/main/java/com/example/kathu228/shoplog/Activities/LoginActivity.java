@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 ////                    userTest = objects.get(0);
 ////                    Log.d("LoginActivity", "User found");
 ////                } else {
-////                    Log.d("LoginActivity", "User not found");
+////                    Log.d("LoginActivity", "User not found. Error: " + e.toString());
 ////                    e.printStackTrace();
 ////                }
 ////            }
@@ -133,19 +133,19 @@ public class LoginActivity extends AppCompatActivity {
 //                                            Log.d("LoginActivity", "List saved");
 //                                            queryList();
 //                                        } else {
-//                                            Log.d("LoginActivity", "List not saved");
+//                                            Log.d("LoginActivity", "List not saved. Error: " + e.toString());
 //                                            e.printStackTrace();
 //                                        }
 //                                    }
 //                                });
 //                            } else {
-//                                Log.d("LoginActivity", "Segment not saved");
+//                                Log.d("LoginActivity", "Segment not saved. Error: " + e.toString());
 //                                e.printStackTrace();
 //                            }
 //                        }
 //                    });
 //                } else {
-//                    Log.d("LoginActivity", "Item not saved");
+//                    Log.d("LoginActivity", "Item not saved. Error: " + e.toString());
 //                    e.printStackTrace();
 //                }
 //            }
