@@ -75,7 +75,7 @@ public class ItemlistFragment extends Fragment{
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
         // Populate??
-        addItems();
+        //addItems();
 
 
         // Put onclicklistener onto add button to add item to list
