@@ -7,11 +7,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
@@ -83,15 +86,33 @@ public class ItemlistFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 String body = etAddItem.getText().toString();
-                Item addedItem = new Item(body,false);
-                etAddItem.setText("");
-                addItem(addedItem);
-                //addItemToList(addedItem);
+                // Does not add empty item
+                if (!body.equals("")) {
+                    Item addedItem = new Item(body, false);
+                    etAddItem.setText("");
+                    addItem(addedItem);
+                    //addItemToList(addedItem);
+                }
 
             }
         });
 
-
+        // Adds item from edittext if press enter or done on keyboard
+        etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String body = etAddItem.getText().toString();
+                    // Does not add empty item
+                    if (!body.equals("")) {
+                        Item addedItem = new Item(body, false);
+                        etAddItem.setText("");
+                        addItem(addedItem);
+                        //addItemToList(addedItem);
+                    }
+                }
+                return false;
+            }
+        });
 
         return v;
     }
