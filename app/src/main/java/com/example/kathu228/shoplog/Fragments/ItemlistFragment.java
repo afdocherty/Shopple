@@ -32,6 +32,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -169,9 +170,12 @@ public class ItemlistFragment extends Fragment{
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
-                                                itemAdapter.notifyItemInserted(0);
+
+
                                                 Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
                                             }
+                                            Collections.reverse(items);
+                                            itemAdapter.notifyDataSetChanged();
 //                                            itemTest = items.get(0);
 //                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
                                         }
