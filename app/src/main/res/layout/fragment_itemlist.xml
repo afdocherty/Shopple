@@ -31,17 +31,17 @@
                 android:gravity="center"
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="@dimen/add_margin"/>
 
             <EditText
                 android:id="@+id/etAddItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/checkbox_margin"
                 android:layout_toEndOf="@+id/ibAddItem"
-                android:hint=" e.g. Apples"
+                android:hint="@string/item_hint"
                 android:textColor="@color/colorPrimaryLight"
-                android:textSize="22sp"
+                android:textSize="@dimen/body_size"
                 android:inputType="textCapSentences" />
 
         </RelativeLayout>

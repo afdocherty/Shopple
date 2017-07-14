@@ -77,6 +77,7 @@ public class ItemlistFragment extends Fragment{
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
+
         // Populate??
         //addItems();
 
@@ -246,5 +247,6 @@ public class ItemlistFragment extends Fragment{
     public void addItem(Item item){
         items.add(0, item);
         itemAdapter.notifyItemInserted(0);
+        rvItems.scrollToPosition(0);
     }
 }
