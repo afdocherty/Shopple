@@ -1,23 +1,26 @@
 package com.example.kathu228.shoplog.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -31,12 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ItemlistFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ItemlistFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *
  */
 
 public class ItemlistFragment extends Fragment{
@@ -51,51 +49,13 @@ public class ItemlistFragment extends Fragment{
     ArrayList<Item> items;
 
     // TODO - Temporary for MVP
-    com.example.kathu228.shoplog.Models.List list1;
-    com.example.kathu228.shoplog.Models.List listTest;
+    ShopList list1;
+    ShopList listTest;
     Segment seg1;
     Segment segTest;
     Item item1;
     Item itemTest;
     ParseUser userTest;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public ItemlistFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ItemlistFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ItemlistFragment newInstance(String param1, String param2) {
-        ItemlistFragment fragment = new ItemlistFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -105,28 +65,55 @@ public class ItemlistFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
         // find the RecyclerView
         rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
-        // find the edittext to add item
-        etAddItem = (EditText) v.findViewById(R.id.etAddItem);
-        // find the add button
-        ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
         itemAdapter = new ItemAdapter(items, R.layout.item);
+        // Set layout manager to position the items
+        rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Attach the adapter to the recyclerview to populate items
+        rvItems.setAdapter(itemAdapter);
+
+        etAddItem = (EditText) v.findViewById(R.id.etAddItem);
+        ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
 
+        // Populate??
+        //addItems();
+
+
+        // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String body = etAddItem.getText().toString();
-                Item addedItem = new Item();
-                addedItem.setBody(body);
-                etAddItem.setText("");
-                addItem(addedItem);
+                // Does not add empty item
+                if (!body.equals("")) {
+                    Item addedItem = new Item(body, false);
+                    etAddItem.setText("");
+                    addItem(addedItem);
+                    //addItemToList(addedItem);
+                }
+
             }
         });
 
-        addItems();
+        // Adds item from edittext if press enter or done on keyboard
+        etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String body = etAddItem.getText().toString();
+                    // Does not add empty item
+                    if (!body.equals("")) {
+                        Item addedItem = new Item(body, false);
+                        etAddItem.setText("");
+                        addItem(addedItem);
+                        //addItemToList(addedItem);
+                    }
+                }
+                return false;
+            }
+        });
 
         return v;
     }
@@ -140,13 +127,13 @@ public class ItemlistFragment extends Fragment{
     }
 
     private void queryListForItem() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("List");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(java.util.List<ParseObject> results, ParseException e) {
                 if (e == null) {
-                    Log.d("ItemListFragment", "List found");
+                    Log.d("ItemListFragment", "ShopList found");
                     // Grab the first list (for MVP) - TODO change
-                    listTest = (com.example.kathu228.shoplog.Models.List) results.get(0);
+                    listTest = (ShopList) results.get(0);
                     Log.d("ItemListFragment", "listTest name: " + listTest.getName());
 
                     ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
@@ -177,6 +164,7 @@ public class ItemlistFragment extends Fragment{
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
+                                                itemAdapter.notifyItemInserted(0);
                                                 Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
                                             }
 //                                            itemTest = items.get(0);
@@ -189,7 +177,7 @@ public class ItemlistFragment extends Fragment{
                         }
                     });
                 } else {
-                    Log.d("ItemListFragment", "List not found. Error: " + e.toString());
+                    Log.d("ItemListFragment", "ShopList not found. Error: " + e.toString());
                 }
             }
         });
@@ -259,37 +247,6 @@ public class ItemlistFragment extends Fragment{
     public void addItem(Item item){
         items.add(0, item);
         itemAdapter.notifyItemInserted(0);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        rvItems.scrollToPosition(0);
     }
 }

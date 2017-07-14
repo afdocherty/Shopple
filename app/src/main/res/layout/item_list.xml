@@ -2,14 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/tvListName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:text="List Name"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:text="List Name"/>
+        android:textColor="@color/secondary_text"
+        android:layout_weight="8.31"
+        android:textSize="@dimen/body_size"/>
 
 </LinearLayout>

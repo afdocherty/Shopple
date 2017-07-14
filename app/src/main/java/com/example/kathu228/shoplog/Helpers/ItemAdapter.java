@@ -1,5 +1,7 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -15,7 +17,6 @@ import java.util.List;
 
 public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
 
-
     public ItemAdapter(List<Item> mlist, int itemViewReference) {
         super(mlist, itemViewReference);
     }
@@ -29,31 +30,11 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
     // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        // get position of item for data
         Item item = mlist.get(position);
 
-        // populate the item views with data
         holder.cbItem.setText(item.getBody());
-        holder.cbItem.setPressed(true); // TODO - get checked boolean from item instance
+        holder.cbItem.setChecked(item.isChecked());
 
-        // TODO - handle click event to change item instance
-//        // puts onclicklistener onto checkbox for each item
-//        // unchecks if checked and checks if unchecked
-//        holder.cbItem.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (item.checked){
-//                    item.checked = false;
-//                    holder.cbItem.setPressed(false);
-//                }
-//                else{
-//                    item.checked = true;
-//                    holder.cbItem.setPressed(true);
-//                }
-//
-//            }
-//        });
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -61,13 +42,73 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
     public class ViewHolder extends BaseAdapter.ViewHolder{
         public CheckBox cbItem;
 
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
         public ViewHolder(View itemView){
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any ViewHolder instance.
             super(itemView);
+
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
+
+            //adds onclicklistener to checkbox, to update object's state once you check it
+            cbItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleCheckbox(mlist.get(getAdapterPosition()),getAdapterPosition(), v);
+                }
+            });
         }
+
+        // checks and unchecks checkbox, while saving the object's boolean state on server
+        public void handleCheckbox(final Item item, final int position, final View v){
+            if (item.isChecked()){
+                cbItem.setChecked(false);
+                item.setChecked(false);
+                item.saveInBackground();
+            }
+            else{
+                cbItem.setChecked(true);
+                item.setChecked(true);
+                item.saveInBackground();
+
+                // Delays a little after checking box, then deletes
+                new CountDownTimer(700, 1000) {
+                    public void onFinish() {
+                        // When timer is finished
+                        // Execute your code here
+                        deleteItem(item, position, v);
+                    }
+
+                    public void onTick(long millisUntilFinished) {
+                        // millisUntilFinished    The amount of time until finished.
+                    }
+                }.start();
+                ;
+
+            }
+        }
+
+        // deletes if checkbox is checked, and allows undo deletion
+        public void deleteItem(final Item item, final int position, View v){
+            // Todo: update remove item
+            mlist.remove(position);
+            notifyItemRemoved(position);
+
+            // if click undo in snackbar, item will reappear in list unchecked
+            Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cbItem.setChecked(false);
+                        item.setChecked(false);
+                        // Todo: update add item later
+                        mlist.add(position, item);
+                        notifyItemInserted(position);
+                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                })
+                .show();
+
+        }
+
+
     }
 }

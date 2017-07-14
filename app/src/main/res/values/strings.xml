@@ -3,4 +3,6 @@
     <string name="fragment_friendlist_text">Test</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="login_button_message">Log in with Facebook</string>
+    <string name="item_hint"> e.g. Apples</string>
+    <string name="list_hint"> e.g. BBQ Checklist</string>
 </resources>

@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/info_btn"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_people_outline"
+        android:onClick="onListInfo"
         android:title="Info"
-        app:showAsAction="always"
-        android:onClick="onListInfo"/>
+        app:showAsAction="always" />
 </menu>

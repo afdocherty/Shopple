@@ -12,30 +12,46 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true" >
+        android:background="@color/white"
+        android:fitsSystemWindows="true">
 
-        <ImageButton
-            android:id="@+id/ibAddItem"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/add_new"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_add" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
 
-        <EditText
-            android:id="@+id/etAddItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/ibAddItem"
-            android:hint="Add Item"
-            android:inputType="text" />
+            <ImageButton
+                android:id="@+id/ibAddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/etAddItem"
+                android:background="@null"
+                android:gravity="center"
+                android:tint="@color/colorPrimaryLight"
+                app:srcCompat="@drawable/ic_add"
+                android:layout_marginLeft="@dimen/add_margin"/>
+
+            <EditText
+                android:id="@+id/etAddItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/checkbox_margin"
+                android:layout_toEndOf="@+id/ibAddItem"
+                android:hint="@string/item_hint"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/body_size"
+                android:inputType="textCapSentences" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/etAddItem"
-            android:layout_marginStart="5dp"/>
+            android:layout_below="@+id/add_new" />
 
     </RelativeLayout>
+
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvName"
+    <CheckBox
+        android:id="@+id/cbName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="Name"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/body_size"
+        android:layout_marginLeft="@dimen/checkbox_margin"
+        app:buttonTint="@color/secondary_text"
+        android:layout_marginTop="@dimen/padding"
+        />
 </LinearLayout>

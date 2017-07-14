@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <CheckBox
         android:id="@+id/cbItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/padding"
+        android:layout_marginLeft="@dimen/checkbox_margin"
         android:text="Item"
-        app:buttonTint="?attr/colorAccent" />
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/body_size"
+        app:buttonTint="@color/secondary_text" />
 </RelativeLayout>

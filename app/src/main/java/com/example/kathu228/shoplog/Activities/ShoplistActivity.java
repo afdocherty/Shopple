@@ -1,12 +1,14 @@
 package com.example.kathu228.shoplog.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Models.Item;
@@ -14,7 +16,7 @@ import com.example.kathu228.shoplog.R;
 
 import java.util.ArrayList;
 
-public class ShoplistActivity extends AppCompatActivity implements ItemlistFragment.OnFragmentInteractionListener{
+public class ShoplistActivity extends AppCompatActivity{
     ArrayList<Item> items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +25,12 @@ public class ShoplistActivity extends AppCompatActivity implements ItemlistFragm
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-//        // Begin the transaction
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        // Replace the contents of the container with the new fragment
-//        ft.replace(R.id.itemlist_frame, new ItemlistFragment());
-//        // Complete the changes added above
-//        ft.commit();
+        // Begin the transaction
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // Replace the contents of the container with the new fragment
+        ft.replace(R.id.itemlist_frame, new ItemlistFragment());
+        // Complete the changes added above
+        ft.commit();
 
     }
 
@@ -52,11 +54,9 @@ public class ShoplistActivity extends AppCompatActivity implements ItemlistFragm
         if (resultCode == RESULT_OK && requestCode == 20) {
             //Code to be executed after you come back from the add people activity
             //(Maybe refresh the shopping list?)
+            Log.d("Tag","works");
+            ArrayList<String> peopleAdded = data.getStringArrayListExtra("people_added");
+            Toast.makeText(this,String.valueOf(peopleAdded.size()),Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
