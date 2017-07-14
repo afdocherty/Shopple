@@ -22,6 +22,7 @@ import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -43,6 +44,7 @@ public class ItemlistFragment extends Fragment{
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
     RecyclerView rvItems;
+//    RecyclerView rvCompleted;
     EditText etAddItem;
     ImageButton ibAddItem;
     ItemAdapter itemAdapter;
@@ -65,6 +67,7 @@ public class ItemlistFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
         // find the RecyclerView
         rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
+//        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
@@ -90,8 +93,8 @@ public class ItemlistFragment extends Fragment{
                 if (!body.equals("")) {
                     Item addedItem = new Item(body, false);
                     etAddItem.setText("");
+                    addItemToList(addedItem);
                     addItem(addedItem);
-                    //addItemToList(addedItem);
                 }
 
             }
@@ -106,8 +109,8 @@ public class ItemlistFragment extends Fragment{
                     if (!body.equals("")) {
                         Item addedItem = new Item(body, false);
                         etAddItem.setText("");
+                        addItemToList(addedItem);
                         addItem(addedItem);
-                        //addItemToList(addedItem);
                     }
                 }
                 return false;
@@ -238,9 +241,22 @@ public class ItemlistFragment extends Fragment{
                             }
                         }
                     });
+                    item.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("ItemListFragment", "Item deleted");
+                            }
+                            else {
+                                Log.d("ItemListFragment", "Item not deleted. Error: " + e.toString());
+                            }
+                        }
+                    });
+
                 } else {
                     Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
                 }
+
             }
         });
     }

@@ -54,6 +54,8 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                     handleCheckbox(mlist.get(getAdapterPosition()),getAdapterPosition(), v);
                 }
             });
+
+            
         }
 
         // checks and unchecks checkbox, while saving the object's boolean state on server
@@ -108,6 +110,8 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                 .show();
 
         }
+
+
 
 
     }
