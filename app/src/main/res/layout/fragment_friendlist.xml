@@ -14,15 +14,16 @@
         android:id="@+id/confirmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorPrimary"
         android:elevation="3dp"
         android:onClick="onSubmit"
         android:text="Confirm"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/tvPeopleAdded"
