@@ -118,6 +118,18 @@ public class ItemlistFragment extends Fragment{
             }
         });
 
+        //find the swipe refresh layout and add the onRefreshListener
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        //swipeContainer.setColorSchemeResources(R.color.);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //call method to repopulate the timeline
+                addItems();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
         return v;
     }
 
