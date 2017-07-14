@@ -17,6 +17,7 @@ import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -45,8 +46,8 @@ public class ItemlistFragment extends Fragment{
     ArrayList<Item> items;
 
     // TODO - Temporary for MVP
-    com.example.kathu228.shoplog.Models.List list1;
-    com.example.kathu228.shoplog.Models.List listTest;
+    ShopList list1;
+    ShopList listTest;
     Segment seg1;
     Segment segTest;
     Item item1;
@@ -82,8 +83,7 @@ public class ItemlistFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 String body = etAddItem.getText().toString();
-                Item addedItem = new Item();
-                addedItem.setBody(body);
+                Item addedItem = new Item(body,false);
                 etAddItem.setText("");
                 addItem(addedItem);
                 //addItemToList(addedItem);
@@ -105,13 +105,13 @@ public class ItemlistFragment extends Fragment{
     }
 
     private void queryListForItem() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("List");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(java.util.List<ParseObject> results, ParseException e) {
                 if (e == null) {
-                    Log.d("ItemListFragment", "List found");
+                    Log.d("ItemListFragment", "ShopList found");
                     // Grab the first list (for MVP) - TODO change
-                    listTest = (com.example.kathu228.shoplog.Models.List) results.get(0);
+                    listTest = (ShopList) results.get(0);
                     Log.d("ItemListFragment", "listTest name: " + listTest.getName());
 
                     ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
@@ -155,7 +155,7 @@ public class ItemlistFragment extends Fragment{
                         }
                     });
                 } else {
-                    Log.d("ItemListFragment", "List not found. Error: " + e.toString());
+                    Log.d("ItemListFragment", "ShopList not found. Error: " + e.toString());
                 }
             }
         });

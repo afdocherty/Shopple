@@ -12,6 +12,15 @@ import com.parse.ParseObject;
 @ParseClassName("Segment")
 public class Segment extends ParseObject {
 
+    public Segment(){
+        //required for Parse
+    }
+
+    public Segment(String name, String color){
+        setName(name);
+        setColor(color);
+    }
+
     // Get the name of the Segment
     public String getName() {
         return getString("name");
@@ -22,5 +31,12 @@ public class Segment extends ParseObject {
         put("name", value);
     }
 
-    // TODO - Segment color field
+    public String getColor(){
+        return getString("color");
+    }
+
+    public void setColor(String color){
+        put("color",color);
+    }
+
 }

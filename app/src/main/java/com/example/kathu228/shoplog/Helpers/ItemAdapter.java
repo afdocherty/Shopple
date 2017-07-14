@@ -29,31 +29,11 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
     // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        // get position of item for data
         Item item = mlist.get(position);
 
-        // populate the item views with data
         holder.cbItem.setText(item.getBody());
-        holder.cbItem.setChecked(false); // TODO - get checked boolean from item instance
+        holder.cbItem.setChecked(item.isChecked());
 
-        // TODO - handle click event to change item instance
-//        // puts onclicklistener onto checkbox for each item
-//        // unchecks if checked and checks if unchecked
-//        holder.cbItem.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (item.checked){
-//                    item.checked = false;
-//                    holder.cbItem.setPressed(false);
-//                }
-//                else{
-//                    item.checked = true;
-//                    holder.cbItem.setPressed(true);
-//                }
-//
-//            }
-//        });
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -61,13 +41,31 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
     public class ViewHolder extends BaseAdapter.ViewHolder{
         public CheckBox cbItem;
 
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
         public ViewHolder(View itemView){
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any ViewHolder instance.
             super(itemView);
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
+
+            //adds onclicklistener to checkbox, to update object's state once you check it
+            cbItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleCheckbox(mlist.get(getAdapterPosition()));
+                }
+            });
+        }
+
+        //checks and unchecks checkbox, while saving the object's boolean state on server
+        public void handleCheckbox(Item item){
+            if (item.isChecked()){
+                cbItem.setChecked(false);
+                item.setChecked(false);
+                item.saveInBackground();
+            }
+            else{
+                cbItem.setChecked(true);
+                item.setChecked(true);
+                item.saveInBackground();
+            }
         }
     }
 }

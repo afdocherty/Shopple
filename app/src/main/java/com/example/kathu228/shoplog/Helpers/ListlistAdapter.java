@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 import java.util.List;
@@ -12,9 +13,9 @@ import java.util.List;
  * Created by afdoch on 7/13/17.
  */
 
-public class ListlistAdapter extends BaseAdapter<ListlistAdapter.ViewHolder, com.example.kathu228.shoplog.Models.List> {
+public class ListlistAdapter extends BaseAdapter<ListlistAdapter.ViewHolder, ShopList> {
 
-    public ListlistAdapter(List<com.example.kathu228.shoplog.Models.List> mlist, int itemViewReference) {
+    public ListlistAdapter(List<ShopList> mlist, int itemViewReference) {
         super(mlist, itemViewReference);
     }
 
@@ -26,9 +27,9 @@ public class ListlistAdapter extends BaseAdapter<ListlistAdapter.ViewHolder, com
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        com.example.kathu228.shoplog.Models.List list = mlist.get(position);
+        ShopList shopList = mlist.get(position);
 
-        holder.tvListName.setText(list.getName());
+        holder.tvListName.setText(shopList.getName());
     }
 
     // Provide a direct reference to each of the views within a data item

@@ -12,6 +12,15 @@ import com.parse.ParseObject;
 @ParseClassName("Item")
 public class Item extends ParseObject{
 
+    public Item(){
+        //Needed for Parse
+    }
+
+    public Item(String body, boolean checked){
+        setBody(body);
+        setChecked(checked);
+    }
+
     // Get the body text of the Item
     public String getBody() {
         return getString("body");
@@ -20,5 +29,13 @@ public class Item extends ParseObject{
     // Set the body text of the Item
     public void setBody(String value) {
         put("body", value);
+    }
+
+    public void setChecked(boolean value) {
+        put("checked",value);
+    }
+
+    public boolean isChecked(){
+        return getBoolean("checked");
     }
 }

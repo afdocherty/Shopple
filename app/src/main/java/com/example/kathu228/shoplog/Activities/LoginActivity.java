@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -24,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
 
     // Init variables for MVP
-    com.example.kathu228.shoplog.Models.List list1;
-    com.example.kathu228.shoplog.Models.List listTest;
+    ShopList list1;
+    ShopList listTest;
     Segment seg1;
     Segment segTest;
     Item item1;
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 ////        ParseQuery<ParseUser> query = ParseUser.getQuery();
 ////        query.findInBackground(new FindCallback<ParseUser>() {
-////            public void done(java.util.List<ParseUser> objects, ParseException e) {
+////            public void done(java.util.ShopList<ParseUser> objects, ParseException e) {
 ////                if (e == null) {
 ////                    userTest = objects.get(0);
 ////                    Log.d("LoginActivity", "User found");
@@ -122,18 +123,18 @@ public class LoginActivity extends AppCompatActivity {
 //                        public void done(ParseException e) {
 //                            if (e == null) {
 //                                Log.d("LoginActivity", "Segment saved");
-//                                list1 = new List();
-//                                list1.setName("List 1");
+//                                list1 = new ShopList();
+//                                list1.setName("ShopList 1");
 //                                ParseRelation<ParseObject> relationListToSegment = list1.getRelation("segments");
 //                                relationListToSegment.add(seg1);
 //                                list1.saveInBackground(new SaveCallback() {
 //                                    @Override
 //                                    public void done(ParseException e) {
 //                                        if (e == null) {
-//                                            Log.d("LoginActivity", "List saved");
+//                                            Log.d("LoginActivity", "ShopList saved");
 //                                            queryList();
 //                                        } else {
-//                                            Log.d("LoginActivity", "List not saved. Error: " + e.toString());
+//                                            Log.d("LoginActivity", "ShopList not saved. Error: " + e.toString());
 //                                            e.printStackTrace();
 //                                        }
 //                                    }
@@ -153,17 +154,17 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
 //    private void queryList() {
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("List");
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
 //        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(java.util.List<ParseObject> results, ParseException e) {
+//            public void done(java.util.ShopList<ParseObject> results, ParseException e) {
 //                if (e == null) {
-//                    Log.d("LoginActivity", "List found");
-//                    listTest = (List) results.get(0);
+//                    Log.d("LoginActivity", "ShopList found");
+//                    listTest = (ShopList) results.get(0);
 //                    Log.d("LoginActivity", "listTest name: " + listTest.getName());
 //
 //                    ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
 //                    relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//                        public void done(java.util.List<ParseObject> results, ParseException e) {
+//                        public void done(java.util.ShopList<ParseObject> results, ParseException e) {
 //                            if (e != null) {
 //                                // There was an error
 //                            } else {
@@ -173,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
 //                                relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
 //                                    @Override
-//                                    public void done(java.util.List<ParseObject> results, ParseException e) {
+//                                    public void done(java.util.ShopList<ParseObject> results, ParseException e) {
 //                                        if (e != null) {
 //                                            // There was an error
 //                                        } else {
@@ -188,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        }
 //                    });
 //                } else {
-//                    Log.d("LoginActivity", "List not found");
+//                    Log.d("LoginActivity", "ShopList not found");
 //                    e.printStackTrace();
 //                }
 //            }

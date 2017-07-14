@@ -5,11 +5,11 @@
 
     <CheckBox
         android:id="@+id/cbItem"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:buttonTint="?attr/colorAccent"
         android:text="Item"
-        android:textColor="@color/colorAccent"
-        android:buttonTint="?attr/colorAccent" />
+        android:textColor="@color/colorAccent" />
 </RelativeLayout>
