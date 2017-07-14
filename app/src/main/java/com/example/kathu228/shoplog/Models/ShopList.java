@@ -29,4 +29,10 @@ public class ShopList extends ParseObject {
     public void setName(String value) {
         put("name", value);
     }
+
+    // TODO - create relation to User, so on the collaborators view you can query the relation
+    // for all the users in it, i.e.
+    //      ParseQuery<ParseObject> query = relation.getQuery();
+    // Or even specify for the current user within the query for the ShopList fragment, i.e.
+    //      query.whereEqualTo("user", ParseUser.getCurrentUser());
 }
