@@ -48,14 +48,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ParseUser user = ParseUser.getCurrentUser();
 
-//                // If there is already a user logged in
-//                if (user != null) {
-//                    Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
-//                    launchAppWithUser();
-//                    //mvpInit();
-//                }
-//                // Otherwise initiate login
-//                else {
+                // If there is already a user logged in
+                if (user != null) {
+                    Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
+                    launchAppWithUser();
+                    //mvpInit();
+                }
+                // Otherwise initiate login
+                else {
                     ArrayList<String> permissions = new ArrayList();
                     permissions.add("email");
                     ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions,
@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                                                 .show();
+
                                         Log.d("MyApp", "User logged in through Facebook!");
                                     }
                                 }
