@@ -118,6 +118,18 @@ public class ItemlistFragment extends Fragment{
             }
         });
 
+        //find the swipe refresh layout and add the onRefreshListener
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        //swipeContainer.setColorSchemeResources(R.color.);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //call method to repopulate the timeline
+                addItems();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
         return v;
     }
 
@@ -222,48 +234,7 @@ public class ItemlistFragment extends Fragment{
         });
     }
 
-    // Remove an item from the MVP list
-    private void removeItemFromList (final Item item) {
-        // MVP Hack to jump straight to Segment - TODO change
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    Log.d("ItemListFragment", "Segment found");
-                    // Grab the first segment (for MVP) - TODO change
-                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
-                    relationSegmentToItem.remove(item);
-                    objects.get(0).saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("ItemListFragment", "Item removed!");
-                            } else {
-                                Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    item.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("ItemListFragment", "Item deleted");
-                            }
-                            else {
-                                Log.d("ItemListFragment", "Item not deleted. Error: " + e.toString());
-                            }
-                        }
-                    });
 
-                } else {
-                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
-                }
-
-            }
-        });
-    }
 
     // add item to list
     public void addItem(Item item){

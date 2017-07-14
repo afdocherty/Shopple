@@ -69,7 +69,8 @@ public class FriendlistFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FriendFragmentListener) getActivity()).friendsFragmentFinished(peopleAdded);
+                //((FriendFragmentListener) getActivity()).friendsFragmentFinished(peopleAdded);
+
             }
         });
 
