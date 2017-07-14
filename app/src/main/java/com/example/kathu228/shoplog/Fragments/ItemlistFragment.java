@@ -77,9 +77,8 @@ public class ItemlistFragment extends Fragment{
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
-
-        // Populate??
-        //addItems();
+        // Populate the items array
+        addItems();
 
 
         // Put onclicklistener onto add button to add item to list
@@ -121,12 +120,15 @@ public class ItemlistFragment extends Fragment{
     public void addItems() {
 
         // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
-        ParseUser user = ParseUser.getCurrentUser();
+        //ParseUser user = ParseUser.getCurrentUser();
 
-        queryListForItem();
+        // Clear the items list
+        items.clear();
+        // Find the items from the database
+        queryListForItems();
     }
 
-    private void queryListForItem() {
+    private void queryListForItems() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(java.util.List<ParseObject> results, ParseException e) {
