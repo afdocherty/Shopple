@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
         }
 
         // checks and unchecks checkbox, while saving the object's boolean state on server
-        public void handleCheckbox(Item item, int position, View v){
+        public void handleCheckbox(final Item item, final int position, final View v){
             if (item.isChecked()){
                 cbItem.setChecked(false);
                 item.setChecked(false);
@@ -66,15 +67,30 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                 cbItem.setChecked(true);
                 item.setChecked(true);
                 item.saveInBackground();
-                deleteItem(item, position, v);
+
+                // Delays a little after checking box, then deletes
+                new CountDownTimer(700, 1000) {
+                    public void onFinish() {
+                        // When timer is finished
+                        // Execute your code here
+                        deleteItem(item, position, v);
+                    }
+
+                    public void onTick(long millisUntilFinished) {
+                        // millisUntilFinished    The amount of time until finished.
+                    }
+                }.start();
+                ;
+
             }
         }
 
         // deletes if checkbox is checked, and allows undo deletion
         public void deleteItem(final Item item, final int position, View v){
-            // Todo: set delay for deletion and update remove item
+            // Todo: update remove item
             mlist.remove(position);
             notifyItemRemoved(position);
+
             // if click undo in snackbar, item will reappear in list unchecked
             Snackbar.make(v, "Item Deleted", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
@@ -85,12 +101,14 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                         // Todo: update add item later
                         mlist.add(position, item);
                         notifyItemInserted(position);
-                        Snackbar snackbar1 = Snackbar.make(v, "Item is restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = Snackbar.make(v, "Item Restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
                 })
                 .show();
 
         }
+
+
     }
 }
