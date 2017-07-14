@@ -11,8 +11,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/padding"
         android:layout_marginLeft="@dimen/checkbox_margin"
-        android:buttonTint="@color/secondary_text"
         android:text="Item"
         android:textColor="@color/secondary_text"
-        android:textSize="@dimen/body_size" />
+        android:textSize="@dimen/body_size"
+        app:buttonTint="@color/secondary_text" />
 </RelativeLayout>

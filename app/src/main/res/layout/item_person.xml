@@ -12,7 +12,7 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/body_size"
         android:layout_marginLeft="@dimen/checkbox_margin"
-        android:buttonTint="@color/secondary_text"
+        app:buttonTint="@color/secondary_text"
         android:layout_marginTop="@dimen/padding"
         />
 </LinearLayout>
