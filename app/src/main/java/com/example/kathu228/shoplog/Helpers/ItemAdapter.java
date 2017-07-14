@@ -2,12 +2,20 @@ package com.example.kathu228.shoplog.Helpers;
 
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -55,7 +63,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                 }
             });
 
-            
+
         }
 
         // checks and unchecks checkbox, while saving the object's boolean state on server
@@ -75,6 +83,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                     public void onFinish() {
                         // When timer is finished
                         // Execute your code here
+                        deleteItemFromList(item);
                         deleteItem(item, position, v);
                     }
 
@@ -85,6 +94,49 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                 ;
 
             }
+        }
+
+        // Remove an item from the MVP list
+        private void deleteItemFromList (final Item item) {
+            // MVP Hack to jump straight to Segment - TODO change
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        Log.d("ItemListFragment", "Segment found");
+                        // Grab the first segment (for MVP) - TODO change
+                        ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
+                        relationSegmentToItem.remove(item);
+                        objects.get(0).saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.d("ItemListFragment", "Item removed!");
+                                } else {
+                                    Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        item.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.d("ItemListFragment", "Item deleted");
+                                }
+                                else {
+                                    Log.d("ItemListFragment", "Item not deleted. Error: " + e.toString());
+                                }
+                            }
+                        });
+
+                    } else {
+                        Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+                    }
+
+                }
+            });
         }
 
         // deletes if checkbox is checked, and allows undo deletion
