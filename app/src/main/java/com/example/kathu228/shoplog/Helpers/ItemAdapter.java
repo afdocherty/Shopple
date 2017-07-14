@@ -92,7 +92,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
             notifyItemRemoved(position);
 
             // if click undo in snackbar, item will reappear in list unchecked
-            Snackbar.make(v, "Item Deleted", Snackbar.LENGTH_LONG)
+            Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -101,7 +101,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                         // Todo: update add item later
                         mlist.add(position, item);
                         notifyItemInserted(position);
-                        Snackbar snackbar1 = Snackbar.make(v, "Item Restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
                 })

@@ -40,9 +40,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_toEndOf="@+id/ibAddItem"
                 android:hint=" e.g. Apples"
-                android:inputType="text"
                 android:textColor="@color/colorPrimaryLight"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                android:inputType="textCapSentences" />
 
         </RelativeLayout>
 
