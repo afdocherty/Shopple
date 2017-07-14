@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -14,7 +15,6 @@ import java.util.List;
  */
 
 public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
-
 
     public ItemAdapter(List<Item> mlist, int itemViewReference) {
         super(mlist, itemViewReference);
@@ -43,19 +43,20 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
 
         public ViewHolder(View itemView){
             super(itemView);
+
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
 
             //adds onclicklistener to checkbox, to update object's state once you check it
             cbItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handleCheckbox(mlist.get(getAdapterPosition()));
+                    handleCheckbox(mlist.get(getAdapterPosition()),getAdapterPosition(), v);
                 }
             });
         }
 
-        //checks and unchecks checkbox, while saving the object's boolean state on server
-        public void handleCheckbox(Item item){
+        // checks and unchecks checkbox, while saving the object's boolean state on server
+        public void handleCheckbox(Item item, int position, View v){
             if (item.isChecked()){
                 cbItem.setChecked(false);
                 item.setChecked(false);
@@ -65,7 +66,31 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
                 cbItem.setChecked(true);
                 item.setChecked(true);
                 item.saveInBackground();
+                deleteItem(item, position, v);
             }
+        }
+
+        // deletes if checkbox is checked, and allows undo deletion
+        public void deleteItem(final Item item, final int position, View v){
+            // Todo: set delay for deletion and update remove item
+            mlist.remove(position);
+            notifyItemRemoved(position);
+            // if click undo in snackbar, item will reappear in list unchecked
+            Snackbar.make(v, "Item Deleted", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cbItem.setChecked(false);
+                        item.setChecked(false);
+                        // Todo: update add item later
+                        mlist.add(position, item);
+                        notifyItemInserted(position);
+                        Snackbar snackbar1 = Snackbar.make(v, "Item is restored!", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                })
+                .show();
+
         }
     }
 }
