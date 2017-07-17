@@ -47,15 +47,15 @@ public class LoginActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        // Check if there is already a user logged in
-        ParseUser user = ParseUser.getCurrentUser();
-        if (user != null) {
-            Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
-            launchAppWithUser();
-            //mvpInit();
-        }
-        // Otherwise initiate login
-        else {
+//        // Check if there is already a user logged in
+//        ParseUser user = ParseUser.getCurrentUser();
+//        if (user != null) {
+//            Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
+//            launchAppWithUser();
+//            //mvpInit();
+//        }
+//        // Otherwise initiate login
+//        else {
             loginButton = (Button) findViewById(R.id.login);
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                             });
                 }
             });
-        }
+//        }
     }
 
     @Override
