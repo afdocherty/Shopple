@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,11 +19,11 @@ import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
+import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -81,6 +82,7 @@ public class ItemlistFragment extends Fragment{
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
+
         // Populate the items array
         addItems();
 
@@ -117,6 +119,12 @@ public class ItemlistFragment extends Fragment{
                 return false;
             }
         });
+
+        // attaches touchHelper to the recyclerview
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(itemAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvItems);
 
         //find the swipe refresh layout and add the onRefreshListener
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);

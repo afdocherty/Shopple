@@ -17,13 +17,14 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.SaveCallback;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by kathu228 on 7/12/17.
  */
 
-public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
+public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implements ItemTouchHelperAdapter{
 
     public ItemAdapter(List<Item> mlist, int itemViewReference) {
         super(mlist, itemViewReference);
@@ -43,6 +44,31 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
         holder.cbItem.setText(item.getBody());
         holder.cbItem.setChecked(item.isChecked());
 
+    }
+
+    // Allows user to move items by dragging
+    // Todo: implement order in database?
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mlist, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mlist, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        //return true;
+    }
+
+    // Allows user to remove item by swiping
+    // Todo: remove item from database
+    @Override
+    public void onItemDismiss(int position) {
+        mlist.remove(position);
+        notifyItemRemoved(position);
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -144,25 +170,58 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> {
             // Todo: update remove item
             mlist.remove(position);
             notifyItemRemoved(position);
-
-            // if click undo in snackbar, item will reappear in list unchecked
-            Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cbItem.setChecked(false);
-                        item.setChecked(false);
-                        // Todo: update add item later
-                        mlist.add(position, item);
-                        notifyItemInserted(position);
-                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
-                        snackbar1.show();
-                    }
-                })
-                .show();
+            undoDelete(item, position, v);
 
         }
 
+        // Add an item to the MVP list
+        private void addItemToList (final Item item) {
+            // MVP Hack to jump straight to Segment - TODO change
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        Log.d("ItemListFragment", "Segment found");
+                        // Grab the first segment (for MVP) - TODO change
+                        ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
+                        relationSegmentToItem.add(item);
+                        objects.get(0).saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.d("ItemListFragment", "Item added!");
+                                } else {
+                                    Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    } else {
+                        Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+                    }
+                }
+            });
+        }
+
+        // if click undo in snackbar, item will reappear in list unchecked
+        public void undoDelete(final Item item, final int position, View v){
+            Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
+                    .setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cbItem.setChecked(false);
+                            item.setChecked(false);
+                            // Todo: update add item later
+                            mlist.add(position, item);
+                            addItemToList(item);
+                            notifyItemInserted(position);
+                            Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
+                            snackbar1.show();
+                        }
+                    })
+                    .show();
+        }
 
 
 
