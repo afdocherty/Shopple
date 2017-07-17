@@ -242,8 +242,6 @@ public class ItemlistFragment extends Fragment{
         });
     }
 
-
-
     // add item to list
     public void addItem(Item item){
         items.add(0, item);

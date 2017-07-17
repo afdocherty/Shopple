@@ -13,15 +13,18 @@ import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     Item item1;
     Item itemTest;
     ParseUser userTest;
+    ShopList list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +46,20 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         final Context context = this;
-        loginButton = (Button) findViewById(R.id.login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser user = ParseUser.getCurrentUser();
 
-                // If there is already a user logged in
-                if (user != null) {
-                    Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
-                    launchAppWithUser();
-                    //mvpInit();
-                }
-                // Otherwise initiate login
-                else {
+        // Check if there is already a user logged in
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            Toast.makeText(context, "Welcome back " + user.getUsername(), Toast.LENGTH_SHORT).show();
+            launchAppWithUser();
+            //mvpInit();
+        }
+        // Otherwise initiate login
+        else {
+            loginButton = (Button) findViewById(R.id.login);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     ArrayList<String> permissions = new ArrayList();
                     permissions.add("email");
                     ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions,
@@ -68,17 +72,19 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                                     } else if (user.isNew()) {
                                         Log.d("MyApp", "User signed up and logged in through Facebook!");
+
+                                        // Add the user to the MVP ShopList
+                                        addToShopList(user);
                                     } else {
                                         Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                                                 .show();
-
                                         Log.d("MyApp", "User logged in through Facebook!");
                                     }
                                 }
                             });
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -158,6 +164,23 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void addToShopList(ParseUser user) {
+        // Find the ShopList
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
+        query.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> results, ParseException e) {
+                            if (e == null) {
+                                Log.d("LoginActivity", "ShopList found");
+                                list = (ShopList) results.get(0);
+                            } else {
+                                Log.d("LoginActivity", "ShopList not found. Error: " + e.toString());
+                            }
+                        }
+        });
+
+        // Add the user to the list
+        list.addUser(user);
+    }
 //    private void queryList() {
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
 //        query.findInBackground(new FindCallback<ParseObject>() {
