@@ -31,7 +31,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= inflateView(parent);
+        View view = inflateView(parent);
         return new ViewHolder(view);
     }
 
