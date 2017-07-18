@@ -34,6 +34,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -95,9 +96,7 @@ public class ItemlistFragment extends Fragment{
                 // Does not add empty item
                 if (!body.equals("")) {
                     Item addedItem = new Item(body, false);
-                    etAddItem.setText("");
                     addItemToList(addedItem);
-                    addItem(addedItem);
                 }
 
             }
@@ -113,7 +112,6 @@ public class ItemlistFragment extends Fragment{
                         Item addedItem = new Item(body, false);
                         etAddItem.setText("");
                         addItemToList(addedItem);
-                        addItem(addedItem);
                     }
                 }
                 return false;
@@ -187,14 +185,20 @@ public class ItemlistFragment extends Fragment{
                                             // results have all the items in the segment
                                             Log.d("ItemListFragment", "Items found");
 
+                                            Collections.sort(results, new Comparator<ParseObject>() {
+                                                public int compare(ParseObject o1, ParseObject o2) {
+                                                    return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+                                                }
+                                            });
+
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
                                                 items.add((Item) parseObject);
-
+                                                parseObject.getCreatedAt();
 
                                                 Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
                                             }
-                                            Collections.reverse(items);
+//                                            Collections.reverse(items);
                                             itemAdapter.notifyDataSetChanged();
 //                                            itemTest = items.get(0);
 //                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
@@ -229,6 +233,8 @@ public class ItemlistFragment extends Fragment{
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item added!");
+                                addItem(item);
+                                etAddItem.setText("");
                             } else {
                                 Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
                                 e.printStackTrace();
