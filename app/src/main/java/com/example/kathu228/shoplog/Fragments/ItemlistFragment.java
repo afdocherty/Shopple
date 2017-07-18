@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
+import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
@@ -54,6 +55,7 @@ public class ItemlistFragment extends Fragment{
     ImageButton ibAddItem;
     ItemAdapter itemAdapter;
     ArrayList<Item> items;
+    public String shopListObjectId;
 
     // TODO - Temporary for MVP
     ShopList list1;
@@ -63,6 +65,17 @@ public class ItemlistFragment extends Fragment{
     Item item1;
     Item itemTest;
     ParseUser userTest;
+
+    public static ItemlistFragment newInstance(String shopListObjectId) {
+        ItemlistFragment itemlistFragment = new ItemlistFragment();
+
+        // Supply shopListFragment as argument
+        Bundle args = new Bundle();
+        args.putString(ShoplistAdapter.SHOPLIST_TAG, shopListObjectId);
+        itemlistFragment.setArguments(args);
+
+        return itemlistFragment;
+    }
 
     @Nullable
     @Override
@@ -85,10 +98,11 @@ public class ItemlistFragment extends Fragment{
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
+        // TODO use shopListObjectId
+        shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
 
         // Populate the items array
         addItems();
-
 
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
