@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
+import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.SaveCallback;
+import com.parse.ParseUser;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -55,16 +57,13 @@ public class ShopListFragment extends Fragment {
         // Attach the adapter to the recyclerview to populate items
         rvShopList.setAdapter(shoplistAdapter);
 
-        // Populate the ShopList array
-        addShopListsFromDatabase();
-
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
         fabAddShopList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                ShopList addedShopList = new ShopList("New List at " + currentDateTimeString);
-                addShopList(createShopList(addedShopList));
+                // Create a new list as the current user, automatically naming it w/ timestamp
+                addShopList(Query.createShoplistAsUser(ParseUser.getCurrentUser(), "New List at " + currentDateTimeString));
             }
         });
 
@@ -83,37 +82,29 @@ public class ShopListFragment extends Fragment {
         return v;
     }
 
-    // Add the ShopLists for the current user to the database
-    private void addShopListsFromDatabase() {
-        // TODO use model-based code
-//        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("ShopList");
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> objects, ParseException e) {
-//                if (e == null) {
-//
-//                } else {
-//                    Log.d("ShopListFragment", "Lists not retrieved. Error: " + e.toString());
-//                }
-//            }
-//        });
-
+    // Refresh the list on resume
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Populate the ShopList array
+        addShopListsFromDatabase();
     }
 
-    // TODO TEMP
-    // Add an ShopList to the database
-    private ShopList createShopList (final ShopList shopList) {
-        shopList.saveInBackground(new SaveCallback() {
+    // Add the ShopLists for the current user to the database
+    private void addShopListsFromDatabase() {
+        shopLists.clear();
+        Query.findShoplistsForUser(ParseUser.getCurrentUser(), new FindCallback<ShopList>() {
             @Override
-            public void done(ParseException e) {
+            public void done(List<ShopList> objects, ParseException e) {
                 if (e == null) {
-                    Log.d("ShopListFragment", "New list created");
+                    Log.d("ShopListFragment", "User lists loaded");
+                    shopLists.addAll(objects);
+                    shoplistAdapter.notifyDataSetChanged();
                 } else {
-                    Log.d("ShopListFragment", "New list not created. Error: " + e.toString());
+                    Log.d("ShopListFragment", "User lists not loaded. Error: " + e.toString());
                 }
             }
         });
-        return null;
     }
 
     // add ShopList to list

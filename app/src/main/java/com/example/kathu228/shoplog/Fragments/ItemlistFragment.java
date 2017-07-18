@@ -100,6 +100,7 @@ public class ItemlistFragment extends Fragment{
 
         // TODO use shopListObjectId
         shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
+        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
 
         // Populate the items array
         addItems();
