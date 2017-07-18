@@ -45,6 +45,11 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
 
     }
 
+//    @Override
+//    public int getItemViewType(int position) {
+//
+//    }
+
     // Allows user to move items by dragging
     // Todo: implement order in database?
     @Override
@@ -67,7 +72,6 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
-        deleteItem(position);
         deleteItemFromList(item);
     }
 
@@ -124,8 +128,9 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
     }
 
     // deletes if checkbox is checked, and allows undo deletion
-    public void deleteItem(final int position){
+    public void deleteItem(final Item item){
         // Todo: update remove item
+        int position = mlist.indexOf(item);
         mlist.remove(position);
         notifyItemRemoved(position);
         //undoDelete(item, position, v);
@@ -149,6 +154,7 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item removed!");
+                                deleteItem(item);
                             } else {
                                 Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
                                 e.printStackTrace();

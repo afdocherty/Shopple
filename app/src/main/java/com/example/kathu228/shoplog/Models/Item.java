@@ -19,7 +19,7 @@ public class Item extends ParseObject{
     public Item(String body, boolean checked){
         setBody(body);
         setChecked(checked);
-
+//        setType(type);
         saveInBackground();
     }
 
@@ -40,4 +40,10 @@ public class Item extends ParseObject{
     public boolean isChecked(){
         return getBoolean("checked");
     }
+
+
+//    public void setType(int type) { put("type", type); }
+//
+//    public int getType() {return getInt("type");}
+
 }
