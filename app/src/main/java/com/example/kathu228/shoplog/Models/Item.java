@@ -16,10 +16,10 @@ public class Item extends ParseObject{
         //Needed for Parse
     }
 
-    public Item(String body, boolean checked){
+    public Item(String body, boolean checked, int type){
         setBody(body);
         setChecked(checked);
-//        setType(type);
+        setType(type);
         saveInBackground();
     }
 
@@ -41,9 +41,9 @@ public class Item extends ParseObject{
         return getBoolean("checked");
     }
 
+    // type = 0 for item, type = 1 for header (e.g. Completed Items)
+    public void setType(int type) { put("type", type); }
 
-//    public void setType(int type) { put("type", type); }
-//
-//    public int getType() {return getInt("type");}
+    public int getType() {return getInt("type");}
 
 }

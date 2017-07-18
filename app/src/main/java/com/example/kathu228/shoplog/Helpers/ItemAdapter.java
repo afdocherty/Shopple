@@ -68,11 +68,12 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
     }
 
     // Allows user to remove item by swiping
-    // Todo: remove item from database
+    // Todo: change to only checking item
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
-        deleteItemFromList(item);
+//        deleteItemFromList(item);
+
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -99,14 +100,20 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
         // checks and unchecks checkbox, while saving the object's boolean state on server
         public void handleCheckbox(final Item item, final int position, final View v){
             if (item.isChecked()){
-                cbItem.setChecked(false);
                 item.setChecked(false);
                 item.saveInBackground();
+                mlist.remove(position);
+                mlist.add(0,item);
+                cbItem.setChecked(false);
+                notifyItemMoved(position, 0);
             }
             else{
-                cbItem.setChecked(true);
                 item.setChecked(true);
                 item.saveInBackground();
+                mlist.remove(position);
+                mlist.add(item);
+                cbItem.setChecked(true);
+                notifyItemMoved(position, mlist.size()-1);
 
 //                // Delays a little after checking box, then deletes
 //                new CountDownTimer(700, 1000) {

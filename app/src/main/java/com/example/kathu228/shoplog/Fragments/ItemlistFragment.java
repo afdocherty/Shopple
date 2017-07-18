@@ -37,6 +37,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.example.kathu228.shoplog.R.layout.item;
+
 /**
  *
  */
@@ -74,7 +76,7 @@ public class ItemlistFragment extends Fragment{
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, R.layout.item);
+        itemAdapter = new ItemAdapter(items, item);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -95,7 +97,7 @@ public class ItemlistFragment extends Fragment{
                 String body = etAddItem.getText().toString();
                 // Does not add empty item
                 if (!body.equals("")) {
-                    Item addedItem = new Item(body, false);
+                    Item addedItem = new Item(body, false, 0);
                     addItemToList(addedItem);
                 }
 
@@ -109,7 +111,7 @@ public class ItemlistFragment extends Fragment{
                     String body = etAddItem.getText().toString();
                     // Does not add empty item
                     if (!body.equals("")) {
-                        Item addedItem = new Item(body, false);
+                        Item addedItem = new Item(body, false, 0);
                         etAddItem.setText("");
                         addItemToList(addedItem);
                     }
@@ -184,21 +186,31 @@ public class ItemlistFragment extends Fragment{
                                         } else {
                                             // results have all the items in the segment
                                             Log.d("ItemListFragment", "Items found");
-
+                                            // sorts parseobjects by most recently created
                                             Collections.sort(results, new Comparator<ParseObject>() {
                                                 public int compare(ParseObject o1, ParseObject o2) {
                                                     return o2.getCreatedAt().compareTo(o1.getCreatedAt());
                                                 }
                                             });
-
+                                            // Adds completed header as an "item"
+                                            Item completed = new Item("Completed Items", false, 1);
+                                            items.add(completed);
+                                            //end index of incomplete items
+                                            int end = 0;
                                             // Add the items to the items arraylist
                                             for (ParseObject parseObject : results) {
-                                                items.add((Item) parseObject);
-                                                parseObject.getCreatedAt();
-
+                                                Item addItem = (Item) parseObject;
+                                                // If item is checked, it adds to the end of the list
+                                                // else, adds item to the end right before the checked items are
+                                                if (addItem.isChecked()){
+                                                    items.add(addItem);
+                                                }
+                                                else{
+                                                    items.add(end,addItem);
+                                                    end++;
+                                                }
                                                 Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
                                             }
-//                                            Collections.reverse(items);
                                             itemAdapter.notifyDataSetChanged();
 //                                            itemTest = items.get(0);
 //                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
