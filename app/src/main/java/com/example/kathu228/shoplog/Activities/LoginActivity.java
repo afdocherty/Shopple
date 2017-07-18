@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.facebook.AccessToken;
@@ -31,8 +32,6 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button loginButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         attemptLoginSavedSession();
 
         // Otherwise initiate login
-        loginButton = (Button) findViewById(R.id.login);
+        Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //in case user pressed back on the screen
+                attemptLoginSavedSession();
+
                 String [] permissions = {"public_profile", "email", "user_friends"};
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList(permissions), new LogInCallback() {
                     @Override
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseSession object, ParseException e) {
                 if (user != null && object != null) {
-                    Toast.makeText(LoginActivity.this, "Welcome back " + user.get("name").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Welcome back " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
                     launchAppWithUser();
                 }
             }
@@ -96,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                     .show();
-            Log.d("MyApp", String.format("User %s logged in through Facebook!", user.get("name").toString()));
+            Log.d("MyApp", String.format("User %s logged in through Facebook!", Query.getNameOfUser(user)));
             launchAppWithUser();
         }
     }
@@ -110,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                             user.setEmail(object.getString("email"));
                             user.put("name", object.getString("name"));
                             user.saveInBackground();
-                            Log.d("MyApp", String.format("User %s signed up and logged in through Facebook!", user.get("name").toString()));
+                            Log.d("MyApp", String.format("User %s signed up and logged in through Facebook!", Query.getNameOfUser(user)));
                             launchAppWithUser();
                         } catch (JSONException e) {
                             e.printStackTrace();
