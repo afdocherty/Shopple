@@ -17,4 +17,5 @@ public class User extends ParseUser {
     // NOTE: LoginActivity returns a ParseUser, meaning
     // casting is required to leverage unique User
     // fields/methods
+
 }

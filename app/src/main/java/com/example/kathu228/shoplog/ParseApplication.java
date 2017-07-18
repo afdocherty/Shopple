@@ -3,8 +3,8 @@ package com.example.kathu228.shoplog;
 import android.app.Application;
 
 import com.example.kathu228.shoplog.Models.Item;
-import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.Models.Segment;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
@@ -18,8 +18,7 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //ParseObject.registerSubclass(User.class);
+        
         ParseObject.registerSubclass(ShopList.class);
         ParseObject.registerSubclass(Segment.class);
         ParseObject.registerSubclass(Item.class);
