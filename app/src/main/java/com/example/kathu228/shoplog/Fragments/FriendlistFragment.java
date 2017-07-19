@@ -39,6 +39,7 @@ public class FriendlistFragment extends Fragment {
 
     public ArrayList<String> peopleAdded;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

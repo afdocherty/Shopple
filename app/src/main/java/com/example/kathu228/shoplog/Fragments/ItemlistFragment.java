@@ -48,7 +48,6 @@ public class ItemlistFragment extends Fragment{
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
     RecyclerView rvItems;
-//    RecyclerView rvCompleted;
     EditText etAddItem;
     ImageButton ibAddItem;
     ItemAdapter itemAdapter;
