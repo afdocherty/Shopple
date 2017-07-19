@@ -1,10 +1,13 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
@@ -23,32 +26,61 @@ import java.util.List;
  * Created by kathu228 on 7/12/17.
  */
 
-public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implements ItemTouchHelperAdapter{
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter{
 
-    public ItemAdapter(List<Item> mlist, int itemViewReference) {
-        super(mlist, itemViewReference);
+    private List<Item> mlist;
+    public ItemAdapter(List<Item> mlist) {
+        this.mlist = mlist;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflateView(parent);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        View view = inflateView(parent);
+        View view;
+
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+                return new ItemViewHolder(view);
+            case 1:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_headers, parent, false);
+                return new HeaderViewHolder(view);
+        }
+        return null;
+//        return new ViewHolder(view);
     }
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Item item = mlist.get(position);
 
-        holder.cbItem.setText(item.getBody());
-        holder.cbItem.setChecked(item.isChecked());
+//        holder.cbItem.setText(item.getBody());
+//        holder.cbItem.setChecked(item.isChecked());
+        if (item != null) {
+            switch (item.getType()) {
+                case 0:
+                    ((ItemViewHolder) holder).cbItem.setText(item.getBody());
+                    ((ItemViewHolder) holder).cbItem.setChecked(item.isChecked());
+                    break;
+                case 1:
+                    ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
+                    break;
+            }
+        }
 
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        if (mlist != null) {
+            Item item = mlist.get(position);
+            if (item != null) {
+                return item.getType();
+            }
+        }
+        return 0;
+    }
 
     // Allows user to move items by dragging
     // Todo: implement order in database?
@@ -76,12 +108,19 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
 
     }
 
+    @Override
+    public int getItemCount() {
+        if (mlist == null)
+            return 0;
+        return mlist.size();
+    }
+
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends BaseAdapter.ViewHolder{
+    public class ItemViewHolder extends BaseAdapter.ViewHolder{
         public CheckBox cbItem;
 
-        public ViewHolder(View itemView){
+        public ItemViewHolder(View itemView){
             super(itemView);
 
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
@@ -131,6 +170,16 @@ public class ItemAdapter extends BaseAdapter<ItemAdapter.ViewHolder,Item> implem
 //                ;
 
             }
+        }
+    }
+
+    public class HeaderViewHolder extends BaseAdapter.ViewHolder{
+        public TextView tvHeader;
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+
+            tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
         }
     }
 

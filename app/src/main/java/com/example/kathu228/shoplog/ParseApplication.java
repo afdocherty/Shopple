@@ -18,7 +18,7 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
         ParseObject.registerSubclass(ShopList.class);
         ParseObject.registerSubclass(Segment.class);
         ParseObject.registerSubclass(Item.class);
