@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Models.Query;
@@ -32,22 +33,33 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public Button loginButton;
+    public ProgressBar pbLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //try to log in with sa
+        // Fetch widgets
+        loginButton = (Button) findViewById(R.id.login);
+        pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+
+        // Set button invisible and progress bar visible
+        loginButton.setVisibility(View.INVISIBLE);
+        pbLoading.setVisibility(View.VISIBLE);
+
+        // Try login, in case already logged in
         attemptLoginSavedSession();
 
-        // Otherwise initiate login
-        Button loginButton = (Button) findViewById(R.id.login);
+        // Set loginbutton click listener
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //in case user pressed back on the screen
-                attemptLoginSavedSession();
+                // Try login, in case user pressed back on the screen
+                //attemptLoginSavedSession();
 
+                // Otherwise initiate login
                 String [] permissions = {"public_profile", "email", "user_friends"};
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList(permissions), new LogInCallback() {
                     @Override
@@ -59,6 +71,25 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void attemptLoginSavedSession() {
+        // Check if there is already a user logged in
+        final ParseUser user = ParseUser.getCurrentUser();
+        ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
+            @Override
+            public void done(ParseSession object, ParseException e) {
+                // If user is already logged in, welcome them back and launch app
+                if (user != null && object != null) {
+                    Toast.makeText(LoginActivity.this, "Welcome back " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
+                    launchAppWithUser();
+                }
+                // Otherwise show the login button and hide the progress bar
+                else {
+                    loginButton.setVisibility(View.VISIBLE);
+                    pbLoading.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -69,20 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     private void launchAppWithUser() {
         Intent intent = new Intent(LoginActivity.this, ShopListsActivity.class);
         startActivity(intent);
-    }
-
-    private void attemptLoginSavedSession(){
-        // Check if there is already a user logged in
-        final ParseUser user = ParseUser.getCurrentUser();
-        ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
-            @Override
-            public void done(ParseSession object, ParseException e) {
-                if (user != null && object != null) {
-                    Toast.makeText(LoginActivity.this, "Welcome back " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
-                    launchAppWithUser();
-                }
-            }
-        });
+        finish();
     }
 
     private void handleFacebookLoginResponse(ParseUser user, ParseException err){
@@ -93,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         } else if (user.isNew()) {
             fillUserInfo(user);
 
-            // Add the user to the MVP ShopList
+            // TODO Change - Add the user to the MVP ShopList
             addToShopList(user);
         } else {
             Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
