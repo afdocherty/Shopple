@@ -102,12 +102,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         //return true;
     }
 
-    // Allows user to remove item by swiping
-    // Todo: change to only checking item
+    // Allows user to remove checked item or check an unchecked item by swiping
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
-//        deleteItemFromList(item);
+        if (item.isChecked() && item.getType()==0){
+            deleteItemFromList(item, position);
+        }
+        else{
+            deleteItem(item);
+            addItem(item, mlist.size());
+            item.setChecked(true);
+            item.saveInBackground();
+        }
+
 
     }
 
@@ -156,21 +164,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 mlist.add(item);
                 cbItem.setChecked(true);
                 notifyItemMoved(position, mlist.size()-1);
-
-//                // Delays a little after checking box, then deletes
-//                new CountDownTimer(700, 1000) {
-//                    public void onFinish() {
-//                        // When timer is finished
-//                        // Execute your code here
-//                        deleteItemFromList(item);
-//                        deleteItem(item, position, v);
-//                    }
-//
-//                    public void onTick(long millisUntilFinished) {
-//                        // millisUntilFinished    The amount of time until finished.
-//                    }
-//                }.start();
-//                ;
 
             }
         }
@@ -287,8 +280,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         });
     }
 
+    //adds item through adapter
+    public void addItem(final Item item, final int position){
+        mlist.add(position, item);
+        notifyItemInserted(position);
+    }
+
     // Add an item to the MVP list
-    private void addItemToList (final Item item) {
+    private void addItemToList (final Item item, final int position) {
         // MVP Hack to jump straight to Segment - TODO change
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -304,6 +303,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item added!");
+                                item.setChecked(false);
                             } else {
                                 Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
                                 e.printStackTrace();
@@ -324,11 +324,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     @Override
                     public void onClick(View v) {
 //                        cbItem.setChecked(false);
-                        item.setChecked(false);
-                        // Todo: update add item later
-                        mlist.add(position, item);
-                        addItemToList(item);
-                        notifyItemInserted(position);
+
+                        addItemToList(item, position);
+
                         Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
