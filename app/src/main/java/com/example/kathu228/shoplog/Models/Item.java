@@ -5,6 +5,7 @@ import com.parse.ParseObject;
 
 /**
  * Created by kathu228 on 7/11/17.
+ *
  */
 
 // Item ParseObject that contains the details associated with a segment item
@@ -45,5 +46,21 @@ public class Item extends ParseObject{
     public void setType(int type) { put("type", type); }
 
     public int getType() {return getInt("type");}
+
+    public void setParent(ShopList parent){
+        put("parent",parent);
+    }
+
+    public ShopList getParent(){
+        return (ShopList) getParseObject("parent");
+    }
+
+    public void setSegment(Segment segment){
+        put("segment",segment);
+    }
+
+    public Segment getSegment(){
+        return (Segment) getParseObject("segment");
+    }
 
 }

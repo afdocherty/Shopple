@@ -9,7 +9,7 @@ import com.parse.ParseUser;
 
 /**
  * Created by afdoch on 7/12/17.
- * 
+ *
  */
 
 // ShopList ParseObject that wraps multiple segments of a list together
