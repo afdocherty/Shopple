@@ -26,20 +26,20 @@ import java.util.List;
  */
 public class ListDetailsFragment extends Fragment {
 
-    public EditText etListName;
-    public ImageButton ibEditName;
+    private EditText etListName;
+    private ImageButton ibEditName;
 
-    public CardView cvColor;
+    private CardView cvColor;
 
-    public CardView cvLeaveList;
+    private CardView cvLeaveList;
 
-    public Button bEditCollab;
-    public ImageButton ibEditCollab;
+    private Button bEditCollab;
+    private ImageButton ibEditCollab;
 
-    public List<String> collabs;
-    public RecyclerView rvCollabs;
-    public DetailsAdapter collabAdapter;
-    public String shopListObjectId;
+    private List<String> collabs;
+    private RecyclerView rvCollabs;
+    private DetailsAdapter collabAdapter;
+    private String shopListObjectId;
 
     public static ListDetailsFragment newInstance(String shopListObjectId) {
         ListDetailsFragment listDetailsFragment = new ListDetailsFragment();

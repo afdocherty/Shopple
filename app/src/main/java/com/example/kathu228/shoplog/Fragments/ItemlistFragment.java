@@ -47,12 +47,12 @@ public class ItemlistFragment extends Fragment{
     // parameters
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
-    RecyclerView rvItems;
-    EditText etAddItem;
-    ImageButton ibAddItem;
-    ItemAdapter itemAdapter;
-    ArrayList<Item> items;
-    public String shopListObjectId;
+    private RecyclerView rvItems;
+    private EditText etAddItem;
+    private ImageButton ibAddItem;
+    private ItemAdapter itemAdapter;
+    private ArrayList<Item> items;
+    private String shopListObjectId;
 
     // TODO - Temporary for MVP
     ShopList list1;
