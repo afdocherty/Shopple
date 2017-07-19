@@ -70,7 +70,6 @@ public class FriendlistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //((FriendFragmentListener) getActivity()).friendsFragmentFinished(peopleAdded);
-
             }
         });
 

@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void launchAppWithUser() {
-        Intent intent = new Intent(LoginActivity.this, ShoplistActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ShopListsActivity.class);
         startActivity(intent);
     }
 
