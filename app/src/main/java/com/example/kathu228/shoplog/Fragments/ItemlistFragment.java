@@ -99,9 +99,6 @@ public class ItemlistFragment extends Fragment{
         shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
 
-        // Populate the items array
-        addItems();
-
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +148,13 @@ public class ItemlistFragment extends Fragment{
         });
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Populate the items array
+        addItems();
     }
 
     public void addItems() {

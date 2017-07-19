@@ -147,6 +147,8 @@ public class LoginActivity extends AppCompatActivity {
     private void addToShopList(final ParseUser user) {
         // Find the ShopList
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
+        // Hardcode that new users be added into the List called "List 1"
+        query.whereEqualTo("name", "List 1");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> results, ParseException e) {
                 if (e == null) {
