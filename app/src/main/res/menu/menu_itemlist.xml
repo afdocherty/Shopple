@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/logout_btn"
-        android:icon="@drawable/logout"
-        android:onClick="onLogout"
-        android:title="Logout"
+        android:id="@+id/info_btn"
+        android:icon="@drawable/ic_people_outline"
+        android:onClick="onListInfo"
+        android:title="Info"
         app:showAsAction="always" />
 </menu>
