@@ -31,11 +31,11 @@ import java.util.List;
 
 public class ShopListFragment extends Fragment {
 
-    public ShoplistAdapter shoplistAdapter;
-    public List<ShopList> shopLists;
-    public RecyclerView rvShopList;
-    public SwipeRefreshLayout swipeContainer;
-    public FloatingActionButton fabAddShopList;
+    private ShoplistAdapter shoplistAdapter;
+    private List<ShopList> shopLists;
+    private RecyclerView rvShopList;
+    private SwipeRefreshLayout swipeContainer;
+    private FloatingActionButton fabAddShopList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

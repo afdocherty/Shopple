@@ -30,14 +30,15 @@ public class FriendlistFragment extends Fragment {
         void friendsFragmentFinished(ArrayList<String> peopleAdded);
     }
 
-    public FriendlistAdapter peopleAdapter;
-    public List<String> people;
-    public RecyclerView rvPeople;
+    private FriendlistAdapter peopleAdapter;
+    private List<String> people;
+    private RecyclerView rvPeople;
 
-    public TextView tvPeopleAdded;
-    public Button confirmBtn;
+    private TextView tvPeopleAdded;
+    private Button confirmBtn;
 
-    public ArrayList<String> peopleAdded;
+    private ArrayList<String> peopleAdded;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

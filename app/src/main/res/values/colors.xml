@@ -5,7 +5,8 @@
     <color name="colorPrimaryLight">#ffa470</color>
     <color name="colorAccent">#897f74</color>
     <color name="white">#ffffff</color>
-    <color name="divider">#99928E</color>
+    <color name="lightgray">#99928e</color>
+    <color name="divider">#e6e6e6</color>
     <color name="secondary_text">#7b6f68</color>
     <color name="black">#000000</color>
 </resources>

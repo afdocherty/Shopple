@@ -53,7 +53,8 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".Activities.ShopListsActivity"></activity>
+        <activity android:name=".Activities.ShopListsActivity" />
+        <activity android:name=".Activities.ListDetailsActivity"></activity>
     </application>
 
 </manifest>

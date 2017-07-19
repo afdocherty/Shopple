@@ -38,8 +38,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.kathu228.shoplog.R.layout.item;
-
 /**
  *
  */
@@ -49,13 +47,12 @@ public class ItemlistFragment extends Fragment{
     // parameters
     private SwipeRefreshLayout swipeContainer;
     private ShoplogClient client;
-    RecyclerView rvItems;
-//    RecyclerView rvCompleted;
-    EditText etAddItem;
-    ImageButton ibAddItem;
-    ItemAdapter itemAdapter;
-    ArrayList<Item> items;
-    public String shopListObjectId;
+    private RecyclerView rvItems;
+    private EditText etAddItem;
+    private ImageButton ibAddItem;
+    private ItemAdapter itemAdapter;
+    private ArrayList<Item> items;
+    private String shopListObjectId;
 
     // TODO - Temporary for MVP
     ShopList list1;
@@ -89,7 +86,7 @@ public class ItemlistFragment extends Fragment{
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, item);
+        itemAdapter = new ItemAdapter(items);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -101,9 +98,6 @@ public class ItemlistFragment extends Fragment{
         // TODO use shopListObjectId
         shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-
-        // Populate the items array
-        addItems();
 
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +148,13 @@ public class ItemlistFragment extends Fragment{
         });
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Populate the items array
+        addItems();
     }
 
     public void addItems() {

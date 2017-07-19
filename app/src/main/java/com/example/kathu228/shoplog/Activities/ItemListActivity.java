@@ -24,8 +24,10 @@ public class ItemListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle(getIntent().getStringExtra("listName"));
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
