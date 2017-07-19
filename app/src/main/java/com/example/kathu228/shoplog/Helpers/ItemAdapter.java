@@ -1,12 +1,15 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Models.Item;
@@ -175,11 +178,55 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class HeaderViewHolder extends BaseAdapter.ViewHolder{
         public TextView tvHeader;
+        public ImageButton ibDelete;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
+            ibDelete = (ImageButton) itemView.findViewById(R.id.ibDelete);
+
+            // asks user if want to delete all items in completed
+            ibDelete.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(final View v) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
+
+                    // set title
+                    alertDialogBuilder.setTitle("Delete completed");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("Are you sure you want to delete all completed items?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, delete all completed items
+                                    deleteItems(getAdapterPosition(), v);
+                                }
+                            })
+                            .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+
+                }
+            });
+        }
+
+        //deletes all items under position
+        public void deleteItems(final int position, final View v){
+            for (int pos = position+1; pos<mlist.size(); pos++){
+                deleteItemFromList(mlist.get(pos), position+1);
+            }
         }
     }
 
@@ -194,7 +241,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // Remove an item from the MVP list
-    private void deleteItemFromList (final Item item) {
+    private void deleteItemFromList (final Item item, final int position) {
         // MVP Hack to jump straight to Segment - TODO change
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -210,7 +257,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item removed!");
-                                deleteItem(item);
+//                                deleteItem(item);
+                                mlist.remove(position);
+                                notifyItemRemoved(position);
+//                                notifyItemRangeChanged(position, getItemCount());
                             } else {
                                 Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
                                 e.printStackTrace();
