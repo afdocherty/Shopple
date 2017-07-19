@@ -38,8 +38,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.kathu228.shoplog.R.layout.item;
-
 /**
  *
  */
@@ -89,7 +87,7 @@ public class ItemlistFragment extends Fragment{
         // initialize the array of items
         items = new ArrayList<>();
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, item);
+        itemAdapter = new ItemAdapter(items);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
