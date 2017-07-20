@@ -20,6 +20,8 @@ import java.util.List;
 @ParseClassName("ShopList")
 public class ShopList extends ParseObject {
 
+    public static final String SHOPLIST_TAG = "ShopList";
+
     public ShopList(){
         //required for Parse
     }

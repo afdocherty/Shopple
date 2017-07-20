@@ -21,7 +21,6 @@ import java.util.List;
 public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter{
 
     public Context context;
-    public static final String SHOPLIST_TAG = "ShopList";
 
     public ShoplistAdapter(List<ShopList> mlist, int itemViewReference) {
         super(mlist, itemViewReference);
@@ -79,7 +78,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         // create intent for the new activity
                         Intent intent = new Intent(context, ItemListActivity.class);
                         // Pass in ShopList ObjectId
-                        intent.putExtra(SHOPLIST_TAG, shopList.getObjectId());
+                        intent.putExtra(ShopList.SHOPLIST_TAG, shopList.getObjectId());
                         intent.putExtra("listName", shopList.getName());
                         context.startActivity(intent);
                     }

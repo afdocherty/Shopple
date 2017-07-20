@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
-import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
@@ -62,7 +61,7 @@ public class ItemlistFragment extends Fragment{
 
         // Supply shopListFragment as argument
         Bundle args = new Bundle();
-        args.putString(ShoplistAdapter.SHOPLIST_TAG, shopListObjectId);
+        args.putString(ShopList.SHOPLIST_TAG, shopListObjectId);
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
@@ -91,7 +90,7 @@ public class ItemlistFragment extends Fragment{
 
 
         // TODO use shopListObjectId
-        shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
         listTest = listTest.getShopListById(shopListObjectId);
         // Put onclicklistener onto add button to add item to list
