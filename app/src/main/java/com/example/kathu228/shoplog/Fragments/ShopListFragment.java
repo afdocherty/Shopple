@@ -97,7 +97,6 @@ public class ShopListFragment extends Fragment {
     // Add the ShopLists for the current user to the database
     private void addShopListsFromDatabase() {
         shopLists.clear();
-
         Query.findShoplistsForUser(ParseUser.getCurrentUser(), new FindCallback<ShopList>() {
             @Override
             public void done(List<ShopList> objects, ParseException e) {

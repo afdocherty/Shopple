@@ -29,6 +29,7 @@ public class ShopList extends ParseObject {
         put("uncategorized_segment",new Segment("uncategorized",this));
         put("completed_segment",new Segment("completed",this));
         addUser(ParseUser.getCurrentUser());
+        addCompletedHeaderItem("Completed Items");
         saveInBackground();
     }
 

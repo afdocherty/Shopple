@@ -66,7 +66,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((ItemViewHolder) holder).cbItem.setText(item.getBody());
                     ((ItemViewHolder) holder).cbItem.setChecked(item.isChecked());
                     break;
-                case 1:
+                case 2:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     break;
             }
