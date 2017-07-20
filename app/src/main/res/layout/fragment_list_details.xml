@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="1dp"
         app:cardUseCompatPadding="true">
@@ -28,15 +27,15 @@
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="Shoplist 1"
+                android:text="Shoplist Name"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorAccent"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="@dimen/add_margin"/>
+                android:layout_marginStart="@dimen/add_margin"/>
 
-            <ImageButton
-                android:id="@+id/ibEditName"
+            <ImageView
+                android:id="@+id/ivEditName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/etListName"
@@ -45,7 +44,7 @@
                 android:layout_toEndOf="@+id/etListName"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_edit"
-                android:layout_marginRight="@dimen/add_margin"/>
+                android:layout_marginEnd="@dimen/add_margin" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -54,7 +53,6 @@
         android:id="@+id/cvColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/cvListName"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="1dp"
@@ -68,8 +66,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/cvListName">
 
-            <ImageButton
-                android:id="@+id/ibColor"
+            <ImageView
+                android:id="@+id/ivColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/bColor"
@@ -77,20 +75,71 @@
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/bColor"
                 android:background="@null"
-                app:srcCompat="@drawable/ic_color_lens" />
+                app:srcCompat="@drawable/ic_color_lens"
+                android:padding="8dp"/>
 
-            <Button
+            <TextView
                 android:id="@+id/bColor"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="@null"
-                android:text="Change Color"
+                android:text="@string/change_color"
                 android:textAlignment="center"
-                android:textAllCaps="false"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:padding="8dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCollaborators"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cvColor"
+        android:layout_above="@+id/cvLeaveList"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:id="@+id/rlCollaborators"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivEditCollab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/bEditCollab"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/bEditCollab"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_people"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/bEditCollab"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@null"
+                android:text="@string/edit_collaborators"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp"
+                android:padding="8dp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvCollabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ivEditCollab" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -98,8 +147,7 @@
         android:id="@+id/cvLeaveList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/cvColor"
+        android:layout_alignParentBottom="true"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="1dp"
         app:cardUseCompatPadding="true">
@@ -109,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/ibLeaveList"
+            <ImageView
+                android:id="@+id/ivLeaveList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/bLeaveList"
@@ -118,67 +166,22 @@
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/bLeaveList"
                 android:background="@null"
-                app:srcCompat="@drawable/account_remove" />
+                app:srcCompat="@drawable/account_remove"
+                android:padding="8dp"/>
 
-            <Button
+            <TextView
                 android:id="@+id/bLeaveList"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="@null"
-                android:text="Leave List"
+                android:text="@string/leave_list"
                 android:textAlignment="center"
-                android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryLight"
-                android:textSize="24sp" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvCollaborators"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/cvLeaveList"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true">
-
-        <RelativeLayout
-            android:id="@+id/rlCollaborators"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/cvLeaveList">
-
-            <ImageButton
-                android:id="@+id/ibEditCollab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/bEditCollab"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/bEditCollab"
-                android:background="@null"
-                app:srcCompat="@drawable/ic_people" />
-
-            <Button
-                android:id="@+id/bEditCollab"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@null"
-                android:text="Edit Collaborators"
-                android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvCollabs"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ibEditCollab" />
+                android:textSize="24sp"
+                android:padding="8dp"
+                android:textStyle="bold"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

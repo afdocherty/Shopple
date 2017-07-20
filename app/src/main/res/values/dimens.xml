@@ -2,7 +2,7 @@
 <resources>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="checkbox_margin">8dp</dimen>
-    <dimen name="add_margin">12dp</dimen>
+    <dimen name="add_margin">16dp</dimen>
     <dimen name="body_size">22sp</dimen>
     <dimen name="padding">5dp</dimen>
     <dimen name="section_margin">12dp</dimen>
