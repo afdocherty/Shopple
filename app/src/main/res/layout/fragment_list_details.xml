@@ -41,10 +41,10 @@
                 android:layout_alignBottom="@+id/etListName"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/etListName"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_edit"
-                android:layout_marginEnd="@dimen/add_margin" />
+                android:layout_marginEnd="8dp"
+                android:padding="@dimen/details_padding"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -70,16 +70,16 @@
                 android:id="@+id/ivColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/bColor"
+                android:layout_alignBottom="@+id/tvColor"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/bColor"
+                android:layout_toStartOf="@+id/tvColor"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_color_lens"
-                android:padding="8dp"/>
+                android:padding="@dimen/details_padding"/>
 
             <TextView
-                android:id="@+id/bColor"
+                android:id="@+id/tvColor"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -89,7 +89,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="24sp"
-                android:padding="8dp"
+                android:padding="@dimen/details_padding"
                 android:textStyle="bold" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -113,16 +113,16 @@
                 android:id="@+id/ivEditCollab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/bEditCollab"
+                android:layout_alignBottom="@+id/tvEditCollab"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/bEditCollab"
+                android:layout_toStartOf="@+id/tvEditCollab"
                 android:background="@null"
                 app:srcCompat="@drawable/ic_people"
-                android:padding="8dp"/>
+                android:padding="@dimen/details_padding"/>
 
             <TextView
-                android:id="@+id/bEditCollab"
+                android:id="@+id/tvEditCollab"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -132,7 +132,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="24sp"
-                android:padding="8dp"
+                android:padding="@dimen/details_padding"
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
@@ -161,16 +161,16 @@
                 android:id="@+id/ivLeaveList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/bLeaveList"
+                android:layout_alignBottom="@+id/tvLeaveList"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/bLeaveList"
+                android:layout_toStartOf="@+id/tvLeaveList"
                 android:background="@null"
                 app:srcCompat="@drawable/account_remove"
-                android:padding="8dp"/>
+                android:padding="@dimen/details_padding"/>
 
             <TextView
-                android:id="@+id/bLeaveList"
+                android:id="@+id/tvLeaveList"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -180,7 +180,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="24sp"
-                android:padding="8dp"
+                android:padding="@dimen/details_padding"
                 android:textStyle="bold"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
