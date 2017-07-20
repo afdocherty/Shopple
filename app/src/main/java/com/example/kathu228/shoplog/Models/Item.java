@@ -25,9 +25,9 @@ public class Item extends ParseObject{
     Item(String body, ShopList parent, Segment segment, int type){
         setBody(body);
         setParent(parent);
-        setSegment(segment);
-        setChecked(false);
-        setVisible(true);
+        put("segment",segment);
+        put("checked",false);
+        put("visible",true);
         setType(type);
         saveInBackground();
     }
