@@ -27,15 +27,9 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -124,7 +118,7 @@ public class ItemlistFragment extends Fragment{
                     if (!body.equals("")) {
                         Item addedItem = listTest.addItem(body);
                         etAddItem.setText("");
-                        addItemToList(addedItem);
+                        addItem(addedItem);
                     }
                 }
                 return false;
@@ -162,142 +156,69 @@ public class ItemlistFragment extends Fragment{
     public void addItems() {
 
         // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
-        //ParseUser user = ParseUser.getCurrentUser();
-
         // Clear the items list
         items.clear();
-        //listTest = listTest.getShopListById(shopListObjectId);
-        listTest.getUncheckedItems(new FindCallback<Item>() {
+        //addUncheckedItems();
+        listTest.getItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
                     Log.d("ItemListFragment", "Unchecked Items found!!");
-                    for (ParseObject parseObject: objects){
-                        Item addItem = (Item)parseObject;
-                        items.add(addItem);
-                        Log.d("ItemListFragment", "Added unchecked item " + ((Item) parseObject).getBody() + " to items ArrrayList");
-                    }
+                    int completed = 0;
+//                    for (Item object: objects){
+//                        if (object.isItem()){
+//                            if (object.isChecked()){
+//                                items.add(object);
+//                                itemAdapter.notifyItemInserted(items.size());
+//                            }
+//                            else{
+//                                items.add(completed,object);
+//                                itemAdapter.notifyItemInserted(completed);
+//                                completed++;
+//                            }
+//                        }
+//                        else if (object.isCompletedHeader()){
+//                            items.add(completed,object);
+//                            itemAdapter.notifyItemInserted(completed);
+//                        }
+//                    }
+                    items.addAll(objects);
+                    itemAdapter.notifyDataSetChanged();
+
                 }
                 else{
                     Log.d("ItemListFragment", "Unchecked Items not found");
                 }
             }
         });
-//        listTest.getCheckedItems();
-//        listTest.addHeaderItem();
-
-        itemAdapter.notifyDataSetChanged();
-        // Find the items from the database
-        //queryListForItems();
     }
 
-    private void queryListForItems() {
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(java.util.List<ParseObject> results, ParseException e) {
-                if (e == null) {
-                    Log.d("ItemListFragment", "ShopList found");
-                    // Grab the first list (for MVP) - TODO change
-                    listTest = (ShopList) results.get(0);
-                    Log.d("ItemListFragment", "listTest name: " + listTest.getName());
-
-                    ParseRelation<ParseObject> relationListToSegment = listTest.getRelation("segments");
-                    relationListToSegment.getQuery().findInBackground(new FindCallback<ParseObject>() {
-                        public void done(java.util.List<ParseObject> results, ParseException e) {
-                            if (e != null) {
-                                // There was an error
-                                Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
-                                e.printStackTrace();
-                            } else {
-                                // results have all the segments in the list
-                                Log.d("ItemListFragment", "Segment found");
-                                // Grab the first segment (for MVP) - TODO change
-                                segTest = (Segment) results.get(0);
-                                Log.d("ItemListFragment", "listTest segment name: " + segTest.getName());
-                                ParseRelation<ParseObject> relationSegmentToItem = segTest.getRelation("items");
-                                relationSegmentToItem.getQuery().findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(java.util.List<ParseObject> results, ParseException e) {
-                                        if (e != null) {
-                                            // There was an error
-                                            Log.d("ItemListFragment", "Items not found. Error: " + e.toString());
-                                            e.printStackTrace();
-                                        } else {
-                                            // results have all the items in the segment
-                                            Log.d("ItemListFragment", "Items found");
-                                            // sorts parseobjects by most recently created
-                                            Collections.sort(results, new Comparator<ParseObject>() {
-                                                public int compare(ParseObject o1, ParseObject o2) {
-                                                    return o2.getCreatedAt().compareTo(o1.getCreatedAt());
-                                                }
-                                            });
-                                            // Adds completed header as an "item"
-
-
-//                                            Item completed = new Item("Completed Items", false, 1);
-//                                            items.add(completed);
-
-                                            //end index of incomplete items
-                                            int end = 0;
-                                            // Add the items to the items arraylist
-                                            for (ParseObject parseObject : results) {
-                                                Item addItem = (Item) parseObject;
-                                                // If item is checked, it adds to the end of the list
-                                                // else, adds item to the end right before the checked items are
-                                                if (addItem.isChecked()){
-                                                    items.add(addItem);
-                                                }
-                                                else{
-                                                    items.add(end,addItem);
-                                                    end++;
-                                                }
-                                                Log.d("ItemListFragment", "Added item " + ((Item) parseObject).getBody() + " to items ArrrayList");
-                                            }
-                                            itemAdapter.notifyDataSetChanged();
-//                                            itemTest = items.get(0);
-//                                            Log.d("ItemListFragment", "segTest item name: " + itemTest.getBody());
-                                        }
-                                    }
-                                });
-
-                            }
-                        }
-                    });
-                } else {
-                    Log.d("ItemListFragment", "ShopList not found. Error: " + e.toString());
+    public void addUncheckedItems(){
+        listTest.getUncheckedItems(new FindCallback<Item>() {
+            @Override
+            public void done(List<Item> objects, ParseException e) {
+                if (e == null){
+                    Log.d("ItemListFragment", "Unchecked Items found!!");
+                    items.addAll(objects);
+                    itemAdapter.notifyDataSetChanged();
+                }
+                else{
+                    Log.d("ItemListFragment", "Unchecked Items not found");
                 }
             }
         });
     }
-
-    // Add an item to the MVP list
-    private void addItemToList (final Item item) {
-        // MVP Hack to jump straight to Segment - TODO change
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
-        query.findInBackground(new FindCallback<ParseObject>() {
+    public void addCheckedItems(){
+        listTest.getCheckedItems(new FindCallback<Item>() {
             @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    Log.d("ItemListFragment", "Segment found");
-                    // Grab the first segment (for MVP) - TODO change
-                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
-                    relationSegmentToItem.add(item);
-                    objects.get(0).saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("ItemListFragment", "Item added!");
-                                addItem(item);
-                                etAddItem.setText("");
-                            } else {
-                                Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else {
-                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+            public void done(List<Item> objects, ParseException e) {
+                if (e == null){
+                    Log.d("ItemListFragment", "Unchecked Items found!!");
+                    items.addAll(objects);
+                    itemAdapter.notifyDataSetChanged();
+                }
+                else{
+                    Log.d("ItemListFragment", "Unchecked Items not found");
                 }
             }
         });
