@@ -95,10 +95,11 @@ public class ItemlistFragment extends Fragment{
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
+
         // TODO use shopListObjectId
         shopListObjectId = getArguments().getString(ShoplistAdapter.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-
+        listTest = listTest.getShopListById(shopListObjectId);
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +107,9 @@ public class ItemlistFragment extends Fragment{
                 String body = etAddItem.getText().toString();
                 // Does not add empty item
                 if (!body.equals("")) {
-                    Item addedItem = new Item(body, false, 0);
-                    addItemToList(addedItem);
+                    Item addedItem = listTest.addItem(body);
+                    etAddItem.setText("");
+                    addItem(addedItem);
                 }
 
             }
@@ -120,7 +122,7 @@ public class ItemlistFragment extends Fragment{
                     String body = etAddItem.getText().toString();
                     // Does not add empty item
                     if (!body.equals("")) {
-                        Item addedItem = new Item(body, false, 0);
+                        Item addedItem = listTest.addItem(body);
                         etAddItem.setText("");
                         addItemToList(addedItem);
                     }
@@ -164,11 +166,33 @@ public class ItemlistFragment extends Fragment{
 
         // Clear the items list
         items.clear();
+        //listTest = listTest.getShopListById(shopListObjectId);
+        listTest.getUncheckedItems(new FindCallback<Item>() {
+            @Override
+            public void done(List<Item> objects, ParseException e) {
+                if (e == null){
+                    Log.d("ItemListFragment", "Unchecked Items found!!");
+                    for (ParseObject parseObject: objects){
+                        Item addItem = (Item)parseObject;
+                        items.add(addItem);
+                        Log.d("ItemListFragment", "Added unchecked item " + ((Item) parseObject).getBody() + " to items ArrrayList");
+                    }
+                }
+                else{
+                    Log.d("ItemListFragment", "Unchecked Items not found");
+                }
+            }
+        });
+//        listTest.getCheckedItems();
+//        listTest.addHeaderItem();
+
+        itemAdapter.notifyDataSetChanged();
         // Find the items from the database
-        queryListForItems();
+        //queryListForItems();
     }
 
     private void queryListForItems() {
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(java.util.List<ParseObject> results, ParseException e) {
@@ -209,8 +233,11 @@ public class ItemlistFragment extends Fragment{
                                                 }
                                             });
                                             // Adds completed header as an "item"
-                                            Item completed = new Item("Completed Items", false, 1);
-                                            items.add(completed);
+
+
+//                                            Item completed = new Item("Completed Items", false, 1);
+//                                            items.add(completed);
+
                                             //end index of incomplete items
                                             int end = 0;
                                             // Add the items to the items arraylist

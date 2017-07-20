@@ -24,9 +24,9 @@ public class Item extends ParseObject{
 
     Item(String body, ShopList parent, Segment segment, int type){
         setBody(body);
-        setChecked(false);
         setParent(parent);
         setSegment(segment);
+        setChecked(false);
         setVisible(true);
         setType(type);
         saveInBackground();
@@ -67,6 +67,10 @@ public class Item extends ParseObject{
     // type = 0 for item, type = 1 for header (e.g. Completed Items)
     private void setType(int type) {
         put("type", type);
+    }
+
+    public int getType() {
+        return getInt("type");
     }
 
     public boolean isItem() {

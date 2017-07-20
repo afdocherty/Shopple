@@ -107,6 +107,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
         if (item.isChecked() && item.getType()==0){
+//            undoDelete(item, position, View.inflate(,R.layout.item,item));
+//            deleteItem(item);
             deleteItemFromList(item, position);
         }
         else{
@@ -250,10 +252,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item removed!");
-//                                deleteItem(item);
                                 mlist.remove(position);
                                 notifyItemRemoved(position);
-//                                notifyItemRangeChanged(position, getItemCount());
                             } else {
                                 Log.d("ItemListFragment", "Item not removed. Error: " + e.toString());
                                 e.printStackTrace();
@@ -265,6 +265,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item deleted");
+
                             }
                             else {
                                 Log.d("ItemListFragment", "Item not deleted. Error: " + e.toString());

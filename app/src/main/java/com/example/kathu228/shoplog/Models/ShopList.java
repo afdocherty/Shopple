@@ -106,7 +106,7 @@ public class ShopList extends ParseObject {
         return new Item(itemName,this,getUncategorizedSegment(),Item.HEADER);
     }
 
-    public Item addComletedHeaderItem(String itemName){
+    public Item addCompletedHeaderItem(String itemName){
         return new Item(itemName,this,getUncategorizedSegment(),Item.COMPLETED_HEADER);
     }
 
