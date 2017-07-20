@@ -7,16 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.kathu228.shoplog.Fragments.FriendlistFragment;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
-import java.util.ArrayList;
-
 public class AddPeopleActivity extends AppCompatActivity implements FriendlistFragment.FriendFragmentListener {
+
+    private ShopList shoplist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_people);
+
+        Intent intent = getIntent();
+        shoplist = ShopList.getShopListById(intent.getStringExtra(ShopList.SHOPLIST_TAG));
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -29,10 +33,16 @@ public class AddPeopleActivity extends AppCompatActivity implements FriendlistFr
     }
 
     @Override
-    public void friendsFragmentFinished(ArrayList<String> peopleAdded) {
+    public ShopList getShopList() {
+        return shoplist;
+    }
+
+    @Override
+    public void friendsFragmentFinished() {
         Intent i = new Intent();
-        i.putExtra("people_added",peopleAdded);
         setResult(RESULT_OK,i);
         finish();
     }
+
+
 }

@@ -5,7 +5,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.example.kathu228.shoplog.Fragments.FriendlistFragment;
+import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.R;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -14,11 +16,11 @@ import java.util.List;
  *
  */
 
-public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,String> {
+public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,ParseUser> {
 
     FriendlistFragment fragmentInstance;
 
-    public FriendlistAdapter(List mlist, int itemViewReference, FriendlistFragment fragmentInstance) {
+    public FriendlistAdapter(List<ParseUser> mlist, int itemViewReference, FriendlistFragment fragmentInstance) {
         super(mlist, itemViewReference);
         this.fragmentInstance=fragmentInstance;
     }
@@ -31,9 +33,8 @@ public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String name = mlist.get(position);
-
-        holder.cbName.setText(name);
+        ParseUser user = mlist.get(position);
+        holder.cbName.setText(Query.getNameOfUser(user));
     }
 
     // ViewHolder Class
@@ -52,11 +53,11 @@ public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,
                 public void onClick(View v) {
                     if (((CheckBox)v).isChecked()){
                         cbName.setChecked(true);
-                        fragmentInstance.addPerson(cbName.getText().toString());
+                        fragmentInstance.addPerson(mlist.get(getAdapterPosition()));
                     }
                     else{
                         cbName.setChecked(false);
-                        fragmentInstance.removePerson(cbName.getText().toString());
+                        fragmentInstance.removePerson(mlist.get(getAdapterPosition()));
                     }
                 }
             });
