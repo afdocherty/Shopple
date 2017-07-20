@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
+import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
@@ -56,6 +58,11 @@ public class ShopListFragment extends Fragment {
         rvShopList.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
         rvShopList.setAdapter(shoplistAdapter);
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(shoplistAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvShopList);
 
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
         fabAddShopList.setOnClickListener(new View.OnClickListener() {

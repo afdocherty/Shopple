@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by afdoch on 7/13/17.
  */
 
-public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> {
+public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter{
 
     public Context context;
     public static final String SHOPLIST_TAG = "ShopList";
@@ -38,6 +39,19 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         ShopList shopList = mlist.get(position);
 
         holder.tvListName.setText(shopList.getName());
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        ShopList shopList = mlist.get(position);
+        shopList.removeUser(ParseUser.getCurrentUser());
+        mlist.remove(position);
+        notifyItemRemoved(position);
     }
 
     // Provide a direct reference to each of the views within a data item
