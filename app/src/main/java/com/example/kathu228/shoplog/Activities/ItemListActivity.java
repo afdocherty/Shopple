@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
-import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ItemListActivity extends AppCompatActivity{
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
-        ItemlistFragment itemlistFragment = ItemlistFragment.newInstance(getIntent().getStringExtra(ShoplistAdapter.SHOPLIST_TAG));
+        ItemlistFragment itemlistFragment = ItemlistFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
         ft.replace(R.id.itemlist_frame, itemlistFragment);
         // Complete the changes added above
         ft.commit();

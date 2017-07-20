@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.FriendlistAdapter;
-import com.example.kathu228.shoplog.Helpers.ShoplogClient;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,23 +29,26 @@ import java.util.List;
 public class FriendlistFragment extends Fragment {
 
     public interface FriendFragmentListener{
-        void friendsFragmentFinished(ArrayList<String> peopleAdded);
+        ShopList getShopList();
+        void friendsFragmentFinished();
     }
 
     private FriendlistAdapter peopleAdapter;
-    private List<String> people;
+    private List<ParseUser> people;
     private RecyclerView rvPeople;
 
     private TextView tvPeopleAdded;
     private Button confirmBtn;
 
-    private ArrayList<String> peopleAdded;
+    private List<ParseUser> peopleAdded;
+    private ShopList shopList;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         peopleAdded = new ArrayList<>();
+        shopList = ((FriendFragmentListener) getActivity()).getShopList();
     }
 
     @Nullable
@@ -54,8 +59,13 @@ public class FriendlistFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_friendlist,container,false);
         //find recycler view
         rvPeople= (RecyclerView) v.findViewById(R.id.people_list);
-        //init the ArrayList (data source)
-        people = Arrays.asList(ShoplogClient.getPeople());
+        //init the ArrayList (data source) to users not in shoplist
+        shopList.getUsersNotInList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                people = objects;
+            }
+        });
         //construct the adapter from this data source
         peopleAdapter = new FriendlistAdapter(people,R.layout.item_person,this);
         //RecyclerView setup (layout manager, use adapter)
@@ -70,19 +80,22 @@ public class FriendlistFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //((FriendFragmentListener) getActivity()).friendsFragmentFinished(peopleAdded);
+                for(ParseUser user : peopleAdded){
+                    shopList.addUser(user);
+                }
+                ((FriendFragmentListener) getActivity()).friendsFragmentFinished();
             }
         });
 
         return v;
     }
 
-    public void addPerson(String person){
+    public void addPerson(ParseUser person){
         peopleAdded.add(person);
         tvPeopleAdded.setText(formatNumPeople(peopleAdded.size()));
     }
 
-    public void removePerson(String person){
+    public void removePerson(ParseUser person){
         peopleAdded.remove(person);
         tvPeopleAdded.setText(formatNumPeople(peopleAdded.size()));
     }
