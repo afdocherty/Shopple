@@ -12,9 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.kathu228.shoplog.Helpers.DetailsAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
@@ -32,15 +29,10 @@ import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
  */
 public class ListDetailsFragment extends Fragment {
 
-    private EditText etListName;
-    private ImageView ivEditName;
-
+    private CardView cvListName;
     private CardView cvColor;
-
+    private CardView cvCollaborators;
     private CardView cvLeaveList;
-
-    private Button bEditCollab;
-    private ImageView ivEditCollab;
 
     private List<String> collabs;
     private RecyclerView rvCollabs;
@@ -79,10 +71,20 @@ public class ListDetailsFragment extends Fragment {
 
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
 
-        etListName = (EditText) v.findViewById(R.id.etListName);
-        ivEditName = (ImageView) v.findViewById(R.id.ivEditName);
+        cvListName = (CardView) v.findViewById(R.id.cvListName);
+        // TODO Use CardView or EditText to edit ShopList name
 
         cvColor = (CardView) v.findViewById(R.id.cvColor);
+        // TODO cvColor onClickListener
+
+        cvCollaborators = (CardView) v.findViewById(R.id.cvCollaborators);
+        cvCollaborators.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollaboratorsDialogFragment composeDialogFragment = CollaboratorsDialogFragment.newInstance(getArguments().getString(ShopList.SHOPLIST_TAG));
+                composeDialogFragment.show(getActivity().getSupportFragmentManager(), "fragment_collab_dialog");
+            }
+        });
 
         cvLeaveList = (CardView) v.findViewById(R.id.cvLeaveList);
         cvLeaveList.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +112,6 @@ public class ListDetailsFragment extends Fragment {
                         .setNegativeButton("No", dialogClickListener).show();
             }
         });
-
-        bEditCollab = (Button) v.findViewById(R.id.bEditCollab);
-        ivEditCollab = (ImageView) v.findViewById(R.id.ivEditCollab);
 
 
         return v;
