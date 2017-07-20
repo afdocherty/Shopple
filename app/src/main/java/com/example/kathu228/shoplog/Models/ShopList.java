@@ -73,8 +73,16 @@ public class ShopList extends ParseObject {
         query.findInBackground(callback);
     }
 
+    public void getUsersNotInList(FindCallback<ParseUser> callback){
+        ParseQuery<ParseUser> allUsersQuery = ParseQuery.getQuery(ParseUser.class);
+        ParseQuery<ParseUser> usersInListQuery = getUsersRelation().getQuery();
+        allUsersQuery.whereDoesNotMatchKeyInQuery("_id","_id",usersInListQuery);
+        allUsersQuery.orderByAscending("name");
+        allUsersQuery.findInBackground(callback);
+    }
+
     public void getItems(FindCallback<Item> callback){
-        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        ParseQuery<Item> query = new ParseQuery(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("visible",true);
         query.orderByDescending("_updated_at");

@@ -24,14 +24,6 @@ public class Query {
         query.findInBackground(callback);
     }
 
-    public static void removeUserFromShoplist(ParseUser user, ShopList list){
-        list.removeUser(user);
-    }
-
-    public static void addUserToShoplist(ParseUser user, ShopList list){
-        list.addUser(user);
-    }
-
     public static String getNameOfUser(ParseUser user){
         return user.getString("name");
     }
