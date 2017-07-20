@@ -1,6 +1,7 @@
 package com.example.kathu228.shoplog.Models;
 
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -24,26 +25,25 @@ public class Query {
     }
 
     public static void removeUserFromShoplist(ParseUser user, ShopList list){
-        list.addUser(user);
-    }
-
-    public static void addUserToShoplist(ParseUser user, ShopList list){
         list.removeUser(user);
     }
 
-    public static ShopList createShoplistAsUser(ParseUser user){
-        ShopList list = new ShopList();
+    public static void addUserToShoplist(ParseUser user, ShopList list){
         list.addUser(user);
-        return list;
-    }
-
-    public static ShopList createShoplistAsUser(ParseUser user, String name){
-        ShopList list = new ShopList(name);
-        list.addUser(user);
-        return list;
     }
 
     public static String getNameOfUser(ParseUser user){
         return user.getString("name");
+    }
+
+    public static ParseUser getParseUserById(String id){
+        try {
+            ParseUser user = ParseUser.createWithoutData(ParseUser.class, id);
+            user.fetchIfNeeded();
+            return user;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
