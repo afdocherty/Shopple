@@ -32,18 +32,6 @@ public class Query {
         list.removeUser(user);
     }
 
-    public static ShopList createShoplistAsUser(ParseUser user){
-        ShopList list = new ShopList();
-        list.addUser(user);
-        return list;
-    }
-
-    public static ShopList createShoplistAsUser(ParseUser user, String name){
-        ShopList list = new ShopList(name);
-        list.addUser(user);
-        return list;
-    }
-
     public static String getNameOfUser(ParseUser user){
         return user.getString("name");
     }

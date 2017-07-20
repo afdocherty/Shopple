@@ -14,18 +14,12 @@ import com.parse.ParseObject;
 @ParseClassName("Item")
 public class Item extends ParseObject{
 
+    static final int ITEM = 0;
+    static final int HEADER = 1;
+    static final int COMPLETED_HEADER = 2;
+
     public Item(){
         //Needed for Parse
-    }
-
-    Item(String body, ShopList parent, Segment segment){
-        setBody(body);
-        setChecked(false);
-        setParent(parent);
-        setSegment(segment);
-        setVisible(true);
-        setType(0);
-        saveInBackground();
     }
 
     Item(String body, ShopList parent, Segment segment, int type){
@@ -71,13 +65,20 @@ public class Item extends ParseObject{
     }
 
     // type = 0 for item, type = 1 for header (e.g. Completed Items)
-    public void setType(int type) {
+    private void setType(int type) {
         put("type", type);
-        saveInBackground();
     }
 
-    public int getType() {
-        return getInt("type");
+    public boolean isItem() {
+        return (getInt("type")==ITEM);
+    }
+
+    public boolean isHeader() {
+        return (getInt("type")==HEADER);
+    }
+
+    public boolean isCompletedHeader() {
+        return (getInt("type")==COMPLETED_HEADER);
     }
 
     private void setParent(ShopList parent){

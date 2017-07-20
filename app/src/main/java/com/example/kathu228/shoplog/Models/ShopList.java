@@ -28,6 +28,7 @@ public class ShopList extends ParseObject {
         setName(name);
         put("uncategorized_segment",new Segment("uncategorized",this));
         put("completed_segment",new Segment("completed",this));
+        addUser(ParseUser.getCurrentUser());
         saveInBackground();
     }
 
@@ -98,11 +99,15 @@ public class ShopList extends ParseObject {
     }
 
     public Item addItem(String itemName){
-        return new Item(itemName,this,getUncategorizedSegment());
+        return new Item(itemName,this,getUncategorizedSegment(),Item.ITEM);
     }
 
-    public Item addItem(String itemName, int type){
-        return new Item(itemName,this,getUncategorizedSegment(),type);
+    public Item addHeaderItem(String itemName){
+        return new Item(itemName,this,getUncategorizedSegment(),Item.HEADER);
+    }
+
+    public Item addComletedHeaderItem(String itemName){
+        return new Item(itemName,this,getUncategorizedSegment(),Item.COMPLETED_HEADER);
     }
 
     public void removeItem(Item item){

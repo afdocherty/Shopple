@@ -8,6 +8,7 @@ import com.parse.ParseQuery;
 
 /**
  * Created by afdoch on 7/12/17.
+ *
  */
 
 // Segment ParseObject that is contained in a list and whih wraps multiple items of a list together
@@ -56,16 +57,21 @@ public class Segment extends ParseObject {
     public void getItems(FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
         query.whereEqualTo("segment",this);
+        query.whereEqualTo("visible",true);
         query.orderByDescending("_updated_at");
         query.findInBackground(callback);
     }
 
     public Item addItem(String name){
-        return new Item(name,getParent(),this);
+        return new Item(name,getParent(), this, Item.ITEM);
     }
 
-    public Item addItem(String name, int type){
-        return new Item(name,getParent(),this,type);
+    public Item addHeaderItem(String name){
+        return new Item(name,getParent(), this, Item.HEADER);
+    }
+
+    public Item addComletedHeaderItem(String itemName){
+        return new Item(itemName,getParent(), this, Item.COMPLETED_HEADER);
     }
 
     public static Segment getSegmentById(String id){
