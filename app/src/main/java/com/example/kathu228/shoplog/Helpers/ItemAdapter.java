@@ -98,12 +98,19 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (item.isChecked() && item.getType() == 0) {
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
-            item.setVisible(false);
-            listTest.removeItem(item);
+            item.setVisible(false,null);
+            listTest.removeItem(item,null);
             deleteItem(position);
 //            deleteItemFromList(item, position);
         } else if(item.getType()==0) {
-            item.setChecked(true);
+            item.setChecked(true,null);
+            item.setVisible(false, null);
+            listTest.removeItem(item, null);
+            deleteItem(position);
+//            deleteItemFromList(item, position);
+        }
+        else{
+            item.setChecked(true, null);
 //            item.saveInBackground();
             deleteItem(position);
             addItem(item, mlist.size());
@@ -141,15 +148,18 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
 
         // checks and unchecks checkbox, while saving the object's boolean state on server
-        public void handleCheckbox(final Item item, final int position, final View v) {
-            if (item.isChecked()) {
-                item.setChecked(false);
+
+        public void handleCheckbox(final Item item, final int position, final View v){
+            if (item.isChecked()){
+                item.setChecked(false, null);
+                item.saveInBackground();
                 mlist.remove(position);
                 mlist.add(0, item);
                 cbItem.setChecked(false);
                 notifyItemMoved(position, 0);
             } else {
-                item.setChecked(true);
+                item.setChecked(true, null);
+                item.saveInBackground();
                 mlist.remove(position);
                 mlist.add(item);
                 cbItem.setChecked(true);
@@ -226,7 +236,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // Remove an item from the shoplist
     private void deleteItemFromList(final Item item) {
-        listTest.removeItem(item);
+        listTest.removeItem(item,null);
     }
 
     // Insert item to mList at position
@@ -237,7 +247,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // Add an item to the shoplist
     private void addItemToList (final Item item, final int position) {
-        item.setVisible(true);
+        item.setVisible(true,null);
     }
 
     // if click undo in snackbar, item will reappear in list unchecked

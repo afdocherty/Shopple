@@ -91,7 +91,7 @@ public class ItemlistFragment extends Fragment{
                 String body = etAddItem.getText().toString();
                 // Does not add empty item
                 if (!body.equals("")) {
-                    Item addedItem = listTest.addItem(body);
+                    Item addedItem = listTest.addItem(body, null);
                     etAddItem.setText("");
                     addItem(addedItem);
                 }
@@ -106,7 +106,7 @@ public class ItemlistFragment extends Fragment{
                     String body = etAddItem.getText().toString();
                     // Does not add empty item
                     if (!body.equals("")) {
-                        Item addedItem = listTest.addItem(body);
+                        Item addedItem = listTest.addItem(body, null);
                         etAddItem.setText("");
                         addItem(addedItem);
                     }
