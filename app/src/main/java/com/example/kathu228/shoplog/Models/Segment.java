@@ -5,6 +5,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 /**
  * Created by afdoch on 7/12/17.
@@ -21,10 +22,15 @@ public class Segment extends ParseObject {
     }
 
     Segment(String name, ShopList parentList){
-        setName(name);
+        put("name", name);
         setParent(parentList);
-
         saveInBackground();
+    }
+
+    Segment(String name, ShopList parentList, SaveCallback callback){
+        put("name", name);
+        setParent(parentList);
+        saveInBackground(callback);
     }
 
     // Get the name of the Segment

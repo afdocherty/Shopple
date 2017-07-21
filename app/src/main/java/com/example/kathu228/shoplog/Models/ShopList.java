@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -27,12 +28,20 @@ public class ShopList extends ParseObject {
     }
 
     public ShopList(String name){
-        setName(name);
-        put("uncategorized_segment",new Segment("uncategorized",this));
-        put("completed_segment",new Segment("completed",this));
-        addUser(ParseUser.getCurrentUser());
-        addCompletedHeaderItem("Completed Items");
-        saveInBackground();
+        put("name", name);
+        put("uncategorized_segment",new Segment("uncategorized", this, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                put("completed_segment",new Segment("completed",ShopList.this));
+                getUsersRelation().add(ParseUser.getCurrentUser());
+                saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        addCompletedHeaderItem("Completed Items");
+                    }
+                });
+            }
+        }));
     }
 
     // Get the name of the ShopList
@@ -75,10 +84,10 @@ public class ShopList extends ParseObject {
         query.findInBackground(callback);
     }
 
-    public void getUsersNotInList(FindCallback<ParseUser> callback){
-        ParseQuery<ParseUser> allUsersQuery = ParseQuery.getQuery(ParseUser.class);
+    public void getUsersNotInList(final FindCallback<ParseUser> callback){
+        ParseQuery<ParseUser> allUsersQuery = ParseUser.getQuery();
         ParseQuery<ParseUser> usersInListQuery = getUsersRelation().getQuery();
-        allUsersQuery.whereDoesNotMatchKeyInQuery("_id","_id",usersInListQuery);
+        allUsersQuery.whereDoesNotMatchKeyInQuery("username","username",usersInListQuery);
         allUsersQuery.orderByAscending("name");
         allUsersQuery.findInBackground(callback);
     }

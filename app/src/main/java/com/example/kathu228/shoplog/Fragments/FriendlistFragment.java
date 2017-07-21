@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.FriendlistAdapter;
+import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
@@ -64,14 +66,22 @@ public class FriendlistFragment extends Fragment {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 people = objects;
+                //construct the adapter from this data source
+                peopleAdapter = new FriendlistAdapter(people,R.layout.item_person,FriendlistFragment.this);
+                //RecyclerView setup (layout manager, use adapter)
+                rvPeople.setLayoutManager(new LinearLayoutManager(getContext()));
+                //set the adapter
+                rvPeople.setAdapter(peopleAdapter);
             }
         });
-        //construct the adapter from this data source
-        peopleAdapter = new FriendlistAdapter(people,R.layout.item_person,this);
-        //RecyclerView setup (layout manager, use adapter)
-        rvPeople.setLayoutManager(new LinearLayoutManager(getContext()));
-        //set the adapter
-        rvPeople.setAdapter(peopleAdapter);
+
+        //Shows a toast with the name of the first user of this list UNNECESSARY
+        shopList.getUserList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                Toast.makeText(getContext(),Query.getNameOfUser(objects.get(0)),Toast.LENGTH_LONG).show();
+            }
+        });
 
         tvPeopleAdded = (TextView) v.findViewById(R.id.tvPeopleAdded);
         confirmBtn = (Button) v.findViewById(R.id.confirmBtn);

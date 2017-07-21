@@ -21,12 +21,10 @@ import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
-import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +45,7 @@ public class ItemlistFragment extends Fragment{
     private ArrayList<Item> items;
     private String shopListObjectId;
 
-    // TODO - Temporary for MVP
-    ShopList list1;
     ShopList listTest;
-    Segment seg1;
-    Segment segTest;
-    Item item1;
-    Item itemTest;
-    ParseUser userTest;
 
     public static ItemlistFragment newInstance(String shopListObjectId) {
         ItemlistFragment itemlistFragment = new ItemlistFragment();

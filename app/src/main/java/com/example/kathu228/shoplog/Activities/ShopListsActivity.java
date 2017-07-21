@@ -1,18 +1,19 @@
 package com.example.kathu228.shoplog.Activities;
 
-import android.content.Intent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.kathu228.shoplog.Fragments.ShopListFragment;
 import com.example.kathu228.shoplog.R;
+import com.parse.ParseUser;
 
 public class ShopListsActivity extends AppCompatActivity {
 
@@ -64,6 +65,7 @@ public class ShopListsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,int id) {
                         // if this button is clicked, close
                         // current activity
+                        ParseUser.logOut();
                         ShopListsActivity.this.finish();
                     }
                 })
