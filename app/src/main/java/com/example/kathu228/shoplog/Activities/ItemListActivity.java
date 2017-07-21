@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Models.Item;
@@ -59,9 +57,7 @@ public class ItemListActivity extends AppCompatActivity{
         if (resultCode == RESULT_OK && requestCode == 20) {
             //Code to be executed after you come back from the add people activity
             //(Maybe refresh the shopping list?)
-            Log.d("Tag","works");
-            ArrayList<String> peopleAdded = data.getStringArrayListExtra("people_added");
-            Toast.makeText(this,String.valueOf(peopleAdded.size()),Toast.LENGTH_LONG).show();
+            // TODO Delete this and move to ItemList > Details > AddPeople
         }
     }
 }
