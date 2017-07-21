@@ -1,9 +1,10 @@
 package com.example.kathu228.shoplog.Models;
 
+import android.support.annotation.Nullable;
+
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
@@ -15,22 +16,26 @@ import com.parse.SaveCallback;
 // Segment ParseObject that is contained in a list and whih wraps multiple items of a list together
 
 @ParseClassName("Segment")
-public class Segment extends ParseObject {
+public class Segment extends BaseParseObject {
+
+    static final int UNCATEGORIZED_SEGMENT=0;
+    static final int COMPLETED_SEGMENT=1;
+    static final int ADDITIONAL_SEGMENT=2;
 
     public Segment(){
         //required for Parse
     }
 
-    Segment(String name, ShopList parentList){
+    Segment(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
         put("name", name);
         setParent(parentList);
-        saveInBackground();
-    }
 
-    Segment(String name, ShopList parentList, SaveCallback callback){
-        put("name", name);
-        setParent(parentList);
-        saveInBackground(callback);
+        switch (segmentType){
+            case 1:
+                addCompletedHeaderItem(name, parentList, callback);
+            case 2:
+                addHeaderItem(name, parentList, callback);
+        }
     }
 
     // Get the name of the Segment
@@ -39,18 +44,11 @@ public class Segment extends ParseObject {
     }
 
     // Set the name of the Segment
-    public void setName(String value) {
+    public void setName(String value, @Nullable SaveCallback callback) {
         put("name", value);
-        saveInBackground();
-    }
 
-//    public String getColor(){
-//        return getString("color");
-//    }
-//
-//    public void setColor(String color){
-//        put("color",color);
-//    }
+        nullableSaveInBackground(callback);
+    }
 
     public ShopList getParent(){
         return (ShopList) getParseObject("parent_list");
@@ -68,16 +66,33 @@ public class Segment extends ParseObject {
         query.findInBackground(callback);
     }
 
-    public Item addItem(String name){
-        return new Item(name,getParent(), this, Item.ITEM);
+    public Item addItem(String name, @Nullable SaveCallback callback){
+        return new Item(name,getParent(), this, Item.ITEM,callback);
     }
 
-    public Item addHeaderItem(String name){
-        return new Item(name,getParent(), this, Item.HEADER);
+    private void addHeaderItem(String name, ShopList parent, final SaveCallback callback){
+        put("header",new Item(name, parent, this, Item.HEADER, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                nullableSaveInBackground(callback);
+            }
+        }));
     }
 
-    public Item addComletedHeaderItem(String itemName){
-        return new Item(itemName,getParent(), this, Item.COMPLETED_HEADER);
+    private void addCompletedHeaderItem(String name, ShopList parent, final SaveCallback callback){
+        put("header",new Item(name, parent, this, Item.COMPLETED_HEADER, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                nullableSaveInBackground(callback);
+            }
+        }));
+    }
+
+    public Item getHeader(){
+        if (getParseObject("header")!=null)
+            return (Item) getParseObject("header");
+        else
+            throw new NullPointerException("uncategorized segment doesn't have a header");
     }
 
     public static Segment getSegmentById(String id){
@@ -90,6 +105,4 @@ public class Segment extends ParseObject {
             return null;
         }
     }
-
-
 }

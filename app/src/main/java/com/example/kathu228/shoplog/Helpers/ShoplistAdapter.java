@@ -48,7 +48,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     @Override
     public void onItemDismiss(int position) {
         ShopList shopList = mlist.get(position);
-        shopList.removeUser(ParseUser.getCurrentUser());
+        shopList.removeUser(ParseUser.getCurrentUser(), null);
         mlist.remove(position);
         notifyItemRemoved(position);
     }

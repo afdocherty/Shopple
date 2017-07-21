@@ -91,7 +91,7 @@ public class FriendlistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 for(ParseUser user : peopleAdded){
-                    shopList.addUser(user);
+                    shopList.addUser(user, null);
                 }
                 ((FriendFragmentListener) getActivity()).friendsFragmentFinished();
             }

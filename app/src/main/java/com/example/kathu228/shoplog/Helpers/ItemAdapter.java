@@ -115,13 +115,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (item.isChecked() && item.getType()==0){
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
-            item.setVisible(false);
-            listTest.removeItem(item);
+            item.setVisible(false, null);
+            listTest.removeItem(item, null);
             deleteItem(item, position);
 //            deleteItemFromList(item, position);
         }
         else{
-            item.setChecked(true);
+            item.setChecked(true, null);
 //            item.saveInBackground();
             deleteItem(item, position);
             addItem(item, mlist.size());
@@ -161,7 +161,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         // checks and unchecks checkbox, while saving the object's boolean state on server
         public void handleCheckbox(final Item item, final int position, final View v){
             if (item.isChecked()){
-                item.setChecked(false);
+                item.setChecked(false, null);
                 item.saveInBackground();
                 mlist.remove(position);
                 mlist.add(0,item);
@@ -169,7 +169,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 notifyItemMoved(position, 0);
             }
             else{
-                item.setChecked(true);
+                item.setChecked(true, null);
                 item.saveInBackground();
                 mlist.remove(position);
                 mlist.add(item);
@@ -311,7 +311,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         public void done(ParseException e) {
                             if (e == null) {
                                 Log.d("ItemListFragment", "Item added!");
-                                item.setChecked(false);
+                                item.setChecked(false, null);
                             } else {
                                 Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
                                 e.printStackTrace();
