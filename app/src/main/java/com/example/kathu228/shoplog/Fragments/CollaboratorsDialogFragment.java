@@ -9,17 +9,12 @@ import android.view.ViewGroup;
 
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
 
 /**
  * Created by afdoch on 7/20/17.
  */
 
 public class CollaboratorsDialogFragment extends DialogFragment {
-
-    private ArrayList<ParseUser> otherUsers;
 
     public static CollaboratorsDialogFragment newInstance(String shopListObjectId) {
         CollaboratorsDialogFragment dialogFragment = new CollaboratorsDialogFragment();
@@ -40,5 +35,14 @@ public class CollaboratorsDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         ShopList.getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG));
+    }
+
+    private String formatNumPeople(int numPeople){
+        if (numPeople == 1)
+            return "1 person added";
+        else if (numPeople == 0)
+            return "No people added";
+        else
+            return String.format("%s people added",numPeople);
     }
 }

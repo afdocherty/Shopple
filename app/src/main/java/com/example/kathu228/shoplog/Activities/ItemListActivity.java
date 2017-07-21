@@ -54,6 +54,7 @@ public class ItemListActivity extends AppCompatActivity{
         if (resultCode == RESULT_OK && requestCode == 20) {
             //Code to be executed after you come back from the add people activity
             //(Maybe refresh the shopping list?)
+            // TODO Delete this and move to ItemList > Details > AddPeople
         }
     }
 }
