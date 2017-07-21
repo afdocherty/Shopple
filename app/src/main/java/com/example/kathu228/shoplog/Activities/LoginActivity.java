@@ -10,18 +10,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Models.Query;
-import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
 
@@ -29,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -111,8 +106,6 @@ public class LoginActivity extends AppCompatActivity {
         } else if (user.isNew()) {
             fillUserInfo(user);
 
-            // TODO Change - Add the user to the MVP ShopList
-            addToShopList(user);
         } else {
             Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                     .show();
@@ -142,22 +135,5 @@ public class LoginActivity extends AppCompatActivity {
         parameters.putString("fields", "name, email");
         request.setParameters(parameters);
         request.executeAsync();
-    }
-
-    private void addToShopList(final ParseUser user) {
-        // Find the ShopList
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ShopList");
-        // Hardcode that new users be added into the List called "List 1"
-        query.whereEqualTo("name", "List 1");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> results, ParseException e) {
-                if (e == null) {
-                    Log.d("LoginActivity", "ShopList found");
-                    ((ShopList) results.get(0)).addUser(user);
-                } else {
-                    Log.d("LoginActivity", "ShopList not found. Error: " + e.toString());
-                }
-            }
-        });
     }
 }
