@@ -48,6 +48,7 @@ public class ItemListActivity extends AppCompatActivity{
     //ran when user presses the info button on the toolbar (allows user to add people to list)
     public void onListInfo(MenuItem item) {
         Intent i = new Intent(this, AddPeopleActivity.class);
+        i.putExtra(ShopList.SHOPLIST_TAG,getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
         startActivityForResult(i,20);
     }
 

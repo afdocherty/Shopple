@@ -70,8 +70,6 @@ public class ShopListFragment extends Fragment {
             public void onClick(View v) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 // Create a new list as the current user, automatically naming it w/ timestamp
-//                addShopList(Query.addUserToShoplist();
-//                createShoplistAsUser(ParseUser.getCurrentUser(), "New List at " + currentDateTimeString));
                 ShopList shopList = new ShopList("New List at " + currentDateTimeString);
                 //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);
                 addShopList(shopList);
