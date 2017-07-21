@@ -140,7 +140,7 @@ public class ItemlistFragment extends Fragment{
     public void onResume() {
         super.onResume();
         // Populate the items array
-        addItems();
+        //addItems();
     }
 
     public void addItems() {
