@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -32,8 +33,10 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter{
 
     private List<Item> mlist;
-    public ItemAdapter(List<Item> mlist) {
+    ShopList listTest;
+    public ItemAdapter(List<Item> mlist, ShopList listTest) {
         this.mlist = mlist;
+        this.listTest = listTest;
     }
 
     @Override
@@ -112,13 +115,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (item.isChecked() && item.getType()==0){
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
-            deleteItemFromList(item, position);
+            item.setVisible(false);
+            listTest.removeItem(item);
+            deleteItem(item, position);
+//            deleteItemFromList(item, position);
         }
         else{
-            deleteItem(item);
-            addItem(item, mlist.size());
             item.setChecked(true);
-            item.saveInBackground();
+//            item.saveInBackground();
+            deleteItem(item, position);
+            addItem(item, mlist.size());
         }
 
 
@@ -229,9 +235,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // deletes if checkbox is checked, and allows undo deletion
-    public void deleteItem(final Item item){
-        // Todo: update remove item
-        int position = mlist.indexOf(item);
+    public void deleteItem(final Item item, final int position){
         mlist.remove(position);
         notifyItemRemoved(position);
         //undoDelete(item, position, v);

@@ -69,8 +69,12 @@ public class ItemlistFragment extends Fragment{
 //        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
         // initialize the array of items
         items = new ArrayList<>();
+        // gt id of shoplist
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
+        listTest = listTest.getShopListById(shopListObjectId);
         // construct the adapter
-        itemAdapter = new ItemAdapter(items);
+        itemAdapter = new ItemAdapter(items, listTest);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -80,10 +84,6 @@ public class ItemlistFragment extends Fragment{
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
 
 
-        // TODO use shopListObjectId
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        listTest = listTest.getShopListById(shopListObjectId);
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,25 +155,25 @@ public class ItemlistFragment extends Fragment{
                 if (e == null){
                     Log.d("ItemListFragment", "Unchecked Items found!!");
                     int completed = 0;
-//                    for (Item object: objects){
-//                        if (object.isItem()){
-//                            if (object.isChecked()){
-//                                items.add(object);
-//                                itemAdapter.notifyItemInserted(items.size());
-//                            }
-//                            else{
-//                                items.add(completed,object);
-//                                itemAdapter.notifyItemInserted(completed);
-//                                completed++;
-//                            }
-//                        }
-//                        else if (object.isCompletedHeader()){
-//                            items.add(completed,object);
-//                            itemAdapter.notifyItemInserted(completed);
-//                        }
-//                    }
-                    items.addAll(objects);
-                    itemAdapter.notifyDataSetChanged();
+                    for (Item object: objects){
+                        if (object.isItem()){
+                            if (object.isChecked()){
+                                items.add(object);
+                                itemAdapter.notifyItemInserted(items.size());
+                            }
+                            else{
+                                items.add(completed,object);
+                                itemAdapter.notifyItemInserted(completed);
+                                completed++;
+                            }
+                        }
+
+                        else if (object.isCompletedHeader()){
+                            items.add(completed,object);
+                            itemAdapter.notifyItemInserted(completed);
+                        }
+                    }
+//                    itemAdapter.notifyDataSetChanged();
 
                 }
                 else{
