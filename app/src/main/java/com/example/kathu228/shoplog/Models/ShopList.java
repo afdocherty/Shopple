@@ -1,9 +1,11 @@
 package com.example.kathu228.shoplog.Models;
 
+import android.support.annotation.Nullable;
+
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -19,7 +21,7 @@ import java.util.List;
 // ShopList ParseObject that wraps multiple segments of a list together
 
 @ParseClassName("ShopList")
-public class ShopList extends ParseObject {
+public class ShopList extends BaseParseObject {
 
     public static final String SHOPLIST_TAG = "ShopList";
 
@@ -27,19 +29,18 @@ public class ShopList extends ParseObject {
         //required for Parse
     }
 
-    public ShopList(String name){
+    public ShopList(String name, @Nullable final SaveCallback callback){
         put("name", name);
-        put("uncategorized_segment",new Segment("uncategorized", this, new SaveCallback() {
+        put("uncategorized_segment",new Segment("uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_segment",new Segment("completed",ShopList.this));
-                getUsersRelation().add(ParseUser.getCurrentUser());
-                saveInBackground(new SaveCallback() {
+                put("completed_segment",new Segment("completed", ShopList.this, Segment.COMPLETED_SEGMENT, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        addCompletedHeaderItem("Completed Items");
+                        getUsersRelation().add(ParseUser.getCurrentUser());
+                        nullableSaveInBackground(callback);
                     }
-                });
+                }));
             }
         }));
     }
@@ -50,9 +51,9 @@ public class ShopList extends ParseObject {
     }
 
     // Set the name of the ShopList
-    public void setName(String value) {
+    public void setName(String value, @Nullable SaveCallback callback) {
         put("name", value);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     // Relation to ParseUsers
@@ -61,17 +62,17 @@ public class ShopList extends ParseObject {
     }
 
     // Add a user to the relation
-    public void addUser(ParseUser user) {
+    public void addUser(ParseUser user, @Nullable SaveCallback callback) {
         getPreviousUserRelation().remove(user);
         getUsersRelation().add(user);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     // Remove a user from the relation
-    public void removeUser(ParseUser user) {
+    public void removeUser(ParseUser user, @Nullable SaveCallback callback) {
         getUsersRelation().remove(user);
         getPreviousUserRelation().add(user);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     private ParseRelation<ParseUser> getPreviousUserRelation(){
@@ -93,7 +94,7 @@ public class ShopList extends ParseObject {
     }
 
     public void getItems(FindCallback<Item> callback){
-        ParseQuery<Item> query = new ParseQuery(Item.class);
+        ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("visible",true);
         query.orderByDescending("_updated_at");
@@ -101,7 +102,7 @@ public class ShopList extends ParseObject {
     }
 
     public void getCheckedItems(FindCallback<Item> callback){
-        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("checked",true);
         query.whereEqualTo("visible",true);
@@ -110,7 +111,7 @@ public class ShopList extends ParseObject {
     }
 
     public void getUncheckedItems(FindCallback<Item> callback){
-        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("checked",false);
         query.whereEqualTo("visible",true);
@@ -118,20 +119,12 @@ public class ShopList extends ParseObject {
         query.findInBackground(callback);
     }
 
-    public Item addItem(String itemName){
-        return new Item(itemName,this,getUncategorizedSegment(),Item.ITEM);
+    public Item addItem(String itemName, @Nullable SaveCallback callback){
+        return new Item(itemName,this,getUncategorizedSegment(),Item.ITEM,callback);
     }
 
-    public Item addHeaderItem(String itemName){
-        return new Item(itemName,this,getUncategorizedSegment(),Item.HEADER);
-    }
-
-    public Item addCompletedHeaderItem(String itemName){
-        return new Item(itemName,this,getUncategorizedSegment(),Item.COMPLETED_HEADER);
-    }
-
-    public void removeItem(Item item){
-        item.deleteInBackground();
+    public void removeItem(Item item, @Nullable DeleteCallback callback){
+        item.nullableDeleteInBackground(callback);
     }
 
     public void removeItemsFromCompleted(){
@@ -139,7 +132,7 @@ public class ShopList extends ParseObject {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 for(Item object : objects){
-                    object.setVisible(false);
+                    object.setVisible(false,null);
                 }
             }
         });
@@ -160,16 +153,17 @@ public class ShopList extends ParseObject {
         return (Segment) getParseObject("completed_segment");
     }
 
-    public Segment addSegment(String name){
-        return new Segment(name,this);
+    public Segment addSegment(String name, @Nullable SaveCallback callback){
+        return new Segment(name,this,Segment.ADDITIONAL_SEGMENT,callback);
     }
 
     public void removeSegment(Segment segment){
+
         segment.getItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 for (Item item : objects){
-                    item.setSegment(getUncategorizedSegment());
+                    item.setSegment(getUncategorizedSegment(),null);
                 }
             }
         });

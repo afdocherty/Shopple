@@ -1,8 +1,10 @@
 package com.example.kathu228.shoplog.Models;
 
+import android.support.annotation.Nullable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 /**
  * Created by kathu228 on 7/11/17.
@@ -12,7 +14,7 @@ import com.parse.ParseObject;
 // Item ParseObject that contains the details associated with a segment item
 
 @ParseClassName("Item")
-public class Item extends ParseObject{
+public class Item extends BaseParseObject{
 
     static final int ITEM = 0;
     static final int HEADER = 1;
@@ -22,14 +24,14 @@ public class Item extends ParseObject{
         //Needed for Parse
     }
 
-    Item(String body, ShopList parent, Segment segment, int type){
+    Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         setBody(body);
         setParent(parent);
         put("segment",segment);
         put("checked",false);
         put("visible",true);
         setType(type);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     // Get the body text of the Item
@@ -38,26 +40,27 @@ public class Item extends ParseObject{
     }
 
     // Set the body text of the Item
-    private void setBody(String value) {
+    void setBody(String value) {
         put("body", value);
     }
 
-    public void setChecked(boolean value) {
+    public void setChecked(boolean value, @Nullable SaveCallback callback) {
         put("checked",value);
-        saveInBackground();
         if (value)
-            setSegment(getParent().getCompletedSegment());
+            put("segment",getParent().getCompletedSegment());
         else
-            setSegment(getParent().getUncategorizedSegment());
+            put("segment",getParent().getUncategorizedSegment());
+
+        nullableSaveInBackground(callback);
     }
 
     public boolean isChecked(){
         return getBoolean("checked");
     }
 
-    public void setVisible(boolean value){
+    public void setVisible(boolean value, @Nullable SaveCallback callback){
         put("visible",value);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     public boolean isVisible(){
@@ -93,9 +96,9 @@ public class Item extends ParseObject{
         return (ShopList) getParseObject("parent");
     }
 
-    public void setSegment(Segment segment){
+    public void setSegment(Segment segment, @Nullable SaveCallback callback){
         put("segment",segment);
-        saveInBackground();
+        nullableSaveInBackground(callback);
     }
 
     public Segment getSegment(){
