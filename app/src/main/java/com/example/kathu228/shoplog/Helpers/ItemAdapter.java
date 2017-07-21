@@ -46,10 +46,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
                 return new ItemViewHolder(view);
             case 1:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_headers, parent, false);
+
+            case 2:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_completed_header, parent, false);
                 return new HeaderViewHolder(view);
+            default:
+                throw new IllegalArgumentException("Invalid viewtype," + viewType);
         }
-        return null;
 //        return new ViewHolder(view);
     }
 

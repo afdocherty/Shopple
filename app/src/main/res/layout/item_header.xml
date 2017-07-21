@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/padding"
+    android:layout_marginLeft="@dimen/section_margin"
+    android:layout_marginRight="@dimen/section_margin"
+    android:layout_marginTop="@dimen/add_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text=" Header"
+        android:textColor="?attr/colorAccent"
+        android:textSize="@dimen/body_size"
+        android:textStyle="bold" />
+
+</RelativeLayout>
