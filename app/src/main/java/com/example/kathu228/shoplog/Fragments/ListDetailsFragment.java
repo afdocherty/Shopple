@@ -1,6 +1,7 @@
 package com.example.kathu228.shoplog.Fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kathu228.shoplog.Activities.AddPeopleActivity;
 import com.example.kathu228.shoplog.Helpers.DetailsAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -81,8 +83,12 @@ public class ListDetailsFragment extends Fragment {
         cvCollaborators.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollaboratorsDialogFragment composeDialogFragment = CollaboratorsDialogFragment.newInstance(getArguments().getString(ShopList.SHOPLIST_TAG));
-                composeDialogFragment.show(getActivity().getSupportFragmentManager(), "fragment_collab_dialog");
+                Intent intent = new Intent(getActivity(), AddPeopleActivity.class);
+                startActivity(intent);
+
+                // TODO switch to modal overlay
+//                CollaboratorsDialogFragment composeDialogFragment = CollaboratorsDialogFragment.newInstance(getArguments().getString(ShopList.SHOPLIST_TAG));
+//                composeDialogFragment.show(getActivity().getSupportFragmentManager(), "fragment_collab_dialog");
             }
         });
 
