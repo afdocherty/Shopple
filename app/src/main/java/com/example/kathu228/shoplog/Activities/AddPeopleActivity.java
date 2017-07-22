@@ -19,8 +19,7 @@ public class AddPeopleActivity extends AppCompatActivity implements FriendlistFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_people);
 
-        Intent intent = getIntent();
-        shoplist = ShopList.getShopListById(intent.getStringExtra(ShopList.SHOPLIST_TAG));
+        shoplist = ShopList.getShopListById(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 

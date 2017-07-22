@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Models.Item;
@@ -23,16 +23,16 @@ public class ItemListActivity extends AppCompatActivity{
     ArrayList<Item> items;
     private boolean notificationsEnabled;
     private static final int mNotificationsId = 001; // Constant id to use for ItemListActivity
-    private MenuItem notificationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setTitle(getIntent().getStringExtra("listName"));
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar_items));
+
+        // Set the color of the Notification Button ImageView
+        setNotificationBtnColor();
 
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -43,24 +43,17 @@ public class ItemListActivity extends AppCompatActivity{
         ft.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_itemlist, menu);
-        return true;
-    }
-
     private void setNotificationBtnColor() {
-        notificationBtn = (MenuItem) findViewById(R.id.notification_btn);
+        ImageView ivNotificationBtn = (ImageView) findViewById(R.id.ivNotificationBtn);
         if (notificationsEnabled) {
-            notificationBtn.setIcon(R.drawable.ic_add_alert_green);
+            ivNotificationBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_green));
         } else {
-            notificationBtn.setIcon(R.drawable.ic_add_alert_white);
+            ivNotificationBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_white));
         }
     }
 
     //ran when user presses the info button on the toolbar (allows user to add people to list)
-    public void onListInfo(MenuItem item) {
+    public void onListInfo(View view) {
         Intent i = new Intent(this, AddPeopleActivity.class);
         // Give the intent the ShopList Object ID
         i.putExtra(ShopList.SHOPLIST_TAG,getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
@@ -68,19 +61,17 @@ public class ItemListActivity extends AppCompatActivity{
     }
 
     // Ran when user clicks on notification button on the toolbar (to activate notifications for this list)
-    public void activateNotifcations(MenuItem item) {
+    public void activateNotifcations(View view) {
         if (notificationsEnabled) {
+            // Disable notifications
             // Close the notification associated with the ShopList Object ID
             closeNotification(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
-            // Disable notifications
-            item.setIcon(R.drawable.ic_add_alert_white);
-            invalidateOptionsMenu(); // Forces call to onPrepareOptionsMenu() to update the menu
+            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_white));
             notificationsEnabled = false;
         } else {
             // Enable notifications
             startNotification(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
-            item.setIcon(R.drawable.ic_add_alert_green);
-            invalidateOptionsMenu(); // Forces call to onPrepareOptionsMenu() to update the menu
+            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_green));
             notificationsEnabled = true;
         }
     }
