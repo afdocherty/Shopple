@@ -3,10 +3,12 @@ package com.example.kathu228.shoplog.Activities;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -63,7 +65,7 @@ public class ItemListActivity extends AppCompatActivity{
     }
 
     // Ran when user clicks on notification button on the toolbar (to activate notifications for this list)
-    public void activateNotifcations(View view) {
+    public void toggleNotifcations(View view) {
         if (notificationsEnabled) {
             // Disable notifications
             // Close the notification associated with the ShopList Object ID
@@ -128,5 +130,34 @@ public class ItemListActivity extends AppCompatActivity{
             //(Maybe refresh the shopping list?)
             // TODO Delete this and move to ItemList > Details > AddPeople
         }
+    }
+
+    // Initialize dialog to start map for My Store or Nearby Stores
+    public void initMaps(View view) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set titlexw
+        alertDialogBuilder.setTitle("Start my Trip");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Route me to:")
+                .setCancelable(true)
+                .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // TODO - route to hardcoded place ID
+                        getResources().getString(R.string.my_store_place_id);
+                    }
+                })
+                .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // TODO - open up Google Maps searching for "grocery store"
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }
