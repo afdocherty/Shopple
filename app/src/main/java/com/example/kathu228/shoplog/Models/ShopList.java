@@ -210,8 +210,23 @@ public class ShopList extends BaseParseObject {
         return (Segment) getParseObject("completed_segment");
     }
 
+    @Deprecated
     public Segment addSegment(String name, @Nullable SaveCallback callback){
         return new Segment(name,this,Segment.ADDITIONAL_SEGMENT,callback);
+    }
+
+    public void addSegment(String name, @NonNull final Segment.SegmentCallback callback){
+        final Segment segment = new Segment();
+        segment.initializeVariables(name, this, Segment.ADDITIONAL_SEGMENT, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    callback.done(segment);
+                else
+                    e.printStackTrace();
+
+            }
+        });
     }
 
     //TODO- Change to a callback format
