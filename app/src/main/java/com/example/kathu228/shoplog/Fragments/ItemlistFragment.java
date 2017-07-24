@@ -2,7 +2,10 @@ package com.example.kathu228.shoplog.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
@@ -33,7 +37,7 @@ import java.util.List;
  *
  */
 
-public class ItemlistFragment extends Fragment{
+public class ItemlistFragment extends Fragment implements SegmentDialogFragment.SegmentDialogListener{
 
     // parameters
     private SwipeRefreshLayout swipeContainer;
@@ -44,6 +48,7 @@ public class ItemlistFragment extends Fragment{
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
     private String shopListObjectId;
+    private FloatingActionButton fabAddSegment;
 
     ShopList listTest;
 
@@ -56,6 +61,26 @@ public class ItemlistFragment extends Fragment{
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
+    }
+
+    // Call this method to launch the edit dialog
+    private void showSegmentDialog() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        SegmentDialogFragment segmentDialogFragment = SegmentDialogFragment.newInstance(shopListObjectId);
+        // SETS the target fragment for use later when sending results
+        segmentDialogFragment.setTargetFragment(this, 0);
+        segmentDialogFragment.show(fm, "fragment_segment_dialog");
+    }
+
+    @Override
+    public void onFinishSegmentDialog(String segmentName) {
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
+        listTest = listTest.getShopListById(shopListObjectId);
+        listTest.addSegment(segmentName,null);
+        Toast.makeText(getContext(), "New category "+segmentName+" created", Toast.LENGTH_SHORT).show();
+
     }
 
     @Nullable
@@ -115,6 +140,14 @@ public class ItemlistFragment extends Fragment{
             }
         });
 
+        fabAddSegment = (FloatingActionButton) v.findViewById(R.id.fabAddSegment);
+        fabAddSegment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSegmentDialog();
+            }
+        });
+
         // attaches touchHelper to the recyclerview
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(itemAdapter);
@@ -171,6 +204,10 @@ public class ItemlistFragment extends Fragment{
                         else if (object.isCompletedHeader()){
                             items.add(completed,object);
                             itemAdapter.notifyItemInserted(completed);
+                        }
+
+                        else if (object.isHeader()){
+
                         }
                     }
 //                    itemAdapter.notifyDataSetChanged();

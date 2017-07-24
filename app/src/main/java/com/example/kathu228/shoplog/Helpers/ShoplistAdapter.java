@@ -111,7 +111,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                                 // Does not add empty item
                                 if (!body.equals("")) {
                                     final ShopList shopList = mlist.get(getAdapterPosition());
-                                    shopList.setName(body);
+                                    shopList.setName(body, null);
                                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(etListName.getWindowToken(), 0);
                                     tvListName.setText(body);

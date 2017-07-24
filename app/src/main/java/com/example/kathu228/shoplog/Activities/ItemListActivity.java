@@ -43,6 +43,7 @@ public class ItemListActivity extends AppCompatActivity{
         ft.commit();
     }
 
+
     private void setNotificationBtnColor() {
         ImageView ivNotificationBtn = (ImageView) findViewById(R.id.ivNotificationBtn);
         if (notificationsEnabled) {

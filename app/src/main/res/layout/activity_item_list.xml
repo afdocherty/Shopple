@@ -11,11 +11,11 @@
         android:id="@+id/toolbar_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" >
+        android:theme="?attr/actionBarTheme"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/itemlist_frame">
 
         <RelativeLayout
             android:layout_width="match_parent"
