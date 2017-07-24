@@ -13,17 +13,35 @@
         app:cardElevation="1dp"
         app:cardUseCompatPadding="true">
 
-        <TextView
-            android:id="@+id/tvListName"
+        <ViewSwitcher
+            android:id="@+id/vsListSwitcher"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_weight="8.31"
-            android:text="List Name"
-            android:textAlignment="center"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="@color/secondary_text"
-            android:textSize="@dimen/body_size" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvListName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:layout_weight="8.31"
+                android:text="List Name"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/secondary_text"
+                android:textSize="@dimen/body_size" />
+
+            <EditText
+                android:id="@+id/etListName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:paddingTop="0dp"
+                android:text="Hello World"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorAccent"
+                android:textSize="22sp"
+                android:maxLines="1"/>
+        </ViewSwitcher>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>

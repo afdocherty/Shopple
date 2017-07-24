@@ -3,9 +3,14 @@ package com.example.kathu228.shoplog.Helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -38,11 +43,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         ShopList shopList = mlist.get(position);
 
         holder.tvListName.setText(shopList.getName());
+        holder.etListName.setText(shopList.getName());
     }
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-
     }
 
     @Override
@@ -58,6 +63,8 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
+        public EditText etListName;
+        public ViewSwitcher switcher;
 
         public ViewHolder(View itemView){
             // Stores the itemView in a public final member variable that can be used
@@ -65,6 +72,8 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
+            switcher = (ViewSwitcher) itemView.findViewById(R.id.vsListSwitcher);
+            etListName = (EditText) itemView.findViewById(R.id.etListName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,7 +82,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                     int position = getAdapterPosition();
                     // Make sure the position is valid, i.e. actually exists in the view
                     if (position != RecyclerView.NO_POSITION) {
-                        // get the tweet at the position, this won't work if the class is static
+                        // get the list at the position, this won't work if the class is static
                         final ShopList shopList = mlist.get(position);
                         // create intent for the new activity
                         Intent intent = new Intent(context, ItemListActivity.class);
@@ -82,6 +91,38 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         intent.putExtra("listName", shopList.getName());
                         context.startActivity(intent);
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    switcher.showNext();
+                    etListName.setSelectAllOnFocus(true);
+                    etListName.selectAll();
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null){
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                    }
+                    etListName.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                                String body = etListName.getText().toString();
+                                // Does not add empty item
+                                if (!body.equals("")) {
+                                    final ShopList shopList = mlist.get(getAdapterPosition());
+                                    shopList.setName(body, null);
+                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(etListName.getWindowToken(), 0);
+                                    tvListName.setText(body);
+                                    switcher.showPrevious();
+                                    etListName.setText(body);
+                                }
+                            }
+                            return false;
+                        }
+                    });
+                    return true;
                 }
             });
         }

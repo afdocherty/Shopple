@@ -29,8 +29,8 @@
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         app:backgroundTint="@color/colorPrimary"
+        app:useCompatPadding="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        app:useCompatPadding="true"/>
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
