@@ -13,7 +13,7 @@
         android:id="@+id/ibDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvHeader"
+        android:layout_alignBottom="@+id/tvCompletedHeader"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/section_margin"
@@ -21,7 +21,7 @@
         app:srcCompat="@drawable/ic_delete_sweep" />
 
     <TextView
-        android:id="@+id/tvHeader"
+        android:id="@+id/tvCompletedHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

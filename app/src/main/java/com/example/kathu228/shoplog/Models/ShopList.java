@@ -240,7 +240,6 @@ public class ShopList extends BaseParseObject {
             }
         });
         segment.deleteInBackground();
-
     }
 
     public static void getInstance(String name, @NonNull final ShoplistCallback callback){

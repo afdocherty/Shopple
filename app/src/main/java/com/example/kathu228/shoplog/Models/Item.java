@@ -62,6 +62,7 @@ public class Item extends BaseParseObject{
         put("checked",value);
         if (value)
             put("segment",getParent().getCompletedSegment());
+
         else
             put("segment",getParent().getUncategorizedSegment());
 
@@ -91,6 +92,7 @@ public class Item extends BaseParseObject{
     }
 
     public boolean isItem() {
+        int type = getType();
         return (getInt("type")==ITEM);
     }
 
@@ -117,6 +119,11 @@ public class Item extends BaseParseObject{
 
     public Segment getSegment(){
         return (Segment) getParseObject("segment");
+    }
+
+    public String getSegmentName(){
+        Segment segment = (Segment) getParseObject("segment");
+        return segment.getName();
     }
 
     public static Item getItemById(String id){
