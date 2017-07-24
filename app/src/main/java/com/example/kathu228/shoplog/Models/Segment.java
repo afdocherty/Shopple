@@ -9,6 +9,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 /**
  * Created by afdoch on 7/12/17.
  *
@@ -78,13 +80,18 @@ public class Segment extends BaseParseObject {
     public void setName(String value, @Nullable final SaveCallback callback) {
         put("name", value);
 
-        getHeader().setBody(value);
-        getHeader().saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                nullableSaveInBackground(callback);
-            }
-        });
+        Item header = getHeader();
+        if (header != null){
+            getHeader().setBody(value);
+            getHeader().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    nullableSaveInBackground(callback);
+                }
+            });
+        } else
+            nullableSaveInBackground(callback);
+
     }
 
     public ShopList getParent(){
@@ -95,12 +102,25 @@ public class Segment extends BaseParseObject {
         put("parent_list",parentList);
     }
 
-    public void getItems(FindCallback<Item> callback){
+    public void getItemsInBackground(FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
         query.whereEqualTo("segment",this);
         query.whereEqualTo("visible",true);
         query.orderByDescending("_updated_at");
         query.findInBackground(callback);
+    }
+
+    public List<Item> getItems(){
+        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        query.whereEqualTo("segment",this);
+        query.whereEqualTo("visible",true);
+        query.orderByDescending("_updated_at");
+        try {
+            return query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new NullPointerException("Error in getting items from fragment");
+        }
     }
 
     @Deprecated

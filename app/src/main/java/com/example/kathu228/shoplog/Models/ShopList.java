@@ -229,8 +229,6 @@ public class ShopList extends BaseParseObject {
         });
     }
 
-    //TODO- Change to a callback format
-
     public void removeSegment(Segment segment){
 
         segment.getItems(new FindCallback<Item>() {
