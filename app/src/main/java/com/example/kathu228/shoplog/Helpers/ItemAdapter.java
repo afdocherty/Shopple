@@ -157,14 +157,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public void handleCheckbox(final Item item, final int position, final View v){
             if (item.isChecked()){
                 item.setChecked(false, null);
-                item.saveInBackground();
                 mlist.remove(position);
                 mlist.add(0, item);
                 cbItem.setChecked(false);
                 notifyItemMoved(position, 0);
-            } else {
-                item.setChecked(true, null);
-                item.saveInBackground();
+            }
+            else{
+                item.setChecked(true,null);
                 mlist.remove(position);
                 mlist.add(item);
                 cbItem.setChecked(true);
@@ -258,6 +257,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         mlist.add(position, item);
         notifyItemInserted(position);
     }
+
 
     // Add an item to the shoplist
     private void addItemToList (final Item item, final int position) {

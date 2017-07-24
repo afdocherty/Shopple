@@ -16,6 +16,10 @@ import com.parse.SaveCallback;
 @ParseClassName("Item")
 public class Item extends BaseParseObject{
 
+    public interface ItemCallback{
+        void done(Item item);
+    }
+
     static final int ITEM = 0;
     static final int HEADER = 1;
     static final int COMPLETED_HEADER = 2;
@@ -24,7 +28,18 @@ public class Item extends BaseParseObject{
         //Needed for Parse
     }
 
+    @Deprecated
     Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
+        setBody(body);
+        setParent(parent);
+        put("segment",segment);
+        put("checked",false);
+        put("visible",true);
+        setType(type);
+        nullableSaveInBackground(callback);
+    }
+
+    void initializeVariables(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         setBody(body);
         setParent(parent);
         put("segment",segment);

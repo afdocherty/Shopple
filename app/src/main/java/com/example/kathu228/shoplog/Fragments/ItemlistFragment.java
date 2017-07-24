@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
-import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
@@ -42,16 +41,16 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     // parameters
     private SwipeRefreshLayout swipeContainer;
-    private ShoplogClient client;
     private RecyclerView rvItems;
     private EditText etAddItem;
     private ImageButton ibAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
+
     private String shopListObjectId;
     private FloatingActionButton fabAddSegment;
 
-    ShopList listTest;
+    ShopList shopList;
 
     public static ItemlistFragment newInstance(String shopListObjectId) {
         ItemlistFragment itemlistFragment = new ItemlistFragment();
@@ -78,8 +77,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onFinishSegmentDialog(String segmentName) {
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        listTest = listTest.getShopListById(shopListObjectId);
-        listTest.addSegment(segmentName,null);
+        shopList = shopList.getShopListById(shopListObjectId);
+        shopList.addSegment(segmentName,null);
         Toast.makeText(getContext(), "New category "+segmentName+" created", Toast.LENGTH_SHORT).show();
 
     }
@@ -95,12 +94,14 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 //        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
         // initialize the array of items
         items = new ArrayList<>();
+
         // gt id of shoplist
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        listTest = listTest.getShopListById(shopListObjectId);
+        shopList = ShopList.getShopListById(shopListObjectId);
+
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, listTest);
+        itemAdapter = new ItemAdapter(items, shopList);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -114,14 +115,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String body = etAddItem.getText().toString();
-                // Does not add empty item
-                if (!body.equals("")) {
-                    Item addedItem = listTest.addItem(body, null);
-                    etAddItem.setText("");
-                    addItem(addedItem);
-                }
-
+                addItem();
             }
         });
 
@@ -129,13 +123,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    String body = etAddItem.getText().toString();
-                    // Does not add empty item
-                    if (!body.equals("")) {
-                        Item addedItem = listTest.addItem(body, null);
-                        etAddItem.setText("");
-                        addItem(addedItem);
-                    }
+                    addItem();
                 }
                 return false;
             }
@@ -174,16 +162,15 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onResume() {
         super.onResume();
         // Populate the items array
-        addItems();
+        // addItems();
     }
 
 
     public void addItems() {
-
         // Clear the items list
         items.clear();
         //addUncheckedItems();
-        listTest.getItems(new FindCallback<Item>() {
+        shopList.getItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -206,7 +193,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 //                            }
                             Segment segment = object.getSegment();
                             if (object.isChecked()) {
-                                Item completedHeader = listTest.getCompletedSegment().getHeader();
+                                Item completedHeader = shopList.getCompletedSegment().getHeader();
                                 if (items.indexOf(completedHeader) == -1) {
                                     items.add(completedHeader);
                                     items.add(object);
@@ -216,12 +203,13 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 //                                items.add(object);
                             }
                             // if object is uncategorized, add to beginning of uncategorized
-                            else if (segment.isUncategorized()){
-                                items.add(0,object);
-//                                itemAdapter.notifyItemInserted(0);
-                                indUncat++;
-                                indLastUncomp++;
-                            }
+                            // TODO: add uncategorized boolean method?
+//                            else if (segment.isUncategorized()){
+//                                items.add(0,object);
+////                                itemAdapter.notifyItemInserted(0);
+//                                indUncat++;
+//                                indLastUncomp++;
+//                            }
                             else{
                                 Item segHeader = segment.getHeader();
                                 // if segment not in list, add segment item to list and add object under it
@@ -279,7 +267,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
 
     public void addUncheckedItems(){
-        listTest.getUncheckedItems(new FindCallback<Item>() {
+        shopList.getUncheckedItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -294,7 +282,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         });
     }
     public void addCheckedItems(){
-        listTest.getCheckedItems(new FindCallback<Item>() {
+        shopList.getCheckedItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -310,9 +298,20 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     // add item to list
-    public void addItem(Item item){
-        items.add(0, item);
-        itemAdapter.notifyItemInserted(0);
-        rvItems.scrollToPosition(0);
+    public void addItem(){
+        String body = etAddItem.getText().toString();
+        // Does not add empty item
+        if (!body.equals("")) {
+            // Changed to Item.ItemCallback()
+            shopList.addItem(body, new Item.ItemCallback() {
+                @Override
+                public void done(Item item) {
+                    etAddItem.setText("");
+                    items.add(0, item);
+                    itemAdapter.notifyItemInserted(0);
+                    rvItems.scrollToPosition(0);
+                }
+            });
+        }
     }
 }

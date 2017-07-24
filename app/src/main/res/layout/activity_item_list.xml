@@ -15,7 +15,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/itemlist_frame">
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:onClick="activateNotifcations"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/ivDetailsBtn"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp" />
 
             <ImageView
                 android:id="@+id/ivDetailsBtn"
@@ -58,6 +58,6 @@
         android:id="@+id/itemlist_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar_items" />
 
 </RelativeLayout>

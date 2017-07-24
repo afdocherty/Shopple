@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Activities;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class ItemListActivity extends AppCompatActivity{
         ft.commit();
     }
 
-
+    // Set the color of the notification button in the Toolbar
     private void setNotificationBtnColor() {
         ImageView ivNotificationBtn = (ImageView) findViewById(R.id.ivNotificationBtn);
         if (notificationsEnabled) {
@@ -77,6 +78,7 @@ public class ItemListActivity extends AppCompatActivity{
         }
     }
 
+    // Create a notification
     private void startNotification(String shopListObjectId) {
         // Get the name of the list
         String shopListName = ShopList.getShopListById(shopListObjectId).getName();
@@ -87,7 +89,9 @@ public class ItemListActivity extends AppCompatActivity{
                         .setSmallIcon(R.drawable.ic_check_box)
                         .setContentTitle("ShopLog")
                         .setContentText("Click to go to " + shopListName)
-                        .setOngoing(true);
+                        .setOngoing(true)
+                        .setCategory(Notification.CATEGORY_SERVICE)
+                        .setPriority(1);
 
         // Create pending intent, mention the Activity which needs to be
         //triggered when user clicks on notification(StopScript.class in this case)
