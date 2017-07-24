@@ -161,7 +161,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onResume() {
         super.onResume();
         // Populate the items array
-        //addItems();
+        // addItems();
     }
 
     public void addItems() {
@@ -242,11 +242,16 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         String body = etAddItem.getText().toString();
         // Does not add empty item
         if (!body.equals("")) {
-            Item addedItem = shopList.addItem(body,null);
-            etAddItem.setText("");
-            items.add(0, addedItem);
-            itemAdapter.notifyItemInserted(0);
-            rvItems.scrollToPosition(0);
+            // Changed to Item.ItemCallback()
+            shopList.addItem(body, new Item.ItemCallback() {
+                @Override
+                public void done(Item item) {
+                    etAddItem.setText("");
+                    items.add(0, item);
+                    itemAdapter.notifyItemInserted(0);
+                    rvItems.scrollToPosition(0);
+                }
+            });
         }
     }
 }
