@@ -18,6 +18,10 @@ import com.parse.SaveCallback;
 @ParseClassName("Segment")
 public class Segment extends BaseParseObject {
 
+    public interface SegmentCallback{
+        void done(Segment segment);
+    }
+
     static final int UNCATEGORIZED_SEGMENT=0;
     static final int COMPLETED_SEGMENT=1;
     static final int ADDITIONAL_SEGMENT=2;
@@ -33,9 +37,35 @@ public class Segment extends BaseParseObject {
         switch (segmentType){
             case 1:
                 addCompletedHeaderItem(name, parentList, callback);
+                //Log.d("debug","complete header created");
+                break;
             case 2:
                 addHeaderItem(name, parentList, callback);
+                //Log.d("debug","header created");
+                break;
+            default:
+                break;
         }
+        nullableSaveInBackground(callback);
+    }
+
+    void initializeVariables(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
+        put("name", name);
+        setParent(parentList);
+
+        switch (segmentType){
+            case 1:
+                addCompletedHeaderItem(name, parentList, callback);
+                //Log.d("debug","complete header created");
+                break;
+            case 2:
+                addHeaderItem(name, parentList, callback);
+                //Log.d("debug","header created");
+                break;
+            default:
+                break;
+        }
+        nullableSaveInBackground(callback);
     }
 
     // Get the name of the Segment
@@ -46,6 +76,8 @@ public class Segment extends BaseParseObject {
     // Set the name of the Segment
     public void setName(String value, @Nullable SaveCallback callback) {
         put("name", value);
+
+        //TODO- Change header title as well
 
         nullableSaveInBackground(callback);
     }
@@ -69,6 +101,8 @@ public class Segment extends BaseParseObject {
     public Item addItem(String name, @Nullable SaveCallback callback){
         return new Item(name,getParent(), this, Item.ITEM,callback);
     }
+
+    //TODO- Change to a callback format
 
     private void addHeaderItem(String name, ShopList parent, final SaveCallback callback){
         put("header",new Item(name, parent, this, Item.HEADER, new SaveCallback() {
