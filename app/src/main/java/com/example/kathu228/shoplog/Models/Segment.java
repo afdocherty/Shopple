@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Models;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.parse.FindCallback;
@@ -7,6 +8,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 /**
  * Created by afdoch on 7/12/17.
@@ -74,12 +77,21 @@ public class Segment extends BaseParseObject {
     }
 
     // Set the name of the Segment
-    public void setName(String value, @Nullable SaveCallback callback) {
+    public void setName(String value, @Nullable final SaveCallback callback) {
         put("name", value);
 
-        //TODO- Change header title as well
+        Item header = getHeader();
+        if (header != null){
+            getHeader().setBody(value);
+            getHeader().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    nullableSaveInBackground(callback);
+                }
+            });
+        } else
+            nullableSaveInBackground(callback);
 
-        nullableSaveInBackground(callback);
     }
 
     public ShopList getParent(){
@@ -90,7 +102,7 @@ public class Segment extends BaseParseObject {
         put("parent_list",parentList);
     }
 
-    public void getItems(FindCallback<Item> callback){
+    public void getItemsInBackground(FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
         query.whereEqualTo("segment",this);
         query.whereEqualTo("visible",true);
@@ -98,11 +110,37 @@ public class Segment extends BaseParseObject {
         query.findInBackground(callback);
     }
 
+    public List<Item> getItems(){
+        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        query.whereEqualTo("segment",this);
+        query.whereEqualTo("visible",true);
+        query.orderByDescending("_updated_at");
+        try {
+            return query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new NullPointerException("Error in getting items from fragment");
+        }
+    }
+
+    @Deprecated
     public Item addItem(String name, @Nullable SaveCallback callback){
         return new Item(name,getParent(), this, Item.ITEM,callback);
     }
 
-    //TODO- Change to a callback format
+    public void addItem(String itemName, @NonNull final Item.ItemCallback callback){
+        final Item item = new Item();
+        item.initializeVariables(itemName, getParent(), this, Item.ITEM, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    callback.done(item);
+                else
+                    e.printStackTrace();
+
+            }
+        });
+    }
 
     private void addHeaderItem(String name, ShopList parent, final SaveCallback callback){
         put("header",new Item(name, parent, this, Item.HEADER, new SaveCallback() {

@@ -28,7 +28,6 @@ public class Item extends BaseParseObject{
         //Needed for Parse
     }
 
-    @Deprecated
     Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         setBody(body);
         setParent(parent);
@@ -63,6 +62,7 @@ public class Item extends BaseParseObject{
         put("checked",value);
         if (value)
             put("segment",getParent().getCompletedSegment());
+
         else
             put("segment",getParent().getUncategorizedSegment());
 
@@ -92,6 +92,7 @@ public class Item extends BaseParseObject{
     }
 
     public boolean isItem() {
+        int type = getType();
         return (getInt("type")==ITEM);
     }
 
@@ -118,6 +119,11 @@ public class Item extends BaseParseObject{
 
     public Segment getSegment(){
         return (Segment) getParseObject("segment");
+    }
+
+    public String getSegmentName(){
+        Segment segment = (Segment) getParseObject("segment");
+        return segment.getName();
     }
 
     public static Item getItemById(String id){

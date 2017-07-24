@@ -210,11 +210,24 @@ public class ShopList extends BaseParseObject {
         return (Segment) getParseObject("completed_segment");
     }
 
+    @Deprecated
     public Segment addSegment(String name, @Nullable SaveCallback callback){
         return new Segment(name,this,Segment.ADDITIONAL_SEGMENT,callback);
     }
 
-    //TODO- Change to a callback format
+    public void addSegment(String name, @NonNull final Segment.SegmentCallback callback){
+        final Segment segment = new Segment();
+        segment.initializeVariables(name, this, Segment.ADDITIONAL_SEGMENT, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    callback.done(segment);
+                else
+                    e.printStackTrace();
+
+            }
+        });
+    }
 
     public void removeSegment(Segment segment){
 
@@ -227,7 +240,6 @@ public class ShopList extends BaseParseObject {
             }
         });
         segment.deleteInBackground();
-
     }
 
     public static void getInstance(String name, @NonNull final ShoplistCallback callback){
