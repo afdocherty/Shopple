@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Models;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.parse.FindCallback;
@@ -74,12 +75,16 @@ public class Segment extends BaseParseObject {
     }
 
     // Set the name of the Segment
-    public void setName(String value, @Nullable SaveCallback callback) {
+    public void setName(String value, @Nullable final SaveCallback callback) {
         put("name", value);
 
-        //TODO- Change header title as well
-
-        nullableSaveInBackground(callback);
+        getHeader().setBody(value);
+        getHeader().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                nullableSaveInBackground(callback);
+            }
+        });
     }
 
     public ShopList getParent(){
@@ -98,11 +103,24 @@ public class Segment extends BaseParseObject {
         query.findInBackground(callback);
     }
 
+    @Deprecated
     public Item addItem(String name, @Nullable SaveCallback callback){
         return new Item(name,getParent(), this, Item.ITEM,callback);
     }
 
-    //TODO- Change to a callback format
+    public void addItem(String itemName, @NonNull final Item.ItemCallback callback){
+        final Item item = new Item();
+        item.initializeVariables(itemName, getParent(), this, Item.ITEM, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    callback.done(item);
+                else
+                    e.printStackTrace();
+
+            }
+        });
+    }
 
     private void addHeaderItem(String name, ShopList parent, final SaveCallback callback){
         put("header",new Item(name, parent, this, Item.HEADER, new SaveCallback() {

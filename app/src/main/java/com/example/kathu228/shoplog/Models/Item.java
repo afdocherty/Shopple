@@ -28,7 +28,6 @@ public class Item extends BaseParseObject{
         //Needed for Parse
     }
 
-    @Deprecated
     Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         setBody(body);
         setParent(parent);
