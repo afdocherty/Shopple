@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Query;
@@ -64,7 +66,9 @@ public class ShopListFragment extends Fragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvShopList);
 
+        // Add ShopList FAB
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
+        // On click, create the list and jump into it
         fabAddShopList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +77,12 @@ public class ShopListFragment extends Fragment {
                 ShopList shopList = new ShopList("New List at " + currentDateTimeString,null);
                 //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);
                 addShopList(shopList);
+
+                Intent intent = new Intent(getActivity(), ItemListActivity.class);
+                // Pass in ShopList ObjectId
+                intent.putExtra(ShopList.SHOPLIST_TAG, shopList.getObjectId());
+                intent.putExtra("listName", shopList.getName());
+                startActivity(intent);
             }
         });
 
