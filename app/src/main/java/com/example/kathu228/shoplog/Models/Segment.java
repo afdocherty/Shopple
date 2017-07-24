@@ -19,8 +19,9 @@ import com.parse.SaveCallback;
 public class Segment extends BaseParseObject {
 
     static final int UNCATEGORIZED_SEGMENT=0;
-    static final int COMPLETED_SEGMENT=1;
-    static final int ADDITIONAL_SEGMENT=2;
+    static final int COMPLETED_SEGMENT=2;
+    static final int ADDITIONAL_SEGMENT=1;
+    int type;
 
     public Segment(){
         //required for Parse
@@ -29,12 +30,16 @@ public class Segment extends BaseParseObject {
     Segment(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
         put("name", name);
         setParent(parentList);
-
+        type = segmentType;
         switch (segmentType){
-            case 1:
+            case UNCATEGORIZED_SEGMENT:
+                setSegmentType(UNCATEGORIZED_SEGMENT);
+            case COMPLETED_SEGMENT:
                 addCompletedHeaderItem(name, parentList, callback);
-            case 2:
+                setSegmentType(COMPLETED_SEGMENT);
+            case ADDITIONAL_SEGMENT:
                 addHeaderItem(name, parentList, callback);
+                setSegmentType(ADDITIONAL_SEGMENT);
         }
     }
 
@@ -57,6 +62,7 @@ public class Segment extends BaseParseObject {
     private void setParent(ShopList parentList){
         put("parent_list",parentList);
     }
+
 
     public void getItems(FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
@@ -93,6 +99,14 @@ public class Segment extends BaseParseObject {
             return (Item) getParseObject("header");
         else
             throw new NullPointerException("uncategorized segment doesn't have a header");
+    }
+
+    public void setSegmentType(int segmentType){
+        type = segmentType;
+    }
+
+    public boolean isUncategorized(){
+        return (type==UNCATEGORIZED_SEGMENT);
     }
 
     public static Segment getSegmentById(String id){

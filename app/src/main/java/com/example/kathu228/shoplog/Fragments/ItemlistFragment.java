@@ -25,6 +25,7 @@ import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
@@ -173,12 +174,12 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onResume() {
         super.onResume();
         // Populate the items array
-        //addItems();
+        addItems();
     }
+
 
     public void addItems() {
 
-        // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
         // Clear the items list
         items.clear();
         //addUncheckedItems();
@@ -187,30 +188,86 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
                     Log.d("ItemListFragment", "Unchecked Items found!!");
-                    int completed = 0;
+                    // indUncat keeps track of where to add the uncategorized items
+                    int indUncat = 0;
+                    // indLastUncomp keeps track of where the last uncompleted item is
+                    int indLastUncomp = 0;
                     for (Item object: objects){
+
                         if (object.isItem()){
-                            if (object.isChecked()){
-                                items.add(object);
-                                itemAdapter.notifyItemInserted(items.size());
+//                            if (object.isChecked()){
+//                                items.add(object);
+//                                itemAdapter.notifyItemInserted(items.size());
+//                            }
+//                            else{
+//                                items.add(completed,object);
+//                                itemAdapter.notifyItemInserted(completed);
+//                                completed++;
+//                            }
+                            Segment segment = object.getSegment();
+                            if (object.isChecked()) {
+                                Item completedHeader = listTest.getCompletedSegment().getHeader();
+                                if (items.indexOf(completedHeader) == -1) {
+                                    items.add(completedHeader);
+                                    items.add(object);
+                                } else {
+                                    items.add(object);
+                                }
+//                                items.add(object);
+                            }
+                            // if object is uncategorized, add to beginning of uncategorized
+                            else if (segment.isUncategorized()){
+                                items.add(0,object);
+//                                itemAdapter.notifyItemInserted(0);
+                                indUncat++;
+                                indLastUncomp++;
                             }
                             else{
-                                items.add(completed,object);
-                                itemAdapter.notifyItemInserted(completed);
-                                completed++;
+                                Item segHeader = segment.getHeader();
+                                // if segment not in list, add segment item to list and add object under it
+                                // else, find index of segment header and add item to the end
+                                int indSeg = items.indexOf(segHeader);
+                                if (indSeg==-1){
+                                    // if uncompleted, add after uncategorized items
+                                    // else, add completed header and item to the end
+                                    if (segHeader.isHeader()){
+                                        items.add(indUncat,segHeader);
+                                        items.add(indUncat+1,object);
+                                        indLastUncomp+=2;
+                                    }
+                                    else{
+                                        items.add(segHeader);
+                                        items.add(object);
+                                    }
+                                }
+                                else{
+                                    if (segHeader.isHeader()){
+                                        items.add(indSeg+1,object);
+                                        indLastUncomp++;
+                                    }
+                                    else{
+                                        items.add(object);
+
+                                    }
+                                }
                             }
                         }
 
                         else if (object.isCompletedHeader()){
-                            items.add(completed,object);
-                            itemAdapter.notifyItemInserted(completed);
+                            if (items.indexOf(object)==-1){
+                                items.add(indLastUncomp, object);
+                            }
                         }
 
                         else if (object.isHeader()){
-
+                            if (items.indexOf(object)==-1) {
+                                items.add(indUncat, object);
+//                                itemAdapter.notifyItemInserted(indLastUncomp);
+                                indLastUncomp++;
+                            }
                         }
                     }
-//                    itemAdapter.notifyDataSetChanged();
+                    itemAdapter.notifyDataSetChanged();
 
                 }
                 else{
@@ -219,6 +276,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             }
         });
     }
+
 
     public void addUncheckedItems(){
         listTest.getUncheckedItems(new FindCallback<Item>() {

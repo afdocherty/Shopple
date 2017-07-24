@@ -18,6 +18,7 @@ import com.example.kathu228.shoplog.R;
 import java.util.List;
 
 import static com.example.kathu228.shoplog.R.layout.item;
+import static com.example.kathu228.shoplog.R.layout.item_header;
 
 /**
  * Created by kathu228 on 7/12/17.
@@ -43,10 +44,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 view = LayoutInflater.from(parent.getContext()).inflate(item, parent, false);
                 return new ItemViewHolder(view);
             case 1:
-
+                view = LayoutInflater.from(parent.getContext()).inflate(item_header, parent, false);
+                return new HeaderViewHolder(view);
             case 2:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_completed_header, parent, false);
-                return new HeaderViewHolder(view);
+                return new CompletedHeaderViewHolder(view);
             default:
                 throw new IllegalArgumentException("Invalid viewtype," + viewType);
         }
@@ -66,8 +68,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((ItemViewHolder) holder).cbItem.setText(item.getBody());
                     ((ItemViewHolder) holder).cbItem.setChecked(item.isChecked());
                     break;
-                case 2:
+                case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
+                    break;
+                case 2:
+                    ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
                     break;
             }
         }
@@ -95,27 +100,27 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
-        if (item.isChecked() && item.getType() == 0) {
+        if (item.isItem()) {
+            if (item.isChecked() && item.getType() == 0) {
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
-            item.setVisible(false,null);
-            listTest.removeItem(item,null);
-            deleteItem(position);
+                item.setVisible(false, null);
+                listTest.removeItem(item, null);
+                deleteItem(position);
 //            deleteItemFromList(item, position);
-        } else if(item.getType()==0) {
-            item.setChecked(true,null);
-            item.setVisible(false, null);
-            listTest.removeItem(item, null);
-            deleteItem(position);
+            } else if (item.getType() == 0) {
+                item.setChecked(true, null);
+                item.setVisible(false, null);
+                listTest.removeItem(item, null);
+                deleteItem(position);
 //            deleteItemFromList(item, position);
-        }
-        else{
-            item.setChecked(true, null);
+            } else {
+                item.setChecked(true, null);
 //            item.saveInBackground();
-            deleteItem(position);
-            addItem(item, mlist.size());
+                deleteItem(position);
+                addItem(item, mlist.size());
+            }
         }
-
 
     }
 
@@ -169,14 +174,23 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public class HeaderViewHolder extends BaseAdapter.ViewHolder {
+    public class HeaderViewHolder extends BaseAdapter.ViewHolder{
         public TextView tvHeader;
-        public ImageButton ibDelete;
-
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
-            tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
+            tvHeader = (TextView)itemView.findViewById(R.id.tvHeader);
+
+        }
+    }
+    public class CompletedHeaderViewHolder extends BaseAdapter.ViewHolder {
+        public TextView tvCompletedHeader;
+        public ImageButton ibDelete;
+
+        public CompletedHeaderViewHolder(View itemView) {
+            super(itemView);
+
+            tvCompletedHeader = (TextView) itemView.findViewById(R.id.tvCompletedHeader);
             ibDelete = (ImageButton) itemView.findViewById(R.id.ibDelete);
 
             // asks user if want to delete all items in completed

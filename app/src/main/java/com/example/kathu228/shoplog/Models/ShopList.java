@@ -168,7 +168,6 @@ public class ShopList extends BaseParseObject {
             }
         });
         segment.deleteInBackground();
-
     }
 
     public static ShopList getShopListById(String id){
