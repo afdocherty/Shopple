@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
-import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -37,15 +36,13 @@ public class ItemlistFragment extends Fragment{
 
     // parameters
     private SwipeRefreshLayout swipeContainer;
-    private ShoplogClient client;
     private RecyclerView rvItems;
     private EditText etAddItem;
     private ImageButton ibAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
-    private String shopListObjectId;
 
-    ShopList listTest;
+    ShopList shopList;
 
     public static ItemlistFragment newInstance(String shopListObjectId) {
         ItemlistFragment itemlistFragment = new ItemlistFragment();
@@ -69,12 +66,14 @@ public class ItemlistFragment extends Fragment{
 //        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
         // initialize the array of items
         items = new ArrayList<>();
+
         // gt id of shoplist
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        listTest = listTest.getShopListById(shopListObjectId);
+        shopList = ShopList.getShopListById(shopListObjectId);
+
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, listTest);
+        itemAdapter = new ItemAdapter(items, shopList);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -88,13 +87,7 @@ public class ItemlistFragment extends Fragment{
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String body = etAddItem.getText().toString();
-                // Does not add empty item
-                if (!body.equals("")) {
-                    Item addedItem = listTest.addItem(body);
-                    etAddItem.setText("");
-                    addItem(addedItem);
-                }
+                addItem();
 
             }
         });
@@ -103,13 +96,7 @@ public class ItemlistFragment extends Fragment{
         etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    String body = etAddItem.getText().toString();
-                    // Does not add empty item
-                    if (!body.equals("")) {
-                        Item addedItem = listTest.addItem(body);
-                        etAddItem.setText("");
-                        addItem(addedItem);
-                    }
+                    addItem();
                 }
                 return false;
             }
@@ -144,12 +131,10 @@ public class ItemlistFragment extends Fragment{
     }
 
     public void addItems() {
-
-        // TODO - Temporary for MVP to get Items for ONLY the first list -> first segment
         // Clear the items list
         items.clear();
         //addUncheckedItems();
-        listTest.getItems(new FindCallback<Item>() {
+        shopList.getItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -184,7 +169,7 @@ public class ItemlistFragment extends Fragment{
     }
 
     public void addUncheckedItems(){
-        listTest.getUncheckedItems(new FindCallback<Item>() {
+        shopList.getUncheckedItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -199,7 +184,7 @@ public class ItemlistFragment extends Fragment{
         });
     }
     public void addCheckedItems(){
-        listTest.getCheckedItems(new FindCallback<Item>() {
+        shopList.getCheckedItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 if (e == null){
@@ -215,9 +200,15 @@ public class ItemlistFragment extends Fragment{
     }
 
     // add item to list
-    public void addItem(Item item){
-        items.add(0, item);
-        itemAdapter.notifyItemInserted(0);
-        rvItems.scrollToPosition(0);
+    public void addItem(){
+        String body = etAddItem.getText().toString();
+        // Does not add empty item
+        if (!body.equals("")) {
+            Item addedItem = shopList.addItem(body,null);
+            etAddItem.setText("");
+            items.add(0, addedItem);
+            itemAdapter.notifyItemInserted(0);
+            rvItems.scrollToPosition(0);
+        }
     }
 }

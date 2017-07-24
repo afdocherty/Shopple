@@ -1,7 +1,6 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.content.DialogInterface;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -112,16 +111,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
-        if (item.isChecked() && item.getType()==0){
+        if (item.isChecked() && item.isItem()){
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
-            item.setVisible(false);
-            listTest.removeItem(item);
+            item.setVisible(false,null);
+            //listTest.removeItem(item,null);
             deleteItem(item, position);
 //            deleteItemFromList(item, position);
         }
         else{
-            item.setChecked(true);
+            item.setChecked(true,null);
 //            item.saveInBackground();
             deleteItem(item, position);
             addItem(item, mlist.size());
@@ -161,16 +160,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         // checks and unchecks checkbox, while saving the object's boolean state on server
         public void handleCheckbox(final Item item, final int position, final View v){
             if (item.isChecked()){
-                item.setChecked(false);
-                item.saveInBackground();
+                item.setChecked(false,null);
                 mlist.remove(position);
                 mlist.add(0,item);
                 cbItem.setChecked(false);
                 notifyItemMoved(position, 0);
             }
             else{
-                item.setChecked(true);
-                item.saveInBackground();
+                item.setChecked(true,null);
                 mlist.remove(position);
                 mlist.add(item);
                 cbItem.setChecked(true);
@@ -235,7 +232,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // deletes if checkbox is checked, and allows undo deletion
-    public void deleteItem(final Item item, final int position){
+    public void deleteItem(Item item, int position){
         mlist.remove(position);
         notifyItemRemoved(position);
         //undoDelete(item, position, v);
@@ -294,53 +291,53 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemInserted(position);
     }
 
-    // Add an item to the MVP list
-    private void addItemToList (final Item item, final int position) {
-        // MVP Hack to jump straight to Segment - TODO change
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    Log.d("ItemListFragment", "Segment found");
-                    // Grab the first segment (for MVP) - TODO change
-                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
-                    relationSegmentToItem.add(item);
-                    objects.get(0).saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("ItemListFragment", "Item added!");
-                                item.setChecked(false);
-                            } else {
-                                Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else {
-                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
-                }
-            }
-        });
-    }
-
-    // if click undo in snackbar, item will reappear in list unchecked
-    public void undoDelete(final Item item, final int position, View v){
-        Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        cbItem.setChecked(false);
-
-                        addItemToList(item, position);
-
-                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
-                        snackbar1.show();
-                    }
-                })
-                .show();
-    }
+//    // Add an item to the MVP list
+//    private void addItemToList (final Item item, final int position) {
+//        // MVP Hack to jump straight to Segment - TODO change
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Segment");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//                if (e == null) {
+//                    Log.d("ItemListFragment", "Segment found");
+//                    // Grab the first segment (for MVP) - TODO change
+//                    ParseRelation<ParseObject> relationSegmentToItem = objects.get(0).getRelation("items");
+//                    relationSegmentToItem.add(item);
+//                    objects.get(0).saveInBackground(new SaveCallback() {
+//                        @Override
+//                        public void done(ParseException e) {
+//                            if (e == null) {
+//                                Log.d("ItemListFragment", "Item added!");
+//                                item.setChecked(false);
+//                            } else {
+//                                Log.d("ItemListFragment", "Item not added. Error: " + e.toString());
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    Log.d("ItemListFragment", "Segment not found. Error: " + e.toString());
+//                }
+//            }
+//        });
+//    }
+//
+//    // if click undo in snackbar, item will reappear in list unchecked
+//    public void undoDelete(final Item item, final int position, View v){
+//        Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
+//                .setAction("Undo", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+////                        cbItem.setChecked(false);
+//
+//                        addItemToList(item, position);
+//
+//                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
+//                        snackbar1.show();
+//                    }
+//                })
+//                .show();
+//    }
 
 
 }

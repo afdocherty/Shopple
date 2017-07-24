@@ -122,7 +122,7 @@ public class ListDetailsFragment extends Fragment {
     private void removeUserFromShoplist() {
         // Get the shoplist by ID and remove the current user from that list
         try {
-            getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG)).removeUser(ParseUser.getCurrentUser());
+            getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG)).removeUser(ParseUser.getCurrentUser(),null);
         } catch (NullPointerException e) {
             Log.d("ListDetailsFragment", "ShopList not found by id");
             throw e;

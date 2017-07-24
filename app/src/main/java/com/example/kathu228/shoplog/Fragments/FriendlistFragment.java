@@ -19,6 +19,7 @@ import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,10 +91,12 @@ public class FriendlistFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(ParseUser user : peopleAdded){
-                    shopList.addUser(user);
-                }
-                ((FriendFragmentListener) getActivity()).friendsFragmentFinished();
+                shopList.addUsers(peopleAdded, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        ((FriendFragmentListener) getActivity()).friendsFragmentFinished();
+                    }
+                });
             }
         });
 

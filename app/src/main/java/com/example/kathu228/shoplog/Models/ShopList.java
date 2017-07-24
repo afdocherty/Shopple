@@ -68,10 +68,26 @@ public class ShopList extends BaseParseObject {
         nullableSaveInBackground(callback);
     }
 
+    public void addUsers(List<ParseUser> users, @Nullable SaveCallback callback){
+        for (ParseUser user : users){
+            getPreviousUserRelation().remove(user);
+            getUsersRelation().add(user);
+        }
+        nullableSaveInBackground(callback);
+    }
+
     // Remove a user from the relation
     public void removeUser(ParseUser user, @Nullable SaveCallback callback) {
         getUsersRelation().remove(user);
         getPreviousUserRelation().add(user);
+        nullableSaveInBackground(callback);
+    }
+
+    public void removeUsers(List<ParseUser> users, @Nullable SaveCallback callback){
+        for (ParseUser user : users){
+            getUsersRelation().remove(user);
+            getPreviousUserRelation().add(user);
+        }
         nullableSaveInBackground(callback);
     }
 
