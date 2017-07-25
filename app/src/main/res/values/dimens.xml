@@ -7,6 +7,6 @@
     <dimen name="padding">4dp</dimen>
     <dimen name="section_margin">12dp</dimen>
     <dimen name="details_padding">8dp</dimen>
-    <dimen name="toolbar_textSize">24sp</dimen>
     <dimen name="trash_margin">20dp</dimen>
+    <dimen name="toolbar_textSize">28sp</dimen>
 </resources>
