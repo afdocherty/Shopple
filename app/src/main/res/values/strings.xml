@@ -9,4 +9,9 @@
     <string name="edit_collaborators">Edit Collaborators</string>
     <string name="leave_list">Leave List</string>
     <string name="your_lists">Your Lists</string>
+    <string name="my_store_address">2100 Queen Anne Ave N, Seattle, WA 98109</string> <!-- Safeway in Queen Anne, Seattle, WA -->
+    <string name="search_entry">grocery+store</string>
+    <string name="FB_lat_long">47.628846,-122.342942</string>
+    <string name="notifications_enabled">Notifications for this trip have been enabled. Happy Shopping!</string>
+
 </resources>

@@ -241,14 +241,10 @@ public class ShopList extends BaseParseObject {
 
     public void removeSegment(Segment segment){
 
-        segment.getItemsInBackground(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                for (Item item : objects){
-                    item.setSegment(getUncategorizedSegment(),null);
-                }
-            }
-        });
+        List<Item> items = segment.getItems();
+        for (Item item : items){
+            item.setSegment(getUncategorizedSegment(),null);
+        }
         segment.deleteInBackground();
     }
 
