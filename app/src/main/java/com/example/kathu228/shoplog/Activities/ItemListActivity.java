@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
@@ -128,7 +129,7 @@ public class ItemListActivity extends AppCompatActivity{
         if (resultCode == RESULT_OK && requestCode == 20) {
             //Code to be executed after you come back from the add people activity
             //(Maybe refresh the shopping list?)
-            // TODO Delete this and move to ItemList > Details > AddPeople
+            // TODO Delete this and reorganize flow to be ItemList > Details > AddPeople
         }
     }
 
@@ -145,13 +146,26 @@ public class ItemListActivity extends AppCompatActivity{
                 .setCancelable(true)
                 .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        // TODO - route to hardcoded place ID
-                        getResources().getString(R.string.my_store_place_id);
+                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA)
+                        // TODO - test this code
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)));
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        }
                     }
                 })
                 .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        // TODO - open up Google Maps searching for "grocery store"
+                        // Search nearby grocery stores
+                        // TODO - test this code
+                        Uri gmmIntentUri = Uri.parse("geo:47.628846,-122.342942?q=grocery+store");
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        }
                     }
                 });
         // create alert dialog
