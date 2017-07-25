@@ -51,11 +51,7 @@ public class Item extends BaseParseObject{
 
     // Get the body text of the Item
     public String getBody() {
-        try {
-            fetchIfNeeded();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        fetchWhenNeeded();
         return getString("body");
     }
 
@@ -70,6 +66,7 @@ public class Item extends BaseParseObject{
     }
 
     public boolean isChecked(){
+        fetchWhenNeeded();
         return getBoolean("checked");
     }
 
@@ -79,6 +76,7 @@ public class Item extends BaseParseObject{
     }
 
     public boolean isVisible(){
+        fetchWhenNeeded();
         return getBoolean("visible");
     }
 
@@ -88,19 +86,22 @@ public class Item extends BaseParseObject{
     }
 
     public int getType() {
+        fetchWhenNeeded();
         return getInt("type");
     }
 
     public boolean isItem() {
-        int type = getType();
+        fetchWhenNeeded();
         return (getInt("type")==ITEM);
     }
 
     public boolean isHeader() {
+        fetchWhenNeeded();
         return (getInt("type")==HEADER);
     }
 
     public boolean isCompletedHeader() {
+        fetchWhenNeeded();
         return (getInt("type")==COMPLETED_HEADER);
     }
 
@@ -109,6 +110,7 @@ public class Item extends BaseParseObject{
     }
 
     public ShopList getParent(){
+        fetchWhenNeeded();
         return (ShopList) getParseObject("parent");
     }
 
@@ -122,6 +124,7 @@ public class Item extends BaseParseObject{
     public Segment getSegment(){
         if (isCompletedHeader())
             throw new NullPointerException("CompleteHeader doesn't have a segment");
+        fetchWhenNeeded();
         return (Segment) getParseObject("segment");
     }
 

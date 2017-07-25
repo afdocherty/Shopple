@@ -62,6 +62,7 @@ public class Segment extends BaseParseObject {
 
     // Get the name of the Segment
     public String getName() {
+        fetchWhenNeeded();
         return getString("name");
     }
 
@@ -84,6 +85,7 @@ public class Segment extends BaseParseObject {
     }
 
     public ShopList getParent(){
+        fetchWhenNeeded();
         return (ShopList) getParseObject("parent_list");
     }
 
@@ -101,6 +103,7 @@ public class Segment extends BaseParseObject {
         query.findInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
+                fetchWhenNeeded();
                 if (getParseObject("header") != null)
                     objects.add(0,getHeader());
                 callback.done(objects,e);
@@ -117,6 +120,7 @@ public class Segment extends BaseParseObject {
         query.orderByDescending("_updated_at");
         try {
             List<Item> list = query.find();
+            fetchWhenNeeded();
             if (getParseObject("header") != null)
                 list.add(0,getHeader());
             return list;
@@ -155,6 +159,7 @@ public class Segment extends BaseParseObject {
     }
 
     public Item getHeader(){
+        fetchWhenNeeded();
         if (getParseObject("header")!=null)
             return (Item) getParseObject("header");
         else

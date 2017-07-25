@@ -162,7 +162,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onResume() {
         super.onResume();
         // Populate the items array
-        // addItems();
+        addItems();
     }
 
 
@@ -175,6 +175,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         shopList.getSegments(new FindCallback<Segment>() {
             @Override
             public void done(List<Segment> objects, ParseException e) {
+                items.addAll(shopList.getUncategorizedSegment().getItems());
                 for (Segment segment: objects){
                     List<Item> mItems = segment.getItems();
                     items.addAll(mItems);
@@ -183,11 +184,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     @Override
                     public void done(List<Item> objects, ParseException e) {
                         items.addAll(objects);
+                        itemAdapter.notifyDataSetChanged();
                     }
                 });
             }
         });
-        itemAdapter.notifyDataSetChanged();
     }
 
 

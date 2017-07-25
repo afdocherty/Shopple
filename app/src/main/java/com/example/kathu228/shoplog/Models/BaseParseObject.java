@@ -3,6 +3,7 @@ package com.example.kathu228.shoplog.Models;
 import android.support.annotation.Nullable;
 
 import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
@@ -23,5 +24,13 @@ public class BaseParseObject extends ParseObject {
             deleteInBackground(callback);
         else
             deleteInBackground();
+    }
+
+    public void fetchWhenNeeded(){
+        try {
+            fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

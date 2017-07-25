@@ -72,6 +72,7 @@ public class ShopList extends BaseParseObject {
 
     // Get the name of the ShopList
     public String getName() {
+        fetchWhenNeeded();
         return getString("name");
     }
 
@@ -83,6 +84,7 @@ public class ShopList extends BaseParseObject {
 
     // Relation to ParseUsers
     private ParseRelation<ParseUser> getUsersRelation() {
+        fetchWhenNeeded();
         return getRelation("users");
     }
 
@@ -117,6 +119,7 @@ public class ShopList extends BaseParseObject {
     }
 
     private ParseRelation<ParseUser> getPreviousUserRelation(){
+        fetchWhenNeeded();
         return getRelation("previous_users");
     }
 
@@ -213,10 +216,12 @@ public class ShopList extends BaseParseObject {
     }
 
     public Segment getUncategorizedSegment(){
+        fetchWhenNeeded();
         return (Segment) getParseObject("uncategorized_segment");
     }
 
     public Item getCompletedHeder(){
+        fetchWhenNeeded();
         return (Item) getParseObject("completed_header");
     }
 
