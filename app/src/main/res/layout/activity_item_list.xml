@@ -25,11 +25,10 @@
                 android:id="@+id/tvListName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="List Name >"
+                android:text="List Name"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_textSize"
-                android:onClick="onListInfo"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_alignParentStart="true"
@@ -43,14 +42,24 @@
                 android:onClick="toggleNotifcations"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/ivMapsBtn"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="12dp" />
 
             <ImageView
                 android:id="@+id/ivMapsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_people_outline"
+                app:srcCompat="@drawable/ic_shopping_cart"
                 android:onClick="initMaps"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/ivDetailsBtn"
+                android:layout_marginEnd="12dp" />
+
+            <ImageView
+                android:id="@+id/ivDetailsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_info_outline"
+                android:onClick="onListInfo"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"/>
