@@ -98,7 +98,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         shopList = ShopList.getShopListById(shopListObjectId);
 
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, shopList);
+        itemAdapter = new ItemAdapter(items, shopList, v);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items

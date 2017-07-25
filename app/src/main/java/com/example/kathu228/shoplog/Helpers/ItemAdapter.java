@@ -38,10 +38,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private List<Item> mlist;
     ShopList listTest;
+    View mview;
 
-    public ItemAdapter(List<Item> mlist, ShopList listTest) {
+    public ItemAdapter(List<Item> mlist, ShopList listTest, View v) {
         this.mlist = mlist;
         this.listTest = listTest;
+        this.mview = v;
     }
 
     @Override
@@ -137,7 +139,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 currentItem.setSegment(newSeg,null);
                 // if new segment is uncategorized, add to beginning
                 // else, add right under the segment header
-                if (newSeg.getName().equals("uncategorized_segment")){
+                if (newSeg.getName().equals("Uncategorized")){
                     newPosition = 0;
                     Toast.makeText(context, "New uncategorized", Toast.LENGTH_SHORT);
                 }
@@ -159,20 +161,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         // only items allowed
         if (item.isItem()) {
             // if item is checked, delete
-            // TODO: snackbar undo
             // else, move under completed
             if (item.isChecked()) {
-//            undoDelete(item, position, );
-//            deleteItem(item);
+                undoDelete(item, position, mview);
                 item.setVisible(false, null);
                 listTest.removeItem(item, null);
                 deleteItem(position);
 //            deleteItemFromList(item, position);
             } else {
                 item.setChecked(true, null);
-                mlist.add(item);
                 mlist.remove(position);
-                notifyItemMoved(position,mlist.size()-1);
+                notifyItemRemoved(position);
+                int toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
+                mlist.add(toPosition,item);
+                notifyItemInserted(toPosition);
             }
         }
 
@@ -209,21 +211,22 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         // checks and unchecks checkbox, while saving the object's boolean state on server
 
         public void handleCheckbox(final Item item, final int position, final View v){
-            if (item.isChecked()){
-                item.setChecked(false, null);
-                mlist.remove(position);
-                mlist.add(0, item);
+            int toPosition;
+            mlist.remove(position);
+            notifyItemRemoved(position);
+            item.setChecked(!item.isChecked(),null);
+            // If item is now unchecked, move to previous segment
+            // Else, move to top of completed
+            if (!item.isChecked()){
+                toPosition=newSegPosition(item);
                 cbItem.setChecked(false);
-                notifyItemMoved(position, 0);
             }
             else{
-                item.setChecked(true,null);
-                mlist.remove(position);
-                mlist.add(item);
+                toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
                 cbItem.setChecked(true);
-                notifyItemMoved(position, mlist.size() - 1);
 
             }
+            addItem(item,toPosition);
         }
     }
 
@@ -370,6 +373,18 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         item.setVisible(true,null);
     }
 
+    // Adding an item back to segment
+    private int newSegPosition(Item item){
+        Segment curSeg = item.getSegment();
+        String curSegname = curSeg.getName();
+        if (curSegname.equals("Uncategorized")){
+            return 0;
+        }
+        else {
+            return (1 + mlist.indexOf(curSeg.getHeader()));
+        }
+    }
+
     // if click undo in snackbar, item will reappear in list unchecked
     public void undoDelete(final Item item, final int position, View v){
         Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
@@ -384,7 +399,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addItem(item, 0);
+                        if (item.isChecked()){
+                            item.setChecked(false, null);
+                        }
+                        int toPosition = newSegPosition(item);
+                        addItem(item, toPosition);
                         Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
