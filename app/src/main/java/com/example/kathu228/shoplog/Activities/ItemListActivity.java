@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Models.Item;
@@ -186,6 +187,7 @@ public class ItemListActivity extends AppCompatActivity{
             startNotification(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
             notificationsEnabled = true;
             setNotificationBtnColor();
+            Toast.makeText(this, getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
         }
     }
 }
