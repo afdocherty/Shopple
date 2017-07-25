@@ -40,7 +40,7 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
                         public void done(ParseException e) {
                             getUsersRelation().add(ParseUser.getCurrentUser());
@@ -56,7 +56,7 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if(e == null){
