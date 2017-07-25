@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ItemListActivity extends AppCompatActivity{
 
     ArrayList<Item> items;
-    private boolean notificationsEnabled;
+    private boolean notificationsEnabled; // TODO - make field of ShopList
     private static final int mNotificationsId = 001; // Constant id to use for ItemListActivity
 
     @Override
@@ -146,6 +146,8 @@ public class ItemListActivity extends AppCompatActivity{
                 .setCancelable(true)
                 .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
+                        // Activate notifications automatically
+                        autoActivateNotifications();
                         // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
                         // TODO - test this code
                         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
@@ -158,6 +160,8 @@ public class ItemListActivity extends AppCompatActivity{
                 })
                 .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
+                        // Activate notifications automatically
+                        autoActivateNotifications();
                         // Search grocery stores that are nearby FB Seattle Office
                         // TODO - test this code
                         Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
@@ -173,5 +177,15 @@ public class ItemListActivity extends AppCompatActivity{
 
         // show it
         alertDialog.show();
+    }
+
+    // Turn notifications on if not already activated
+    private void autoActivateNotifications() {
+        if (!notificationsEnabled) {
+            // Enable notifications
+            startNotification(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
+            notificationsEnabled = true;
+            setNotificationBtnColor();
+        }
     }
 }
