@@ -185,14 +185,10 @@ public class ShopList extends BaseParseObject {
     }
 
     public void removeItemsFromCompleted(){
-        getCompletedSegment().getItems(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                for(Item object : objects){
-                    object.setVisible(false,null);
-                }
-            }
-        });
+        List<Item> items = getCompletedSegment().getItems();
+        for(Item object : items){
+            object.setVisible(false,null);
+        }
     }
 
     public void getSegments(FindCallback<Segment> callback){
@@ -230,15 +226,10 @@ public class ShopList extends BaseParseObject {
     }
 
     public void removeSegment(Segment segment){
-
-        segment.getItems(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                for (Item item : objects){
-                    item.setSegment(getUncategorizedSegment(),null);
-                }
+        List<Item> items = segment.getItems();
+            for (Item item : items){
+                item.setSegment(getUncategorizedSegment(),null);
             }
-        });
         segment.deleteInBackground();
     }
 

@@ -82,7 +82,7 @@ public class SegmentDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (segmentName.replaceAll("\\s","")!=""){
-                    shopList.addSegment(segmentName,null);
+                    //shopList.addSegment(segmentName,null);
                     sendBackResult();
                 }
             }

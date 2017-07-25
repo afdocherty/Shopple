@@ -78,7 +78,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
         shopList = shopList.getShopListById(shopListObjectId);
-        shopList.addSegment(segmentName,null);
+        //shopList.addSegment(segmentName, null);
         Toast.makeText(getContext(), "New category "+segmentName+" created", Toast.LENGTH_SHORT).show();
 
     }
@@ -170,99 +170,24 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // Clear the items list
         items.clear();
         //addUncheckedItems();
-        shopList.getItems(new FindCallback<Item>() {
+        // getSegments does not include completed items
+        // TODO: check order
+        shopList.getSegments(new FindCallback<Segment>() {
             @Override
-            public void done(List<Item> objects, ParseException e) {
-                if (e == null){
-                    Log.d("ItemListFragment", "Unchecked Items found!!");
-                    // indUncat keeps track of where to add the uncategorized items
-                    int indUncat = 0;
-                    // indLastUncomp keeps track of where the last uncompleted item is
-                    int indLastUncomp = 0;
-                    for (Item object: objects){
-
-                        if (object.isItem()){
-//                            if (object.isChecked()){
-//                                items.add(object);
-//                                itemAdapter.notifyItemInserted(items.size());
-//                            }
-//                            else{
-//                                items.add(completed,object);
-//                                itemAdapter.notifyItemInserted(completed);
-//                                completed++;
-//                            }
-                            Segment segment = object.getSegment();
-                            if (object.isChecked()) {
-                                Item completedHeader = shopList.getCompletedSegment().getHeader();
-                                if (items.indexOf(completedHeader) == -1) {
-                                    items.add(completedHeader);
-                                    items.add(object);
-                                } else {
-                                    items.add(object);
-                                }
-//                                items.add(object);
-                            }
-                            // if object is uncategorized, add to beginning of uncategorized
-                            // TODO: add uncategorized boolean method?
-//                            else if (segment.isUncategorized()){
-//                                items.add(0,object);
-////                                itemAdapter.notifyItemInserted(0);
-//                                indUncat++;
-//                                indLastUncomp++;
-//                            }
-                            else{
-                                Item segHeader = segment.getHeader();
-                                // if segment not in list, add segment item to list and add object under it
-                                // else, find index of segment header and add item to the end
-                                int indSeg = items.indexOf(segHeader);
-                                if (indSeg==-1){
-                                    // if uncompleted, add after uncategorized items
-                                    // else, add completed header and item to the end
-                                    if (segHeader.isHeader()){
-                                        items.add(indUncat,segHeader);
-                                        items.add(indUncat+1,object);
-                                        indLastUncomp+=2;
-                                    }
-                                    else{
-                                        items.add(segHeader);
-                                        items.add(object);
-                                    }
-                                }
-                                else{
-                                    if (segHeader.isHeader()){
-                                        items.add(indSeg+1,object);
-                                        indLastUncomp++;
-                                    }
-                                    else{
-                                        items.add(object);
-
-                                    }
-                                }
-                            }
-                        }
-
-                        else if (object.isCompletedHeader()){
-                            if (items.indexOf(object)==-1){
-                                items.add(indLastUncomp, object);
-                            }
-                        }
-
-                        else if (object.isHeader()){
-                            if (items.indexOf(object)==-1) {
-                                items.add(indUncat, object);
-//                                itemAdapter.notifyItemInserted(indLastUncomp);
-                                indLastUncomp++;
-                            }
-                        }
+            public void done(List<Segment> objects, ParseException e) {
+                for (Segment segment: objects){
+                    List<Item> mItems = segment.getItems();
+                    items.addAll(mItems);
+                }
+                shopList.getCheckedItems(new FindCallback<Item>() {
+                    @Override
+                    public void done(List<Item> objects, ParseException e) {
+                        items.addAll(objects);
                     }
-                    itemAdapter.notifyDataSetChanged();
-
-                }
-                else{
-                    Log.d("ItemListFragment", "Unchecked Items not found");
-                }
+                });
             }
         });
+        itemAdapter.notifyDataSetChanged();
     }
 
 

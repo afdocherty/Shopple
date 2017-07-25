@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
@@ -74,6 +75,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid itemtype," + item.getType());
             }
         }
 
@@ -90,35 +93,73 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return 0;
     }
 
-    // Allows user to move items by dragging
-    // Todo: implement order in database?
+    // Allows user to move items into categories by dragging
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        Item currentItem = mlist.get(fromPosition);
+        Item newSegItem = mlist.get(toPosition);
+        if (currentItem.isItem()){
+            int newPosition = 0;
+            // cannot move checked items
+            if (currentItem.isChecked()){
+                return;
+            }
+
+            // if toPosition is in completed, make item checked
+            if (newSegItem.isChecked()){
+                currentItem.setChecked(true, null);
+                newPosition = mlist.size();
+                mlist.remove(fromPosition);
+                notifyItemRemoved(fromPosition);
+            }
+            else{
+                Segment newSeg = newSegItem.getSegment();
+                Segment currentSeg = currentItem.getSegment();
+                // if already same categories, do nothing
+                if (newSeg==currentSeg){
+                    return;
+                }
+                mlist.remove(fromPosition);
+                notifyItemRemoved(fromPosition);
+                // change item's segment
+                currentItem.setSegment(newSeg,null);
+                // if new segment is uncategorized, add to beginning
+                // else, add right under the segment header
+                if (newSeg.getName().equals("uncategorized_segment")){
+                    newPosition = 0;
+                }
+                else{
+                    newPosition = 1 + mlist.indexOf(newSeg.getHeader());
+                }
+            }
+
+            mlist.add(newPosition,currentItem);
+            notifyItemInserted(newPosition);
+        }
+
     }
 
     // Allows user to remove checked item or check an unchecked item by swiping
     @Override
     public void onItemDismiss(int position) {
         Item item = mlist.get(position);
+        // only items allowed
         if (item.isItem()) {
-            if (item.isChecked() && item.getType() == 0) {
+            // if item is checked, delete
+            // TODO: snackbar undo
+            // else, move under completed
+            if (item.isChecked()) {
 //            undoDelete(item, position, View.inflate(,R.layout.item,item));
 //            deleteItem(item);
                 item.setVisible(false, null);
                 listTest.removeItem(item, null);
                 deleteItem(position);
 //            deleteItemFromList(item, position);
-            } else if (item.getType() == 0) {
-                item.setChecked(true, null);
-                item.setVisible(false, null);
-                listTest.removeItem(item, null);
-                deleteItem(position);
-//            deleteItemFromList(item, position);
             } else {
                 item.setChecked(true, null);
-//            item.saveInBackground();
-                deleteItem(position);
-                addItem(item, mlist.size());
+                mlist.add(item);
+                mlist.remove(position);
+                notifyItemMoved(position,mlist.size()-1);
             }
         }
 
