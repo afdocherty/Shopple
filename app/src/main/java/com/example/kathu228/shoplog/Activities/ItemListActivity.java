@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
@@ -39,6 +40,9 @@ public class ItemListActivity extends AppCompatActivity{
         // Set the color of the Notification Button ImageView
         setNotificationBtnColor();
 
+        // Set the toolbar title to name of shoplist
+        setToolbarTitle();
+
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment, containing the ShopList Object ID
@@ -47,6 +51,7 @@ public class ItemListActivity extends AppCompatActivity{
         // Complete the changes added above
         ft.commit();
     }
+
 
     // Set the color of the notification button in the Toolbar
     private void setNotificationBtnColor() {
@@ -80,6 +85,14 @@ public class ItemListActivity extends AppCompatActivity{
             ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_green));
             notificationsEnabled = true;
         }
+    }
+
+    // Sets up the toolbar title
+    private void setToolbarTitle(){
+        TextView tvShopListName = (TextView)findViewById(R.id.tvListName);
+        String shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_TAG);
+        String shopListName = ShopList.getShopListById(shopListObjectId).getName();
+        tvShopListName.setText(shopListName);
     }
 
     // Create a notification

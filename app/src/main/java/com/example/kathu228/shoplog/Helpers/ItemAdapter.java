@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Models.Item;
@@ -111,6 +112,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             int newPosition = 0;
             // cannot move checked items
             if (currentItem.isChecked()){
+                Toast.makeText(context, "Cannot move checked", Toast.LENGTH_SHORT);
                 return;
             }
 
@@ -120,12 +122,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 newPosition = mlist.size();
                 mlist.remove(fromPosition);
                 notifyItemRemoved(fromPosition);
+                Toast.makeText(context, "New checked", Toast.LENGTH_SHORT);
             }
             else{
                 Segment newSeg = newSegItem.getSegment();
                 Segment currentSeg = currentItem.getSegment();
                 // if already same categories, do nothing
-                if (newSeg==currentSeg){
+                if (newSeg.getName().equals(currentSeg.getName())){
+                    Toast.makeText(context, "Same segment already", Toast.LENGTH_SHORT);
                     return;
                 }
                 mlist.remove(fromPosition);
@@ -136,6 +140,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 // else, add right under the segment header
                 if (newSeg.getName().equals("uncategorized_segment")){
                     newPosition = 0;
+                    Toast.makeText(context, "New uncategorized", Toast.LENGTH_SHORT);
                 }
                 else{
                     newPosition = 1 + mlist.indexOf(newSeg.getHeader());
