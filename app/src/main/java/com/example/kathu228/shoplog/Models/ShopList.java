@@ -40,14 +40,14 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_segment",new Segment("completed", ShopList.this, Segment.COMPLETED_SEGMENT, new SaveCallback() {
+                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
-                    public void done(ParseException e) {
-                        getUsersRelation().add(ParseUser.getCurrentUser());
-                        nullableSaveInBackground(callback);
+                        public void done(ParseException e) {
+                            getUsersRelation().add(ParseUser.getCurrentUser());
+                            nullableSaveInBackground(callback);
                     }
                 }));
-            }
+                }
         }));
     }
 
@@ -56,15 +56,14 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_segment",new Segment("Completed", ShopList.this, Segment.COMPLETED_SEGMENT, new SaveCallback() {
+                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if(e == null){
                             getUsersRelation().add(ParseUser.getCurrentUser());
                             nullableSaveInBackground(callback);
-                        } else {
+                        } else
                             e.printStackTrace();
-                        }
                     }
                 }));
             }
@@ -139,17 +138,25 @@ public class ShopList extends BaseParseObject {
         ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("visible",true);
+        query.whereEqualTo("type",Item.ITEM);
         query.orderByDescending("_updated_at");
         query.findInBackground(callback);
     }
 
-    public void getCheckedItems(FindCallback<Item> callback){
+    public void getCheckedItems(final FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("checked",true);
         query.whereEqualTo("visible",true);
+        query.whereEqualTo("type",Item.ITEM);
         query.orderByDescending("_updated_at");
-        query.findInBackground(callback);
+        query.findInBackground(new FindCallback<Item>() {
+            @Override
+            public void done(List<Item> objects, ParseException e) {
+                objects.add(0,getCompletedHeder());
+                callback.done(objects,e);
+            }
+        });
     }
 
     public void getUncheckedItems(FindCallback<Item> callback){
@@ -157,6 +164,7 @@ public class ShopList extends BaseParseObject {
         query.whereEqualTo("parent",this);
         query.whereEqualTo("checked",false);
         query.whereEqualTo("visible",true);
+        query.whereEqualTo("type",Item.ITEM);
         query.orderByDescending("_updated_at");
         query.findInBackground(callback);
     }
@@ -185,19 +193,21 @@ public class ShopList extends BaseParseObject {
     }
 
     public void removeItemsFromCompleted(){
-        getCompletedSegment().getItems(new FindCallback<Item>() {
+        getCheckedItems(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 for(Item object : objects){
-                    object.setVisible(false,null);
+                    if(object.isItem())
+                        object.setVisible(false,null);
                 }
             }
         });
     }
 
     public void getSegments(FindCallback<Segment> callback){
-        ParseQuery<Segment> query = new ParseQuery<Segment>(Segment.class);
-        query.whereEqualTo("parent",this);
+        ParseQuery<Segment> query = new ParseQuery<>(Segment.class);
+        query.whereEqualTo("parent_list",this);
+        query.whereExists("header");
         query.orderByDescending("_updated_at");
         query.findInBackground(callback);
     }
@@ -206,8 +216,8 @@ public class ShopList extends BaseParseObject {
         return (Segment) getParseObject("uncategorized_segment");
     }
 
-    public Segment getCompletedSegment(){
-        return (Segment) getParseObject("completed_segment");
+    public Item getCompletedHeder(){
+        return (Item) getParseObject("completed_header");
     }
 
     @Deprecated
@@ -231,7 +241,7 @@ public class ShopList extends BaseParseObject {
 
     public void removeSegment(Segment segment){
 
-        segment.getItems(new FindCallback<Item>() {
+        segment.getItemsInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 for (Item item : objects){

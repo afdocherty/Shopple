@@ -26,8 +26,7 @@ public class Segment extends BaseParseObject {
     }
 
     static final int UNCATEGORIZED_SEGMENT=0;
-    static final int COMPLETED_SEGMENT=1;
-    static final int ADDITIONAL_SEGMENT=2;
+    static final int ADDITIONAL_SEGMENT=1;
 
     public Segment(){
         //required for Parse
@@ -38,18 +37,13 @@ public class Segment extends BaseParseObject {
         setParent(parentList);
 
         switch (segmentType){
-            case 1:
-                addCompletedHeaderItem(name, parentList, callback);
-                //Log.d("debug","complete header created");
-                break;
-            case 2:
+            case ADDITIONAL_SEGMENT:
                 addHeaderItem(name, parentList, callback);
-                //Log.d("debug","header created");
                 break;
             default:
+                nullableSaveInBackground(callback);
                 break;
         }
-        nullableSaveInBackground(callback);
     }
 
     void initializeVariables(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
@@ -57,18 +51,13 @@ public class Segment extends BaseParseObject {
         setParent(parentList);
 
         switch (segmentType){
-            case 1:
-                addCompletedHeaderItem(name, parentList, callback);
-                //Log.d("debug","complete header created");
-                break;
-            case 2:
+            case ADDITIONAL_SEGMENT:
                 addHeaderItem(name, parentList, callback);
-                //Log.d("debug","header created");
                 break;
             default:
+                nullableSaveInBackground(callback);
                 break;
         }
-        nullableSaveInBackground(callback);
     }
 
     // Get the name of the Segment
@@ -102,21 +91,35 @@ public class Segment extends BaseParseObject {
         put("parent_list",parentList);
     }
 
-    public void getItemsInBackground(FindCallback<Item> callback){
+    public void getItemsInBackground(final FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
         query.whereEqualTo("segment",this);
         query.whereEqualTo("visible",true);
+        query.whereEqualTo("checked",false);
+        query.whereEqualTo("type",Item.ITEM);
         query.orderByDescending("_updated_at");
-        query.findInBackground(callback);
+        query.findInBackground(new FindCallback<Item>() {
+            @Override
+            public void done(List<Item> objects, ParseException e) {
+                if (getParseObject("header") != null)
+                    objects.add(0,getHeader());
+                callback.done(objects,e);
+            }
+        });
     }
 
     public List<Item> getItems(){
-        ParseQuery<Item> query = new ParseQuery<Item>(Item.class);
+        ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("segment",this);
         query.whereEqualTo("visible",true);
+        query.whereEqualTo("checked",false);
+        query.whereEqualTo("type",Item.ITEM);
         query.orderByDescending("_updated_at");
         try {
-            return query.find();
+            List<Item> list = query.find();
+            if (getParseObject("header") != null)
+                list.add(0,getHeader());
+            return list;
         } catch (ParseException e) {
             e.printStackTrace();
             throw new NullPointerException("Error in getting items from fragment");
@@ -151,15 +154,6 @@ public class Segment extends BaseParseObject {
         }));
     }
 
-    private void addCompletedHeaderItem(String name, ShopList parent, final SaveCallback callback){
-        put("header",new Item(name, parent, this, Item.COMPLETED_HEADER, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                nullableSaveInBackground(callback);
-            }
-        }));
-    }
-
     public Item getHeader(){
         if (getParseObject("header")!=null)
             return (Item) getParseObject("header");
@@ -167,6 +161,7 @@ public class Segment extends BaseParseObject {
             throw new NullPointerException("uncategorized segment doesn't have a header");
     }
 
+    @Nullable
     public static Segment getSegmentById(String id){
         try {
             Segment segment = Segment.createWithoutData(Segment.class, id);

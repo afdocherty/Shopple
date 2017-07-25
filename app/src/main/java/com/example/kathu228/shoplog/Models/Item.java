@@ -31,7 +31,8 @@ public class Item extends BaseParseObject{
     Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         setBody(body);
         setParent(parent);
-        put("segment",segment);
+        if (segment != null)
+            put("segment",segment);
         put("checked",false);
         put("visible",true);
         setType(type);
@@ -50,6 +51,11 @@ public class Item extends BaseParseObject{
 
     // Get the body text of the Item
     public String getBody() {
+        try {
+            fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return getString("body");
     }
 
@@ -60,12 +66,6 @@ public class Item extends BaseParseObject{
 
     public void setChecked(boolean value, @Nullable SaveCallback callback) {
         put("checked",value);
-        if (value)
-            put("segment",getParent().getCompletedSegment());
-
-        else
-            put("segment",getParent().getUncategorizedSegment());
-
         nullableSaveInBackground(callback);
     }
 
@@ -112,18 +112,17 @@ public class Item extends BaseParseObject{
         return (ShopList) getParseObject("parent");
     }
 
-    public void setSegment(Segment segment, @Nullable SaveCallback callback){
+    public void setSegment(Segment segment, @Nullable SaveCallback callback) {
+        if (isCompletedHeader())
+            throw new NullPointerException("CompleteHeader doesn't have a segment");
         put("segment",segment);
         nullableSaveInBackground(callback);
     }
 
     public Segment getSegment(){
+        if (isCompletedHeader())
+            throw new NullPointerException("CompleteHeader doesn't have a segment");
         return (Segment) getParseObject("segment");
-    }
-
-    public String getSegmentName(){
-        Segment segment = (Segment) getParseObject("segment");
-        return segment.getName();
     }
 
     public static Item getItemById(String id){
