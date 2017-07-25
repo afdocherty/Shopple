@@ -146,9 +146,9 @@ public class ItemListActivity extends AppCompatActivity{
                 .setCancelable(true)
                 .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA)
+                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
                         // TODO - test this code
-                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)));
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -158,9 +158,9 @@ public class ItemListActivity extends AppCompatActivity{
                 })
                 .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        // Search nearby grocery stores
+                        // Search grocery stores that are nearby FB Seattle Office
                         // TODO - test this code
-                        Uri gmmIntentUri = Uri.parse("geo:47.628846,-122.342942?q=grocery+store");
+                        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         if (mapIntent.resolveActivity(getPackageManager()) != null) {
