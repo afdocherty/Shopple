@@ -191,37 +191,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
 
-    public void addUncheckedItems(){
-        shopList.getUncheckedItems(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                if (e == null){
-                    Log.d("ItemListFragment", "Unchecked Items found!!");
-                    items.addAll(objects);
-                    itemAdapter.notifyDataSetChanged();
-                }
-                else{
-                    Log.d("ItemListFragment", "Unchecked Items not found");
-                }
-            }
-        });
-    }
-    public void addCheckedItems(){
-        shopList.getCheckedItems(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                if (e == null){
-                    Log.d("ItemListFragment", "Unchecked Items found!!");
-                    items.addAll(objects);
-                    itemAdapter.notifyDataSetChanged();
-                }
-                else{
-                    Log.d("ItemListFragment", "Unchecked Items not found");
-                }
-            }
-        });
-    }
-
     // add item to list
     public void addItem(){
         String body = etAddItem.getText().toString();

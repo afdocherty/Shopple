@@ -1,15 +1,21 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
@@ -27,6 +33,8 @@ import static com.example.kathu228.shoplog.R.layout.item_header;
 
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
 
+    public Context context;
+
     private List<Item> mlist;
     ShopList listTest;
 
@@ -38,6 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        View view = inflateView(parent);
+        context = parent.getContext();
         View view;
 
         switch (viewType) {
@@ -216,10 +225,46 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class HeaderViewHolder extends BaseAdapter.ViewHolder{
         public TextView tvHeader;
+        public ViewSwitcher switcher;
+        public EditText etHeader;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             tvHeader = (TextView)itemView.findViewById(R.id.tvHeader);
+            switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
+            etHeader = (EditText)itemView.findViewById(R.id.etHeader);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    switcher.showNext();
+                    etHeader.setSelectAllOnFocus(true);
+                    etHeader.selectAll();
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null){
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                    }
+                    etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                                String body = etHeader.getText().toString();
+                                // Does not add empty item
+                                if (!body.equals("")) {
+                                    // TODO: Change segment in shoplist
+                                    //listTest.addSegment();
+                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(etHeader.getWindowToken(), 0);
+                                    tvHeader.setText(body);
+                                    switcher.showPrevious();
+                                    etHeader.setText(body);
+                                }
+                            }
+                            return false;
+                        }
+                    });
+                    return true;
+                }
+            });
 
         }
     }

@@ -16,7 +16,8 @@
         <ViewSwitcher
             android:id="@+id/vsListSwitcher"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:measureAllChildren="false">
 
             <TextView
                 android:id="@+id/tvListName"
