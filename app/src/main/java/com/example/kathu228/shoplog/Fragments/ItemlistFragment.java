@@ -19,7 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -67,6 +66,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private void showSegmentDialog() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         SegmentDialogFragment segmentDialogFragment = SegmentDialogFragment.newInstance(shopListObjectId);
         // SETS the target fragment for use later when sending results
         segmentDialogFragment.setTargetFragment(this, 0);
@@ -74,13 +74,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     @Override
-    public void onFinishSegmentDialog(String segmentName) {
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        shopList = shopList.getShopListById(shopListObjectId);
-        //shopList.addSegment(segmentName, null);
-        Toast.makeText(getContext(), "New category "+segmentName+" created", Toast.LENGTH_SHORT).show();
-
+    public void onFinishSegmentDialog(Item segHeader) {
+        // find completed header and add segment header right above
+        items.add(segHeader);
+        addItems();
     }
 
     @Nullable

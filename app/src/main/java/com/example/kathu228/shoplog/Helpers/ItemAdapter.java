@@ -71,8 +71,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Item item = mlist.get(position);
 
-//        holder.cbItem.setText(item.getBody());
-//        holder.cbItem.setChecked(item.isChecked());
         if (item != null) {
             switch (item.getType()) {
                 case 0:
@@ -81,6 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     break;
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
+                    ((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -163,7 +162,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             // TODO: snackbar undo
             // else, move under completed
             if (item.isChecked()) {
-//            undoDelete(item, position, View.inflate(,R.layout.item,item));
+//            undoDelete(item, position, );
 //            deleteItem(item);
                 item.setVisible(false, null);
                 listTest.removeItem(item, null);
@@ -239,12 +238,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             etHeader = (EditText)itemView.findViewById(R.id.etHeader);
 
+
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     switcher.showNext();
                     etHeader.setSelectAllOnFocus(true);
                     etHeader.selectAll();
+
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null){
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
@@ -252,16 +253,29 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener(){
                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                             if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                String body = etHeader.getText().toString();
+                                final String body = etHeader.getText().toString();
                                 // Does not add empty item
                                 if (!body.equals("")) {
-                                    // TODO: Change segment in shoplist
-                                    //listTest.addSegment();
-                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(etHeader.getWindowToken(), 0);
-                                    tvHeader.setText(body);
-                                    switcher.showPrevious();
-                                    etHeader.setText(body);
+                                    Segment currentSeg = mlist.get(getAdapterPosition()).getSegment();
+                                    // Changes segment in the list by removing old segment and adding a new segment with all the old items
+                                    final List<Item> segItems = currentSeg.getItems();
+                                    listTest.addSegment(body, new Segment.SegmentCallback() {
+                                        @Override
+                                        public void done(Segment segment) {
+                                            for (Item segItem: segItems){
+                                                if (segItem.isItem()) {
+                                                    segItem.setSegment(segment, null);
+
+                                                }
+                                            }
+                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.hideSoftInputFromWindow(etHeader.getWindowToken(), 0);
+                                            tvHeader.setText(body);
+                                            switcher.showPrevious();
+                                            etHeader.setText(body);
+                                        }
+                                    });
+
                                 }
                             }
                             return false;
@@ -319,14 +333,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             });
         }
 
-        //deletes all items starting at position
-        public void deleteItems(final int position) {
-            int len = mlist.size();
-            for (int i = position; i < len; i++) {
-                Item deletedItem = mlist.get(position);
-                deleteItemFromList(deletedItem);
-                deleteItem(position);
-            }
+    }
+
+    //deletes all completed items
+    public void deleteItems(final int position) {
+        int len = mlist.size();
+        for (int i = position; i < len; i++) {
+            Item deletedItem = mlist.get(position);
+            deleteItemFromList(deletedItem);
+            deleteItem(position);
         }
     }
 
@@ -340,7 +355,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // Remove an item from the shoplist
     private void deleteItemFromList(final Item item) {
-        listTest.removeItem(item,null);
+        item.setVisible(false, null);
     }
 
     // Insert item to mList at position

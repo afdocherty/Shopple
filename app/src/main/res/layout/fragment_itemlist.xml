@@ -27,11 +27,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/etAddItem"
+                android:layout_marginLeft="@dimen/add_margin"
                 android:background="@null"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:tint="@color/colorPrimaryLight"
-                app:srcCompat="@drawable/ic_add"
-                android:layout_marginLeft="@dimen/add_margin"/>
+                app:srcCompat="@drawable/ic_add" />
 
             <EditText
                 android:id="@+id/etAddItem"

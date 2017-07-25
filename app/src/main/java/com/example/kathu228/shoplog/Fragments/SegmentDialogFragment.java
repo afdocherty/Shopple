@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
@@ -31,14 +33,14 @@ public class SegmentDialogFragment extends DialogFragment {
 
     // Defines the listener interface
     public interface SegmentDialogListener {
-        void onFinishSegmentDialog(String segmentName);
+        void onFinishSegmentDialog(Item segHeader);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult() {
+    public void sendBackResult(Item segHeader) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         SegmentDialogListener listener = (SegmentDialogListener) getTargetFragment();
-        listener.onFinishSegmentDialog(etNewSegment.getText().toString());
+        listener.onFinishSegmentDialog(segHeader);
         dismiss();
     }
 
@@ -49,7 +51,7 @@ public class SegmentDialogFragment extends DialogFragment {
     public static SegmentDialogFragment newInstance(String shopListObjectId) {
         SegmentDialogFragment frag = new SegmentDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ShopList.SHOPLIST_TAG, shopListObjectId);
+        args.putString("shopListId", shopListObjectId);
         frag.setArguments(args);
         return frag;
     }
@@ -67,8 +69,8 @@ public class SegmentDialogFragment extends DialogFragment {
         bCancelSegment = (Button) view.findViewById(R.id.bCancelSegment);
         bAddSegment = (Button) view.findViewById(R.id.bAddSegment);
         // Fetch arguments from bundle and find shoplist
-        String shopListID = getArguments().getString(ShopList.SHOPLIST_TAG);
-        shopList = shopList.getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG));
+        String shopListID = getArguments().getString("shopListId");
+        shopList = shopList.getShopListById(shopListID);
         // Dismisses dialog when cancel
         bCancelSegment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,27 +80,26 @@ public class SegmentDialogFragment extends DialogFragment {
         });
         // Adds new segment
         bAddSegment.setOnClickListener(new View.OnClickListener() {
-            String segmentName = etNewSegment.getText().toString();
             @Override
             public void onClick(View v) {
-                if (segmentName.replaceAll("\\s","")!=""){
-                    //shopList.addSegment(segmentName,null);
-                    sendBackResult();
+                String segmentName = etNewSegment.getText().toString();
+                if (!segmentName.replaceAll("\\s","").equals("")){
+                    addSegment(segmentName);
                 }
             }
         });
         etNewSegment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            String segmentName = etNewSegment.getText().toString();
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (segmentName.replaceAll("\\s", "") != "") {
+                String segmentName = etNewSegment.getText().toString();
+                if (!segmentName.replaceAll("\\s","").equals("")) {
                     if (EditorInfo.IME_ACTION_DONE == actionId) {
                         // Return input text back to activity through the implemented listener
                         // Close the dialog and return back to the parent activity
-                        sendBackResult();
-                        return true;
+                        addSegment(segmentName);
+//                        return true;
                     }
-                    return false;
+//                    return false;
 
                 }
                 return false;
@@ -109,6 +110,14 @@ public class SegmentDialogFragment extends DialogFragment {
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+    }
+    public void addSegment(String segmentName){
+        shopList.addSegment(segmentName, new Segment.SegmentCallback() {
+            @Override
+            public void done(Segment segment) {
+                sendBackResult(segment.getHeader());
+            }
+        });
     }
 
 }

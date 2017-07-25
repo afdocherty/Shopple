@@ -48,6 +48,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        return;
     }
 
     @Override
