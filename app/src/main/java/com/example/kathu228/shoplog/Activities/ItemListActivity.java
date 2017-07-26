@@ -40,9 +40,6 @@ public class ItemListActivity extends AppCompatActivity{
         // Set the color of the Notification Button ImageView
         setNotificationBtnColor();
 
-        // Set the toolbar title to name of shoplist
-        setToolbarTitle();
-
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment, containing the ShopList Object ID
@@ -52,6 +49,13 @@ public class ItemListActivity extends AppCompatActivity{
         ft.commit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Set the toolbar title to name of shoplist
+        setToolbarTitle();
+    }
 
     // Set the color of the notification button in the Toolbar
     private void setNotificationBtnColor() {
@@ -65,10 +69,10 @@ public class ItemListActivity extends AppCompatActivity{
 
     //ran when user presses the info button on the toolbar (allows user to add people to list)
     public void onListInfo(View view) {
-        Intent i = new Intent(this, AddPeopleActivity.class);
+        Intent i = new Intent(this, ListDetailsActivity.class);
         // Give the intent the ShopList Object ID
         i.putExtra(ShopList.SHOPLIST_TAG,getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
-        startActivityForResult(i,20);
+        startActivity(i);
     }
 
     // Ran when user clicks on notification button on the toolbar (to activate notifications for this list)
@@ -134,17 +138,6 @@ public class ItemListActivity extends AppCompatActivity{
 
         // Builds the notification and issues it.
         mNotifyMgr.cancel(shopListObjectId, mNotificationsId);
-    }
-
-    @Override
-    //REQUEST CODES:
-    // 20-from shop list info (AddPeopleActivity). Returns nothing
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == 20) {
-            //Code to be executed after you come back from the add people activity
-            //(Maybe refresh the shopping list?)
-            // TODO Delete this and reorganize flow to be ItemList > Details > AddPeople
-        }
     }
 
     // Initialize dialog to start map for My Store or Nearby Stores
