@@ -83,7 +83,7 @@ public class ShopListFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), ItemListActivity.class);
                         // Pass in ShopList ObjectId
                         intent.putExtra(ShopList.SHOPLIST_TAG, list.getObjectId());
-                        intent.putExtra("listName", list.getName());
+                        intent.putExtra(ShopList.SHOPLIST_NEW_TAG, true);
                         startActivity(intent);
                     }
                 });

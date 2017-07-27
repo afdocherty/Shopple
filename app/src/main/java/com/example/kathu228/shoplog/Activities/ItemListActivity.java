@@ -32,7 +32,8 @@ public class ItemListActivity extends AppCompatActivity{
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment, containing the ShopList Object ID
-        ItemlistFragment itemlistFragment = ItemlistFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
+        ItemlistFragment itemlistFragment = ItemlistFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG),
+                getIntent().getBooleanExtra(ShopList.SHOPLIST_NEW_TAG, false));
         ft.replace(R.id.itemlist_frame, itemlistFragment);
         // Complete the changes added above
         ft.commit();

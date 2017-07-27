@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
@@ -28,6 +29,9 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +52,17 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     private String shopListObjectId;
     private FloatingActionButton fabAddSegment;
+    private LinearLayout llDummy;
 
     ShopList shopList;
 
-    public static ItemlistFragment newInstance(String shopListObjectId) {
+    public static ItemlistFragment newInstance(String shopListObjectId, boolean isNew) {
         ItemlistFragment itemlistFragment = new ItemlistFragment();
 
         // Supply shopListFragment as argument
         Bundle args = new Bundle();
         args.putString(ShopList.SHOPLIST_TAG, shopListObjectId);
+        args.putBoolean(ShopList.SHOPLIST_NEW_TAG, isNew);
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
@@ -92,7 +98,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // initialize the array of items
         items = new ArrayList<>();
 
-        // gt id of shoplist
+        // get id of shoplist
         String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         Log.d("ItemlistFragment", "objId: " + shopListObjectId);
         shopList = ShopList.getShopListById(shopListObjectId);
@@ -104,15 +110,31 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // Attach the adapter to the recyclerview to populate items
         rvItems.setAdapter(itemAdapter);
 
+        // Shift focus to dummy view to prevent auto-focusing on EditText
+        llDummy = (LinearLayout) v.findViewById(R.id.llDummy);
+        llDummy.setFocusableInTouchMode(true);
+        if (!getArguments().getBoolean(ShopList.SHOPLIST_NEW_TAG)) {
+            llDummy.requestFocus();
+        }
+
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
-
 
         // Put onclicklistener onto add button to add item to list
         ibAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addItem();
+            }
+        });
+
+        // Create add FAB and force visible (Note: must be defined before etAddItem OnEditorActionListener!)
+        fabAddSegment = (FloatingActionButton) v.findViewById(R.id.fabAddSegment);
+        fabAddSegment.setVisibility(View.VISIBLE);
+        fabAddSegment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSegmentDialog();
             }
         });
 
@@ -126,13 +148,19 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             }
         });
 
-        fabAddSegment = (FloatingActionButton) v.findViewById(R.id.fabAddSegment);
-        fabAddSegment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSegmentDialog();
-            }
-        });
+        // 3rd-party workaround to catch keyboard open/close events
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen) {
+                            fabAddSegment.setVisibility(View.INVISIBLE);
+                        } else {
+                            fabAddSegment.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
 
         // attaches touchHelper to the recyclerview
         ItemTouchHelper.Callback callback =

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -41,9 +39,9 @@
                 android:layout_marginRight="@dimen/checkbox_margin"
                 android:layout_toEndOf="@+id/ibAddItem"
                 android:hint="@string/item_hint"
+                android:inputType="textCapSentences"
                 android:textColor="@color/colorPrimaryLight"
-                android:textSize="@dimen/body_size"
-                android:inputType="textCapSentences" />
+                android:textSize="@dimen/body_size" />
 
         </RelativeLayout>
 
@@ -51,8 +49,14 @@
             android:id="@+id/rvItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add_new"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/add_new" />
+
+        <LinearLayout
+            android:id="@+id/llDummy"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:orientation="vertical" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddSegment"
@@ -64,9 +68,9 @@
             android:tint="@color/white"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="6dp"
-            app:useCompatPadding="true"
             app:pressedTranslationZ="12dp"
-            app:srcCompat="@drawable/ic_create_new_folder" />
+            app:srcCompat="@drawable/ic_create_new_folder"
+            app:useCompatPadding="true" />
 
 
     </RelativeLayout>

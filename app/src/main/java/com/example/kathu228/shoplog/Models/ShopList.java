@@ -29,6 +29,7 @@ public class ShopList extends BaseParseObject {
     }
 
     public static final String SHOPLIST_TAG = "ShopList";
+    public static final String SHOPLIST_NEW_TAG = "new_list";
 
     public ShopList(){
         //required for Parse
