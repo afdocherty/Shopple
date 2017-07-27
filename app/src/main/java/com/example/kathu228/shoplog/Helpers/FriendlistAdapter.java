@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * Created by fmonsalve on 7/12/17.
- *
  */
 
 public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,ParseUser> {

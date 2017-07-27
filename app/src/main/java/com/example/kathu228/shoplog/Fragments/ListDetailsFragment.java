@@ -27,15 +27,17 @@ import com.example.kathu228.shoplog.Activities.AddPeopleActivity;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Activities.ShopListsActivity;
 import com.example.kathu228.shoplog.Helpers.DetailsAdapter;
-import com.example.kathu228.shoplog.Helpers.ShoplogClient;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.example.kathu228.shoplog.Models.ShopList.SHOPLIST_TAG;
 import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
 
 /**
@@ -51,7 +53,7 @@ public class ListDetailsFragment extends Fragment {
     private ImageView ivEditName;
     private TextView tvListName;
 
-    private List<String> collabs;
+    private List<ParseUser> collabs;
     private RecyclerView rvCollabs;
     private DetailsAdapter collabAdapter;
     private String shopListObjectId;
@@ -83,17 +85,7 @@ public class ListDetailsFragment extends Fragment {
         try {
             shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
 
-            //find recycler view
-            rvCollabs = (RecyclerView) v.findViewById(R.id.rvCollabs);
-            //init the ArrayList (data source)
-            collabs = Arrays.asList(ShoplogClient.getPeople());
-            //construct the adapter from this data source
-            collabAdapter = new DetailsAdapter(collabs, R.layout.item_collab, this);
-            //RecyclerView setup (layout manager, use adapter)
-            rvCollabs.setLayoutManager(new LinearLayoutManager(getContext()));
-            //set the adapter
-            rvCollabs.setAdapter(collabAdapter);
-
+            // List Name Card
             // Click on ivEditName to edit the name of the list
             tvListName = (TextView) v.findViewById(R.id.tvListName);
             tvListName.setText((ShopList.getShopListById(shopListObjectId)).getName());
@@ -129,6 +121,7 @@ public class ListDetailsFragment extends Fragment {
                 }
             });
 
+            // Notifications Card
             cvNotifications = (CardView) v.findViewById(R.id.cvNotifications);
             cvNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,6 +129,18 @@ public class ListDetailsFragment extends Fragment {
 
                 }
             });
+
+            // Collaborators Card
+            //find recycler view
+            rvCollabs = (RecyclerView) v.findViewById(R.id.rvCollabs);
+            //init the ArrayList (data source)
+            collabs = new ArrayList<>();
+            //construct the adapter from this data source
+            collabAdapter = new DetailsAdapter(collabs, R.layout.item_collab, this);
+            //RecyclerView setup (layout manager, use adapter)
+            rvCollabs.setLayoutManager(new LinearLayoutManager(getContext()));
+            //set the adapter
+            rvCollabs.setAdapter(collabAdapter);
 
             cvCollaborators = (CardView) v.findViewById(R.id.cvCollaborators);
             cvCollaborators.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +157,7 @@ public class ListDetailsFragment extends Fragment {
                 }
             });
 
+            // Leave List Card
             cvLeaveList = (CardView) v.findViewById(R.id.cvLeaveList);
             cvLeaveList.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -187,6 +193,26 @@ public class ListDetailsFragment extends Fragment {
 
         return v;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        addCollaborators();
+    }
+
+    // Update the collaborators of the list
+    private void addCollaborators() {
+        // First clear list
+        collabs.clear();
+        // Then get the user list and update the collabs array & adapter
+        (ShopList.getShopListById(getArguments().getString(SHOPLIST_TAG))).getUserList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                collabs.addAll(objects);
+                collabAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     // Remove the current user from the current ShopList
