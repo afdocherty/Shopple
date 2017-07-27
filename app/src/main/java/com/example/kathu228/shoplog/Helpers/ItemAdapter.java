@@ -294,16 +294,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         categoryHeader = mlist.get(getAdapterPosition());
                         isCategorizing = categoryHeader.getSegment();
                         prevSeg = isCategorizing;
+                        categorizing(isCategorizing.getName(),ibCategorize,mview);
                     }
-                    else if (isCategorizing.equals(prevSeg)){
-                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
-                        isCategorizing = null;
-                    }
-                    else{
-                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
-                        categoryHeader = mlist.get(getAdapterPosition());
-                        isCategorizing = categoryHeader.getSegment();
-                        prevSeg = isCategorizing;
+                    else {
+                        return;
                     }
 
 
@@ -432,6 +426,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     }
                 })
                 .show();
+    }
+
+    // opens snackbar to show which category you are currently editing and enables closure
+    public void categorizing(final String categoryName, final ImageButton ibEdit, View v){
+       Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE)
+               .setAction("Done", new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
+                       isCategorizing = null;
+                       categoryHeader = null;
+                   }
+               })
+               .show();
     }
 
 

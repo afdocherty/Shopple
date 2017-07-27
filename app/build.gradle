@@ -48,7 +48,11 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile "com.android.support:support-v4:${supportLibVersion}"
     compile 'com.parse:parse-livequery-android:1.0.4'
+    compile 'com.google.api-client:google-api-client-android:1.22.0'
+    compile 'com.google.apis:google-api-services-vision:v1-rev357-1.22.0'
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile 'commons-io:commons-io:2.5'
     testCompile 'junit:junit:4.12'
-
+    compile 'com.rmtheis:tess-two:6.0.0'
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
 }
