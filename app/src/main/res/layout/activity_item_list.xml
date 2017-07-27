@@ -31,18 +31,7 @@
                 android:textSize="@dimen/toolbar_textSize"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/ivNotificationBtn" />
-
-            <ImageView
-                android:id="@+id/ivNotificationBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_add_alert_white"
-                android:onClick="toggleNotifcations"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/ivMapsBtn"
-                android:layout_marginEnd="12dp" />
+                android:layout_alignParentStart="true" />
 
             <ImageView
                 android:id="@+id/ivMapsBtn"
