@@ -3,6 +3,7 @@ package com.example.kathu228.shoplog.Helpers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -15,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Models.Item;
@@ -39,11 +39,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private List<Item> mlist;
     ShopList listTest;
     View mview;
+    Segment isCategorizing;
+    Item categoryHeader;
 
     public ItemAdapter(List<Item> mlist, ShopList listTest, View v) {
         this.mlist = mlist;
         this.listTest = listTest;
         this.mview = v;
+        this.isCategorizing = null;
+        this.categoryHeader = null;
     }
 
     @Override
@@ -107,51 +111,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Allows user to move items into categories by dragging
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Item currentItem = mlist.get(fromPosition);
-        Item newSegItem = mlist.get(toPosition);
-        if (currentItem.isItem()){
-            int newPosition = 0;
-            // cannot move checked items
-            if (currentItem.isChecked()){
-                Toast.makeText(context, "Cannot move checked", Toast.LENGTH_SHORT);
-                return;
-            }
-
-            // if toPosition is in completed, make item checked
-            if (newSegItem.isChecked()){
-                currentItem.setChecked(true, null);
-                newPosition = mlist.size();
-                mlist.remove(fromPosition);
-                notifyItemRemoved(fromPosition);
-                Toast.makeText(context, "New checked", Toast.LENGTH_SHORT);
-            }
-            else{
-                Segment newSeg = newSegItem.getSegment();
-                Segment currentSeg = currentItem.getSegment();
-                // if already same categories, do nothing
-                if (newSeg.getName().equals(currentSeg.getName())){
-                    Toast.makeText(context, "Same segment already", Toast.LENGTH_SHORT);
-                    return;
-                }
-                mlist.remove(fromPosition);
-                notifyItemRemoved(fromPosition);
-                // change item's segment
-                currentItem.setSegment(newSeg,null);
-                // if new segment is uncategorized, add to beginning
-                // else, add right under the segment header
-                if (newSeg.getName().equals("Uncategorized")){
-                    newPosition = 0;
-                    Toast.makeText(context, "New uncategorized", Toast.LENGTH_SHORT);
-                }
-                else{
-                    newPosition = 1 + mlist.indexOf(newSeg.getHeader());
-                }
-            }
-
-            mlist.add(newPosition,currentItem);
-            notifyItemInserted(newPosition);
-        }
-
     }
 
     // Allows user to remove checked item or check an unchecked item by swiping
@@ -177,6 +136,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 notifyItemInserted(toPosition);
             }
         }
+        else{
+            return;
+        }
 
     }
 
@@ -186,6 +148,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return 0;
         return mlist.size();
     }
+
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -201,16 +164,49 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             cbItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition(), v);
+                    if (isCategorizing != (null)){
+                        cbItem.setChecked(!cbItem.isChecked());
+                        handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
+                    }
+                    else {
+                        handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition());
+                    }
                 }
             });
 
 
         }
 
-        // checks and unchecks checkbox, while saving the object's boolean state on server
+        // adds item to segment if different segment, removes item if same segment
+        // cannot add complete
+        public void handleCategorizing(Item item, int fromPos){
+            if (!item.isChecked()){
+                Segment itemSeg = item.getSegment();
+                String itemSegName = itemSeg.getName();
+                String segName = isCategorizing.getName();
+                Segment newSeg;
+                int newPos;
+                if (itemSegName.equals(segName)){
+                    mlist.remove(fromPos);
+                    newSeg = listTest.getUncategorizedSegment();
+                    newPos = 0;
+                }
+                else{
+                    // TODO: replace with finding header position
+                    mlist.remove(fromPos);
+                    newSeg=isCategorizing;
+                    newPos=mlist.indexOf(categoryHeader)+1;
 
-        public void handleCheckbox(final Item item, final int position, final View v){
+                }
+                item.setSegment(newSeg,null);
+                mlist.add(newPos,item);
+                notifyItemRemoved(fromPos);
+                notifyItemInserted(newPos);
+            }
+        }
+
+        // checks and unchecks checkbox, while saving the object's boolean state on server
+        public void handleCheckbox(final Item item, final int position){
             int toPosition;
             mlist.remove(position);
             notifyItemRemoved(position);
@@ -234,12 +230,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public TextView tvHeader;
         public ViewSwitcher switcher;
         public EditText etHeader;
+        public ImageButton ibCategorize;
+        public Segment prevSeg;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             tvHeader = (TextView)itemView.findViewById(R.id.tvHeader);
             switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             etHeader = (EditText)itemView.findViewById(R.id.etHeader);
+            ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
 
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -278,7 +277,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                                             etHeader.setText(body);
                                         }
                                     });
-
                                 }
                             }
                             return false;
@@ -288,6 +286,29 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 }
             });
 
+            ibCategorize.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isCategorizing==null){
+                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
+                        categoryHeader = mlist.get(getAdapterPosition());
+                        isCategorizing = categoryHeader.getSegment();
+                        prevSeg = isCategorizing;
+                    }
+                    else if (isCategorizing.equals(prevSeg)){
+                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
+                        isCategorizing = null;
+                    }
+                    else{
+                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
+                        categoryHeader = mlist.get(getAdapterPosition());
+                        isCategorizing = categoryHeader.getSegment();
+                        prevSeg = isCategorizing;
+                    }
+
+
+                }
+            });
         }
     }
     public class CompletedHeaderViewHolder extends BaseAdapter.ViewHolder {
@@ -378,10 +399,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         Segment curSeg = item.getSegment();
         String curSegname = curSeg.getName();
         if (curSegname.equals("Uncategorized")){
-            return 0;
+            return (0);
         }
         else {
-            return (1 + mlist.indexOf(curSeg.getHeader()));
+            Item head = curSeg.getHeader();
+            int ind = mlist.indexOf(head);
+            return (1 + ind);
         }
     }
 
