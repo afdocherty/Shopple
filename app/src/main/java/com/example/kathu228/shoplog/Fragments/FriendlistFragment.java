@@ -10,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.FriendlistAdapter;
-import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
@@ -80,7 +78,7 @@ public class FriendlistFragment extends Fragment {
         shopList.getUserList(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
-                Toast.makeText(getContext(),Query.getNameOfUser(objects.get(0)),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),Query.getNameOfUser(objects.get(0)),Toast.LENGTH_LONG).show();
             }
         });
 

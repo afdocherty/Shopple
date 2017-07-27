@@ -22,7 +22,7 @@ public class ListDetailsActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment, containing the ShopList Object ID
         ListDetailsFragment listDetailsFragment = ListDetailsFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
-        ft.replace(R.id.itemlist_frame, listDetailsFragment);
+        ft.replace(R.id.details_frame, listDetailsFragment);
         // Complete the changes added above
         ft.commit();
     }
