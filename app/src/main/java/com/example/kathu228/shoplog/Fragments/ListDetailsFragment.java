@@ -201,12 +201,12 @@ public class ListDetailsFragment extends Fragment {
             // Disable notifications
             // Close the notification associated with the ShopList Object ID
             closeNotification(shopListObjectId);
-            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert));
+            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_white));
             notificationsEnabled = false;
         } else {
             // Enable notifications
             startNotification(shopListObjectId);
-            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert_green));
+            ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.ic_add_alert));
             notificationsEnabled = true;
         }
     }

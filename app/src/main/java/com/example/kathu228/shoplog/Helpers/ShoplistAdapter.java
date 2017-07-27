@@ -1,7 +1,9 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -53,11 +55,40 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     }
 
     @Override
-    public void onItemDismiss(int position) {
-        ShopList shopList = mlist.get(position);
-        shopList.removeUser(ParseUser.getCurrentUser(),null);
-        mlist.remove(position);
-        notifyItemRemoved(position);
+    public void onItemDismiss(final int position) {
+
+        final ShopList shopList = mlist.get(position);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+        // set title
+        alertDialogBuilder.setTitle("Delete completed");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete all completed items?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, delete all completed items
+                        shopList.removeUser(ParseUser.getCurrentUser(),null);
+                        mlist.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        notifyDataSetChanged();
+                        dialog.cancel();
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
     }
 
     // Provide a direct reference to each of the views within a data item
