@@ -26,7 +26,8 @@ import java.util.List;
  * Created by fmonsalve on 7/12/17.
  *
  */
-
+@Deprecated
+// This is now done using Modal Overlay (CollaboratorsDialogFragment)
 public class FriendlistFragment extends Fragment {
 
     public interface FriendFragmentListener{
