@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,26 +12,28 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
+import com.example.kathu228.shoplog.Helpers.NotificationHandler;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 import java.util.ArrayList;
 
-import static com.example.kathu228.shoplog.Models.ShopList.SHOPLIST_PENDINTENT_TAG;
-
 public class ItemListActivity extends AppCompatActivity{
 
     ArrayList<Item> items;
     private ItemlistFragment itemlistFragment;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        context = this;
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_items));
 
         if (getIntent().hasExtra(ShopList.SHOPLIST_PENDINTENT_TAG)) {
@@ -83,7 +86,7 @@ public class ItemListActivity extends AppCompatActivity{
     public void onListInfo(View view) {
         Intent i = new Intent(this, ListDetailsActivity.class);
         // Give the intent the ShopList Object ID
-        if (getIntent().hasExtra(SHOPLIST_PENDINTENT_TAG)) {
+        if (getIntent().hasExtra(ShopList.SHOPLIST_PENDINTENT_TAG)) {
             i.putExtra(ShopList.SHOPLIST_TAG,getIntent().getStringExtra(ShopList.SHOPLIST_PENDINTENT_TAG));
         } else {
             i.putExtra(ShopList.SHOPLIST_TAG,getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
@@ -96,8 +99,8 @@ public class ItemListActivity extends AppCompatActivity{
     private void setToolbarTitle(){
         TextView tvShopListName = (TextView)findViewById(R.id.tvListName);
         String shopListObjectId;
-        if (getIntent().hasExtra(SHOPLIST_PENDINTENT_TAG)) {
-            shopListObjectId = getIntent().getStringExtra(SHOPLIST_PENDINTENT_TAG);
+        if (getIntent().hasExtra(ShopList.SHOPLIST_PENDINTENT_TAG)) {
+            shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_PENDINTENT_TAG);
         } else {
             shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_TAG);
         }
@@ -119,8 +122,9 @@ public class ItemListActivity extends AppCompatActivity{
                 .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         // Activate notifications automatically
-                        // TODO - autoActivateNotifications
-                        // autoActivateNotifications();
+                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+
                         // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
                         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -133,8 +137,9 @@ public class ItemListActivity extends AppCompatActivity{
                 .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         // Activate notifications automatically
-                        // TODO - autoActivateNotifications
-                        // autoActivateNotifications();
+                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+
                         // Search grocery stores that are nearby FB Seattle Office
                         Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
