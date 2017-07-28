@@ -102,7 +102,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // Make sure the list with the specified shopListObjectId exists
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
 
-        if (ShopList.getShopListById(shopListObjectId) == null) {
+        if (shopListObjectId == null || ShopList.getShopListById(shopListObjectId) == null) {
             throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
 
