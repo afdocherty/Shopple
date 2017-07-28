@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kathu228.shoplog.Activities.AddPeopleActivity;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Activities.ShopListsActivity;
 import com.example.kathu228.shoplog.Helpers.DetailsAdapter;
@@ -146,14 +145,14 @@ public class ListDetailsFragment extends Fragment {
             cvCollaborators.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), AddPeopleActivity.class);
-                    // Give the intent the ShopList Object ID
-                    i.putExtra(ShopList.SHOPLIST_TAG, shopListObjectId);
-                    startActivity(i);
-
-                    // TODO switch to modal overlay
-//                CollaboratorsDialogFragment composeDialogFragment = CollaboratorsDialogFragment.newInstance(getArguments().getString(ShopList.SHOPLIST_TAG));
-//                composeDialogFragment.show(getActivity().getSupportFragmentManager(), "fragment_collab_dialog");
+//                    Intent i = new Intent(getActivity(), AddPeopleActivity.class);
+//                    // Give the intent the ShopList Object ID
+//                    i.putExtra(ShopList.SHOPLIST_TAG, shopListObjectId);
+//                    startActivity(i);
+//
+                    // Open Modal Overaly (CollaboratorsDialogFragment)
+                    CollaboratorsDialogFragment composeDialogFragment = CollaboratorsDialogFragment.newInstance(getArguments().getString(ShopList.SHOPLIST_TAG));
+                    composeDialogFragment.show(getActivity().getSupportFragmentManager(), "fragment_collab_dialog");
                 }
             });
 
@@ -213,6 +212,12 @@ public class ListDetailsFragment extends Fragment {
                 collabAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    // Locally insert people into array
+    public void addNewPeople(List<ParseUser> newPeople) {
+        collabs.addAll(newPeople);
+        collabAdapter.notifyDataSetChanged();
     }
 
     // Remove the current user from the current ShopList

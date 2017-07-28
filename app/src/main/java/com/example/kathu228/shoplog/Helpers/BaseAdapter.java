@@ -18,7 +18,7 @@ public abstract class BaseAdapter<VH extends BaseAdapter.ViewHolder,ListType> ex
     public List<ListType> mlist;
     private AppCompatActivity context;
 
-    private int itemViewReference;
+    protected int itemViewReference;
 
     //pass in the Tweets array into constructor
     //itemView reference would be R.layout.___ for reference to layout that
