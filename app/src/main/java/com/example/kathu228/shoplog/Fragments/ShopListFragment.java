@@ -85,6 +85,7 @@ public class ShopListFragment extends Fragment {
         fabAddShopList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO format better
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 // Create a new list as the current user, automatically naming it w/ timestamp
                 ShopList.getInstance("New List on " + currentDateTimeString, new ShopList.ShoplistCallback() {
