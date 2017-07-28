@@ -45,7 +45,6 @@ public class FriendlistFragment extends Fragment {
     private List<ParseUser> peopleAdded;
     private ShopList shopList;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

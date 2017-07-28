@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -29,6 +30,8 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.SubscriptionHandling;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -51,7 +54,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ArrayList<Item> items;
     private ArrayList<Segment> segments;
 
-    private String shopListObjectId;
+    public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
 
@@ -67,6 +70,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
+    }
+
+    public String getShopListObjectId() {
+        return shopListObjectId;
     }
 
     // Call this method to launch the edit dialog
@@ -94,7 +101,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
         try {
             // get id of shoplist
-            String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+            shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
             Log.d("ItemlistFragment", "objId: " + shopListObjectId);
             shopList = ShopList.getShopListById(shopListObjectId);
 
@@ -193,10 +200,18 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     @Override
     public void onResume() {
         super.onResume();
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        shopList = ShopList.getShopListById(shopListObjectId);
         // Populate the items array
         addItems();
+        startLiveQueries();
     }
 
+    @Override
+    public void onPause() {
+        shopList.stopLiveQueries();
+        super.onPause();
+    }
 
     public void addItems() {
         // Clear the items list
@@ -244,21 +259,50 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
     }
 
+    private void startLiveQueries() {
+        //Live Queries
+        shopList.startItemLiveQuery(new SubscriptionHandling.HandleEventsCallback<Item>() {
+            @Override
+            public void onEvents(ParseQuery<Item> query, SubscriptionHandling.Event event, Item object) {
+                Log.d("debug", "Item added");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Item added", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        shopList.startSegmentLiveQuery(new SubscriptionHandling.HandleEventsCallback<Segment>() {
+            @Override
+            public void onEvents(ParseQuery<Segment> query, SubscriptionHandling.Event event, Segment object) {
+                Log.d("debug", "Segment added");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Segment added", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+    }
     // add segment header to UI
     private void addSegmentToUI(Item newSegHeader){
-        int pos = items.indexOf(segments.get(0).getHeader());
+        Item header = shopList.getCompletedHeader();
+        if (segments.size()>0)
+            header = segments.get(0).getHeader();
+        int pos = items.indexOf(header);
         items.add(pos,newSegHeader);
         segments.add(0,newSegHeader.getSegment());
         itemAdapter.notifyItemInserted(pos);
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
-    private void addItemToUI(@Nullable Segment segment, Item item){
-        int newPos;
+    private void addItemToUI(Item item, @Nullable Segment segment){
+        int newPos=0;
         if (segment!=null)
             newPos = items.indexOf(segment.getHeader())+1;
-        else
-            newPos = 0;
         items.add(newPos,item);
         itemAdapter.notifyItemInserted(newPos);
     }
@@ -276,5 +320,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 return i;
         }
         return -1;
+
     }
 }

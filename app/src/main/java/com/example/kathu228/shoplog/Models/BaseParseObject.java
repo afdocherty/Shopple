@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 /**
@@ -14,12 +15,14 @@ import com.parse.SaveCallback;
 
 public class BaseParseObject extends ParseObject {
     public void nullableSaveInBackground(@Nullable SaveCallback callback){
+        put("edit_session", ParseUser.getCurrentUser().getSessionToken());
         if (callback != null)
             saveInBackground(callback);
         else
             saveInBackground();
     }
     public void nullableDeleteInBackground(@Nullable DeleteCallback callback){
+        put("edit_session", ParseUser.getCurrentUser().getSessionToken());
         if (callback != null)
             deleteInBackground(callback);
         else
