@@ -61,11 +61,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
         // set title
-        alertDialogBuilder.setTitle("Delete completed");
+        alertDialogBuilder.setTitle("Delete list");
 
         // set dialog message
         alertDialogBuilder
-                .setMessage("Are you sure you want to delete all completed items?")
+                .setMessage("Are you sure you want to delete "+shopList.getName()+"?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

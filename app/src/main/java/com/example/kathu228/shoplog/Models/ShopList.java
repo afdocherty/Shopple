@@ -11,8 +11,11 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SubscriptionHandling;
 
 import java.util.List;
+
+import static com.example.kathu228.shoplog.ParseApplication.parseLiveQueryClient;
 
 /**
  * Created by afdoch on 7/12/17.
@@ -31,6 +34,10 @@ public class ShopList extends BaseParseObject {
     public static final String SHOPLIST_TAG = "ShopList";
     public static final String SHOPLIST_NEW_TAG = "new_list";
     public static final String SHOPLIST_PENDINTENT_TAG = "pending_intent";
+
+    private ParseQuery<Item> currentItemLiveQuery;
+    private ParseQuery<Segment> currentSegmentLiveQuery;
+
 
     public ShopList(){
         //required for Parse
@@ -253,6 +260,30 @@ public class ShopList extends BaseParseObject {
             item.setSegment(getUncategorizedSegment(),null);
         }
         segment.deleteInBackground();
+    }
+
+    public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
+        ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
+        query.whereEqualTo("parent",this);
+        query.whereEqualTo("visible",true);
+        query.whereEqualTo("type",Item.ITEM);
+        query.whereNotEqualTo("edit_session",ParseUser.getCurrentUser().getSessionToken());
+        SubscriptionHandling<Item> subscriptionHandling = parseLiveQueryClient.subscribe(query);
+        subscriptionHandling.handleEvents(callback);
+    }
+
+    public void startSegmentLiveQuery(SubscriptionHandling.HandleEventsCallback<Segment> callback){
+        ParseQuery<Segment> query = new ParseQuery<>(Segment.class);
+        query.whereEqualTo("parent_list",this);
+        query.whereExists("header");
+        query.whereNotEqualTo("edit_session",ParseUser.getCurrentUser().getSessionToken());
+        SubscriptionHandling<Segment> subscriptionHandling = parseLiveQueryClient.subscribe(query);
+        subscriptionHandling.handleEvents(callback);
+    }
+
+    public void stopLiveQueries(){
+        parseLiveQueryClient.unsubscribe(currentItemLiveQuery);
+        parseLiveQueryClient.unsubscribe(currentSegmentLiveQuery);
     }
 
     public static void getInstance(String name, @NonNull final ShoplistCallback callback){

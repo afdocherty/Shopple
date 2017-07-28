@@ -6,12 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -115,8 +112,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // Allows user to remove checked item or check an unchecked item by swiping
     @Override
-    public void onItemDismiss(int position) {
-        Item item = mlist.get(position);
+    public void onItemDismiss(final int position) {
+        final Item item = mlist.get(position);
         // only items allowed
         if (item.isItem()) {
             // if item is checked, delete
@@ -136,8 +133,35 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 notifyItemInserted(toPosition);
             }
         }
-        else{
-            return;
+        else if (item.isHeader()){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            // set title
+            alertDialogBuilder.setTitle("Clear category");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, get rid of segment
+                            removeSegment(item, position);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            notifyItemChanged(position);
+                            dialog.cancel();
+                        }
+                    });
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
         }
 
     }
@@ -231,7 +255,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public ViewSwitcher switcher;
         public EditText etHeader;
         public ImageButton ibCategorize;
-        public Segment prevSeg;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -241,51 +264,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
 
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    switcher.showNext();
-                    etHeader.setSelectAllOnFocus(true);
-                    etHeader.selectAll();
-
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null){
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                    }
-                    etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                final String body = etHeader.getText().toString();
-                                // Does not add empty item
-                                if (!body.equals("")) {
-                                    Segment currentSeg = mlist.get(getAdapterPosition()).getSegment();
-                                    // Changes segment in the list by removing old segment and adding a new segment with all the old items
-                                    final List<Item> segItems = currentSeg.getItems();
-                                    listTest.addSegment(body, new Segment.SegmentCallback() {
-                                        @Override
-                                        public void done(Segment segment) {
-                                            for (Item segItem: segItems){
-                                                if (segItem.isItem()) {
-                                                    segItem.setSegment(segment, null);
-
-                                                }
-                                            }
-                                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                            imm.hideSoftInputFromWindow(etHeader.getWindowToken(), 0);
-                                            tvHeader.setText(body);
-                                            switcher.showPrevious();
-                                            etHeader.setText(body);
-                                        }
-                                    });
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                    return true;
-                }
-            });
-
             ibCategorize.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -293,7 +271,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categoryHeader = mlist.get(getAdapterPosition());
                         isCategorizing = categoryHeader.getSegment();
-                        prevSeg = isCategorizing;
                         categorizing(isCategorizing.getName(),ibCategorize,mview);
                     }
                     else {
@@ -303,6 +280,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
                 }
             });
+
+
         }
     }
     public class CompletedHeaderViewHolder extends BaseAdapter.ViewHolder {
@@ -397,7 +376,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         else {
             Item head = curSeg.getHeader();
-            int ind = mlist.indexOf(head);
+            int ind = getItemIndex(head);
             return (1 + ind);
         }
     }
@@ -442,5 +421,31 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                .show();
     }
 
+    // Removes segment and make all items uncategorized
+    private void removeSegment(Item item, int pos) {
+        Segment curSegment = item.getSegment();
+        deleteItem(pos);
+        List<Item> segItems = curSegment.getItems();
+        for (Item segItem : segItems) {
+            if (segItem.isItem()) {
+                int fromPos = getItemIndex(segItem);
+                if (fromPos>-1){
+                    deleteItem(fromPos);
+                    addItem(segItem, 0);
+                }
+            }
+        }
+        listTest.removeSegment(curSegment);
+
+
+    }
+
+    private int getItemIndex(Item item){
+        for (int i=0; i<mlist.size(); i++){
+            if (item.getObjectId().equals(mlist.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
+    }
 
 }
