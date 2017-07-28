@@ -14,7 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -44,6 +45,8 @@ public class ShopListFragment extends Fragment {
     private RecyclerView rvShopList;
     private SwipeRefreshLayout swipeContainer;
     private FloatingActionButton fabAddShopList;
+    private TextView tvDirection;
+    private ImageView ivDirection;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +75,10 @@ public class ShopListFragment extends Fragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvShopList);
 
+        // Add directions to make new list
+        tvDirection = (TextView) v.findViewById(R.id.tvDirection);
+        ivDirection = (ImageView) v.findViewById(R.id.ivDirection);
+
         // Add ShopList FAB
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
         // On click, create the list and jump into it
@@ -80,7 +87,7 @@ public class ShopListFragment extends Fragment {
             public void onClick(View v) {
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 // Create a new list as the current user, automatically naming it w/ timestamp
-                ShopList.getInstance("New List at " + currentDateTimeString, new ShopList.ShoplistCallback() {
+                ShopList.getInstance("New List on " + currentDateTimeString, new ShopList.ShoplistCallback() {
                     @Override
                     public void done(ShopList list) {
                         //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);
@@ -89,7 +96,7 @@ public class ShopListFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), ItemListActivity.class);
                         // Pass in ShopList ObjectId
                         intent.putExtra(ShopList.SHOPLIST_TAG, list.getObjectId());
-                        intent.putExtra("listName", list.getName());
+                        intent.putExtra(ShopList.SHOPLIST_NEW_TAG, true);
                         startActivity(intent);
                     }
                 });
@@ -166,6 +173,7 @@ public class ShopListFragment extends Fragment {
                     Log.d("ShopListFragment", "User lists loaded");
                     shopLists.addAll(objects);
                     shoplistAdapter.notifyDataSetChanged();
+                    addDirections();
                 } else {
                     Log.d("ShopListFragment", "User lists not loaded. Error: " + e.toString());
                 }
@@ -178,5 +186,17 @@ public class ShopListFragment extends Fragment {
         shopLists.add(0, shopList);
         shoplistAdapter.notifyItemInserted(0);
         rvShopList.scrollToPosition(0);
+    }
+
+    // shows directions if no lists and hides if there are
+    private void addDirections(){
+        if (shopLists.size()==0){
+            tvDirection.setVisibility(View.VISIBLE);
+            ivDirection.setVisibility(View.VISIBLE);
+        }
+        else{
+            tvDirection.setVisibility(View.GONE);
+            ivDirection.setVisibility(View.GONE);
+        }
     }
 }

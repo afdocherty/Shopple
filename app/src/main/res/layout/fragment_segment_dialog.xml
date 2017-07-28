@@ -21,10 +21,10 @@
         android:layout_below="@+id/tvNewSegment"
         android:hint="e.g. Fruits and Vegetables"
         android:imeOptions="actionDone"
-        android:inputType="text"
         android:textColor="@color/white"
         android:layout_marginLeft="@dimen/add_margin"
-        android:layout_marginRight="@dimen/add_margin"/>
+        android:layout_marginRight="@dimen/add_margin"
+        android:inputType="textCapSentences"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

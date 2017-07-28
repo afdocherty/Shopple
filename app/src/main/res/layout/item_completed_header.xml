@@ -13,21 +13,20 @@
         android:id="@+id/ibDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvCompletedHeader"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/section_margin"
+        android:layout_marginLeft="@dimen/trash_margin"
         android:background="@null"
-        app:srcCompat="@drawable/ic_delete_sweep" />
+        app:srcCompat="@drawable/ic_delete_sweep"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvCompletedHeader" />
 
     <TextView
         android:id="@+id/tvCompletedHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:text=" Completed Items"
         android:textColor="?attr/colorAccent"
         android:textSize="@dimen/body_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

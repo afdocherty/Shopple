@@ -32,6 +32,7 @@ public class ShopList extends BaseParseObject {
     }
 
     public static final String SHOPLIST_TAG = "ShopList";
+    public static final String SHOPLIST_NEW_TAG = "new_list";
 
     private ParseQuery<Item> currentItemLiveQuery;
     private ParseQuery<Segment> currentSegmentLiveQuery;
@@ -44,10 +45,10 @@ public class ShopList extends BaseParseObject {
     @Deprecated
     public ShopList(String name, @Nullable final SaveCallback callback){
         put("name", name);
-        put("uncategorized_segment",new Segment("uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
+        put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
                         public void done(ParseException e) {
                             getUsersRelation().add(ParseUser.getCurrentUser());
@@ -63,7 +64,7 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if(e == null){
@@ -163,7 +164,7 @@ public class ShopList extends BaseParseObject {
         query.findInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
-                objects.add(0,getCompletedHeder());
+                objects.add(0,getCompletedHeader());
                 callback.done(objects,e);
             }
         });
@@ -227,7 +228,7 @@ public class ShopList extends BaseParseObject {
         return (Segment) getParseObject("uncategorized_segment");
     }
 
-    public Item getCompletedHeder(){
+    public Item getCompletedHeader(){
         fetchWhenNeeded();
         return (Item) getParseObject("completed_header");
     }

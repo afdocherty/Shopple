@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/padding"
@@ -10,11 +11,11 @@
 
     <ViewSwitcher
         android:id="@+id/vsHeaderSwitcher"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:measureAllChildren="false"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:measureAllChildren="false">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/tvHeader"
@@ -22,8 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text=" Header"
-            android:textColor="?attr/colorAccent"
+            android:textColor="@color/secondary_text"
             android:textSize="@dimen/body_size"
             android:textStyle="bold" />
 
@@ -31,7 +34,7 @@
             android:id="@+id/etHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:inputType="textCapSentences"
             android:maxLines="1"
             android:paddingTop="0dp"
             android:text="Hello World"
@@ -39,5 +42,16 @@
             android:textColor="@color/colorAccent"
             android:textSize="22sp" />
     </ViewSwitcher>
+
+    <ImageButton
+        android:id="@+id/ibCategorize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_edit"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/vsHeaderSwitcher"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

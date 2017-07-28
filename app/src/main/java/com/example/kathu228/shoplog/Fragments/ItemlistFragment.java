@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,9 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SubscriptionHandling;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +52,21 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ImageButton ibAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
+    private ArrayList<Segment> segments;
 
     private String shopListObjectId;
     private FloatingActionButton fabAddSegment;
+    private LinearLayout llDummy;
 
     ShopList shopList;
 
-    public static ItemlistFragment newInstance(String shopListObjectId) {
+    public static ItemlistFragment newInstance(String shopListObjectId, boolean isNew) {
         ItemlistFragment itemlistFragment = new ItemlistFragment();
 
         // Supply shopListFragment as argument
         Bundle args = new Bundle();
         args.putString(ShopList.SHOPLIST_TAG, shopListObjectId);
+        args.putBoolean(ShopList.SHOPLIST_NEW_TAG, isNew);
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
@@ -69,6 +76,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private void showSegmentDialog() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         SegmentDialogFragment segmentDialogFragment = SegmentDialogFragment.newInstance(shopListObjectId);
         // SETS the target fragment for use later when sending results
         segmentDialogFragment.setTargetFragment(this, 0);
@@ -76,13 +84,9 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     @Override
-    public void onFinishSegmentDialog(String segmentName) {
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        shopList = shopList.getShopListById(shopListObjectId);
-        //shopList.addSegment(segmentName, null);
-        Toast.makeText(getContext(), "New category "+segmentName+" created", Toast.LENGTH_SHORT).show();
-
+    public void onFinishSegmentDialog(Item segHeader) {
+        // find completed header and add segment header right above
+        addSegmentToUI(segHeader);
     }
 
     @Nullable
@@ -91,71 +95,100 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
-        // find the RecyclerView
-        rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
+        try {
+            // get id of shoplist
+            String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+            Log.d("ItemlistFragment", "objId: " + shopListObjectId);
+            shopList = ShopList.getShopListById(shopListObjectId);
+
+            // find the RecyclerView
+            rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
 //        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
-        // initialize the array of items
-        items = new ArrayList<>();
+            // initialize the array of items
+            items = new ArrayList<>();
+            // initialize the array of segments
+            segments = new ArrayList<>();
 
-        // gt id of shoplist
-        String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        Log.d("ItemlistFragment", "objId: " + shopListObjectId);
-        shopList = ShopList.getShopListById(shopListObjectId);
+            // construct the adapter
+            itemAdapter = new ItemAdapter(items, shopList, v);
+            // Set layout manager to position the items
+            rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
+            // Attach the adapter to the recyclerview to populate items
+            rvItems.setAdapter(itemAdapter);
 
-        // construct the adapter
-        itemAdapter = new ItemAdapter(items, shopList);
-        // Set layout manager to position the items
-        rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Attach the adapter to the recyclerview to populate items
-        rvItems.setAdapter(itemAdapter);
-
-        etAddItem = (EditText) v.findViewById(R.id.etAddItem);
-        ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
-
-
-        // Put onclicklistener onto add button to add item to list
-        ibAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addItem();
+            // Shift focus to dummy view to prevent auto-focusing on EditText
+            llDummy = (LinearLayout) v.findViewById(R.id.llDummy);
+            llDummy.setFocusableInTouchMode(true);
+            if (!getArguments().getBoolean(ShopList.SHOPLIST_NEW_TAG)) {
+                llDummy.requestFocus();
             }
-        });
 
-        // Adds item from edittext if press enter or done on keyboard
-        etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+            etAddItem = (EditText) v.findViewById(R.id.etAddItem);
+            ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
+
+            // Put onclicklistener onto add button to add item to list
+            ibAddItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     addItem();
                 }
-                return false;
-            }
-        });
+            });
 
-        fabAddSegment = (FloatingActionButton) v.findViewById(R.id.fabAddSegment);
-        fabAddSegment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSegmentDialog();
-            }
-        });
+            // Create add FAB and force visible (Note: must be defined before etAddItem OnEditorActionListener!)
+            fabAddSegment = (FloatingActionButton) v.findViewById(R.id.fabAddSegment);
+            fabAddSegment.setVisibility(View.VISIBLE);
+            fabAddSegment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showSegmentDialog();
+                }
+            });
 
-        // attaches touchHelper to the recyclerview
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(itemAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(rvItems);
+            // Adds item from edittext if press enter or done on keyboard
+            etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        addItem();
+                    }
+                    return false;
+                }
+            });
 
-        //find the swipe refresh layout and add the onRefreshListener
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        //swipeContainer.setColorSchemeResources(R.color.);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //call method to repopulate the timeline
-                addItems();
-                swipeContainer.setRefreshing(false);
-            }
-        });
+            // 3rd-party workaround to catch keyboard open/close events
+            KeyboardVisibilityEvent.setEventListener(
+                    getActivity(),
+                    new KeyboardVisibilityEventListener() {
+                        @Override
+                        public void onVisibilityChanged(boolean isOpen) {
+                            if (isOpen) {
+                                fabAddSegment.setVisibility(View.INVISIBLE);
+                            } else {
+                                fabAddSegment.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+
+            // attaches touchHelper to the recyclerview
+            ItemTouchHelper.Callback callback =
+                    new SimpleItemTouchHelperCallback(itemAdapter);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            touchHelper.attachToRecyclerView(rvItems);
+
+            //find the swipe refresh layout and add the onRefreshListener
+            swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+            //swipeContainer.setColorSchemeResources(R.color.);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    //call method to repopulate the timeline
+                    addItems();
+                    swipeContainer.setRefreshing(false);
+                }
+            });
+        } catch (NullPointerException e) {
+            Log.d("ListDetailsFragment", "ShopList not found by id");
+            throw e;
+        }
 
         return v;
     }
@@ -177,6 +210,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void addItems() {
         // Clear the items list
         items.clear();
+        segments.clear();
         //addUncheckedItems();
         // getSegments does not include completed items
         // TODO: check order
@@ -188,6 +222,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     List<Item> mItems = segment.getItems();
                     items.addAll(mItems);
                 }
+                segments.addAll(objects);
                 shopList.getCheckedItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
@@ -218,7 +253,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
     }
 
-    private void startLiveQueries(){
+    private void startLiveQueries() {
         //TODO- Live Queries
         shopList.startItemLiveQuery(new SubscriptionHandling.HandleEventsCallback<Item>() {
             @Override
@@ -245,5 +280,39 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 });
             }
         });
+    }
+    // add segment header to UI
+    private void addSegmentToUI(Item newSegHeader){
+        int pos = items.indexOf(segments.get(0).getHeader());
+        items.add(pos,newSegHeader);
+        segments.add(0,newSegHeader.getSegment());
+        itemAdapter.notifyItemInserted(pos);
+    }
+
+    // add item to segment if passed, else add to uncategorized (front-end)
+    private void addItemToUI(@Nullable Segment segment, Item item){
+        int newPos;
+        if (segment!=null)
+            newPos = items.indexOf(segment.getHeader())+1;
+        else
+            newPos = 0;
+        items.add(newPos,item);
+        itemAdapter.notifyItemInserted(newPos);
+    }
+
+    // delete item from UI
+    private void deleteItemFromUI(Item item){
+        int pos = items.indexOf(item);
+        items.remove(item);
+        itemAdapter.notifyItemRemoved(pos);
+    }
+
+    private int getItemIndex(Item item){
+        for (int i=0; i<items.size(); i++){
+            if (item.getObjectId().equals(items.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
+
     }
 }

@@ -36,7 +36,9 @@
 
         <activity android:name=".Activities.ShopListsActivity" />
 
-        <activity android:name=".Activities.ListDetailsActivity"></activity>
+        <activity
+            android:name=".Activities.ListDetailsActivity"
+            android:windowSoftInputMode="stateHidden" />
 
     </application>
 

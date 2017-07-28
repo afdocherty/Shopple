@@ -3,14 +3,12 @@ package com.example.kathu228.shoplog.Helpers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,10 +35,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private List<Item> mlist;
     ShopList listTest;
+    View mview;
+    Segment isCategorizing;
+    Item categoryHeader;
 
-    public ItemAdapter(List<Item> mlist, ShopList listTest) {
+    public ItemAdapter(List<Item> mlist, ShopList listTest, View v) {
         this.mlist = mlist;
         this.listTest = listTest;
+        this.mview = v;
+        this.isCategorizing = null;
+        this.categoryHeader = null;
     }
 
     @Override
@@ -70,8 +74,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Item item = mlist.get(position);
 
-//        holder.cbItem.setText(item.getBody());
-//        holder.cbItem.setChecked(item.isChecked());
         if (item != null) {
             switch (item.getType()) {
                 case 0:
@@ -80,6 +82,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     break;
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
+                    ((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -105,71 +108,60 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Allows user to move items into categories by dragging
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Item currentItem = mlist.get(fromPosition);
-        Item newSegItem = mlist.get(toPosition);
-        if (currentItem.isItem()){
-            int newPosition = 0;
-            // cannot move checked items
-            if (currentItem.isChecked()){
-                return;
-            }
-
-            // if toPosition is in completed, make item checked
-            if (newSegItem.isChecked()){
-                currentItem.setChecked(true, null);
-                newPosition = mlist.size();
-                mlist.remove(fromPosition);
-                notifyItemRemoved(fromPosition);
-            }
-            else{
-                Segment newSeg = newSegItem.getSegment();
-                Segment currentSeg = currentItem.getSegment();
-                // if already same categories, do nothing
-                if (newSeg==currentSeg){
-                    return;
-                }
-                mlist.remove(fromPosition);
-                notifyItemRemoved(fromPosition);
-                // change item's segment
-                currentItem.setSegment(newSeg,null);
-                // if new segment is uncategorized, add to beginning
-                // else, add right under the segment header
-                if (newSeg.getName().equals("uncategorized_segment")){
-                    newPosition = 0;
-                }
-                else{
-                    newPosition = 1 + mlist.indexOf(newSeg.getHeader());
-                }
-            }
-
-            mlist.add(newPosition,currentItem);
-            notifyItemInserted(newPosition);
-        }
-
     }
 
     // Allows user to remove checked item or check an unchecked item by swiping
     @Override
-    public void onItemDismiss(int position) {
-        Item item = mlist.get(position);
+    public void onItemDismiss(final int position) {
+        final Item item = mlist.get(position);
         // only items allowed
         if (item.isItem()) {
             // if item is checked, delete
-            // TODO: snackbar undo
             // else, move under completed
             if (item.isChecked()) {
-//            undoDelete(item, position, View.inflate(,R.layout.item,item));
-//            deleteItem(item);
+                undoDelete(item, position, mview);
                 item.setVisible(false, null);
                 listTest.removeItem(item, null);
                 deleteItem(position);
 //            deleteItemFromList(item, position);
             } else {
                 item.setChecked(true, null);
-                mlist.add(item);
                 mlist.remove(position);
-                notifyItemMoved(position,mlist.size()-1);
+                notifyItemRemoved(position);
+                int toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
+                mlist.add(toPosition,item);
+                notifyItemInserted(toPosition);
             }
+        }
+        else if (item.isHeader()){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            // set title
+            alertDialogBuilder.setTitle("Clear category");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, get rid of segment
+                            removeSegment(item, position);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            notifyItemChanged(position);
+                            dialog.cancel();
+                        }
+                    });
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
         }
 
     }
@@ -180,6 +172,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return 0;
         return mlist.size();
     }
+
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -195,31 +188,65 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             cbItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition(), v);
+                    if (isCategorizing != (null)){
+                        cbItem.setChecked(!cbItem.isChecked());
+                        handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
+                    }
+                    else {
+                        handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition());
+                    }
                 }
             });
 
 
         }
 
-        // checks and unchecks checkbox, while saving the object's boolean state on server
+        // adds item to segment if different segment, removes item if same segment
+        // cannot add complete
+        public void handleCategorizing(Item item, int fromPos){
+            if (!item.isChecked()){
+                Segment itemSeg = item.getSegment();
+                String itemSegName = itemSeg.getName();
+                String segName = isCategorizing.getName();
+                Segment newSeg;
+                int newPos;
+                if (itemSegName.equals(segName)){
+                    mlist.remove(fromPos);
+                    newSeg = listTest.getUncategorizedSegment();
+                    newPos = 0;
+                }
+                else{
+                    // TODO: replace with finding header position
+                    mlist.remove(fromPos);
+                    newSeg=isCategorizing;
+                    newPos=mlist.indexOf(categoryHeader)+1;
 
-        public void handleCheckbox(final Item item, final int position, final View v){
-            if (item.isChecked()){
-                item.setChecked(false, null);
-                mlist.remove(position);
-                mlist.add(0, item);
+                }
+                item.setSegment(newSeg,null);
+                mlist.add(newPos,item);
+                notifyItemRemoved(fromPos);
+                notifyItemInserted(newPos);
+            }
+        }
+
+        // checks and unchecks checkbox, while saving the object's boolean state on server
+        public void handleCheckbox(final Item item, final int position){
+            int toPosition;
+            mlist.remove(position);
+            notifyItemRemoved(position);
+            item.setChecked(!item.isChecked(),null);
+            // If item is now unchecked, move to previous segment
+            // Else, move to top of completed
+            if (!item.isChecked()){
+                toPosition=newSegPosition(item);
                 cbItem.setChecked(false);
-                notifyItemMoved(position, 0);
             }
             else{
-                item.setChecked(true,null);
-                mlist.remove(position);
-                mlist.add(item);
+                toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
                 cbItem.setChecked(true);
-                notifyItemMoved(position, mlist.size() - 1);
 
             }
+            addItem(item,toPosition);
         }
     }
 
@@ -227,44 +254,33 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public TextView tvHeader;
         public ViewSwitcher switcher;
         public EditText etHeader;
+        public ImageButton ibCategorize;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             tvHeader = (TextView)itemView.findViewById(R.id.tvHeader);
             switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             etHeader = (EditText)itemView.findViewById(R.id.etHeader);
+            ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+            ibCategorize.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    switcher.showNext();
-                    etHeader.setSelectAllOnFocus(true);
-                    etHeader.selectAll();
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null){
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                public void onClick(View v) {
+                    if (isCategorizing==null){
+                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
+                        categoryHeader = mlist.get(getAdapterPosition());
+                        isCategorizing = categoryHeader.getSegment();
+                        categorizing(isCategorizing.getName(),ibCategorize,mview);
                     }
-                    etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                String body = etHeader.getText().toString();
-                                // Does not add empty item
-                                if (!body.equals("")) {
-                                    // TODO: Change segment in shoplist
-                                    //listTest.addSegment();
-                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(etHeader.getWindowToken(), 0);
-                                    tvHeader.setText(body);
-                                    switcher.showPrevious();
-                                    etHeader.setText(body);
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                    return true;
+                    else {
+                        return;
+                    }
+
+
                 }
             });
+
 
         }
     }
@@ -314,14 +330,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             });
         }
 
-        //deletes all items starting at position
-        public void deleteItems(final int position) {
-            int len = mlist.size();
-            for (int i = position; i < len; i++) {
-                Item deletedItem = mlist.get(position);
-                deleteItemFromList(deletedItem);
-                deleteItem(position);
-            }
+    }
+
+    //deletes all completed items
+    public void deleteItems(final int position) {
+        int len = mlist.size();
+        for (int i = position; i < len; i++) {
+            Item deletedItem = mlist.get(position);
+            deleteItemFromList(deletedItem);
+            deleteItem(position);
         }
     }
 
@@ -335,7 +352,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // Remove an item from the shoplist
     private void deleteItemFromList(final Item item) {
-        listTest.removeItem(item,null);
+        item.setVisible(false, null);
     }
 
     // Insert item to mList at position
@@ -348,6 +365,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Add an item to the shoplist
     private void addItemToList (final Item item, final int position) {
         item.setVisible(true,null);
+    }
+
+    // Adding an item back to segment
+    private int newSegPosition(Item item){
+        Segment curSeg = item.getSegment();
+        String curSegname = curSeg.getName();
+        if (curSegname.equals("Uncategorized")){
+            return (0);
+        }
+        else {
+            Item head = curSeg.getHeader();
+            int ind = getItemIndex(head);
+            return (1 + ind);
+        }
     }
 
     // if click undo in snackbar, item will reappear in list unchecked
@@ -364,7 +395,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addItem(item, 0);
+                        if (item.isChecked()){
+                            item.setChecked(false, null);
+                        }
+                        int toPosition = newSegPosition(item);
+                        addItem(item, toPosition);
                         Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
@@ -372,5 +407,45 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 .show();
     }
 
+    // opens snackbar to show which category you are currently editing and enables closure
+    public void categorizing(final String categoryName, final ImageButton ibEdit, View v){
+       Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE)
+               .setAction("Done", new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
+                       isCategorizing = null;
+                       categoryHeader = null;
+                   }
+               })
+               .show();
+    }
+
+    // Removes segment and make all items uncategorized
+    private void removeSegment(Item item, int pos) {
+        Segment curSegment = item.getSegment();
+        deleteItem(pos);
+        List<Item> segItems = curSegment.getItems();
+        for (Item segItem : segItems) {
+            if (segItem.isItem()) {
+                int fromPos = getItemIndex(segItem);
+                if (fromPos>-1){
+                    deleteItem(fromPos);
+                    addItem(segItem, 0);
+                }
+            }
+        }
+        listTest.removeSegment(curSegment);
+
+
+    }
+
+    private int getItemIndex(Item item){
+        for (int i=0; i<mlist.size(); i++){
+            if (item.getObjectId().equals(mlist.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
+    }
 
 }

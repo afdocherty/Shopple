@@ -1,10 +1,12 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-import com.example.kathu228.shoplog.Fragments.FriendlistFragment;
+import com.example.kathu228.shoplog.Fragments.CollaboratorsDialogFragment;
 import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.R;
 import com.parse.ParseUser;
@@ -12,16 +14,26 @@ import com.parse.ParseUser;
 import java.util.List;
 
 /**
- * Created by fmonsalve on 7/12/17.
+ * Created by afdoch on 7/27/17.
  */
 
-public class FriendlistAdapter extends BaseAdapter<FriendlistAdapter.ViewHolder,ParseUser> {
+public class ModalFriendListAdapter extends BaseAdapter<ModalFriendListAdapter.ViewHolder,ParseUser> {
 
-    FriendlistFragment fragmentInstance;
+    CollaboratorsDialogFragment fragmentInstance;
+    private Context ownerActivity;
 
-    public FriendlistAdapter(List<ParseUser> mlist, int itemViewReference, FriendlistFragment fragmentInstance) {
+    public ModalFriendListAdapter(List<ParseUser> mlist, int itemViewReference, CollaboratorsDialogFragment fragmentInstance, Context ownerActivity) {
         super(mlist, itemViewReference);
         this.fragmentInstance=fragmentInstance;
+        this.ownerActivity = ownerActivity;
+    }
+
+    @Override
+    public View inflateView(ViewGroup parent) {
+            //context=(AppCompatActivity) parent.getContext();
+
+            LayoutInflater inflater = LayoutInflater.from(ownerActivity);
+            return inflater.inflate(itemViewReference,parent,false);
     }
 
     @Override

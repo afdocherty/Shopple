@@ -5,11 +5,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.kathu228.shoplog.Fragments.CollaboratorsDialogFragment;
 import com.example.kathu228.shoplog.Fragments.ListDetailsFragment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.ParseUser;
 
-public class ListDetailsActivity extends AppCompatActivity {
+import java.util.List;
+
+public class ListDetailsActivity extends AppCompatActivity implements CollaboratorsDialogFragment.CollaboratorsDialogListener{
+
+    private ListDetailsFragment listDetailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +27,15 @@ public class ListDetailsActivity extends AppCompatActivity {
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment, containing the ShopList Object ID
-        ListDetailsFragment listDetailsFragment = ListDetailsFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
-        ft.replace(R.id.itemlist_frame, listDetailsFragment);
+        listDetailsFragment = ListDetailsFragment.newInstance(getIntent().getStringExtra(ShopList.SHOPLIST_TAG));
+        ft.replace(R.id.details_frame, listDetailsFragment);
         // Complete the changes added above
         ft.commit();
+    }
+
+    // Access the data result passed to the activity here
+    @Override
+    public void onFinishCollaboratorsDialog(List<ParseUser> newPeople) {
+        listDetailsFragment.addNewPeople(newPeople);
     }
 }

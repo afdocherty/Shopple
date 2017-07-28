@@ -10,6 +10,8 @@ import com.example.kathu228.shoplog.Fragments.FriendlistFragment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
+@Deprecated
+// This is now done using Modal Overlay (CollaboratorsDialogFragment)
 public class AddPeopleActivity extends AppCompatActivity implements FriendlistFragment.FriendFragmentListener {
 
     private ShopList shoplist;
