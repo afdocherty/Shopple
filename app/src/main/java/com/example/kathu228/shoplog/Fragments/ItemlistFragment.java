@@ -260,7 +260,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     private void startLiveQueries() {
-        //TODO- Live Queries
+        //Live Queries
         shopList.startItemLiveQuery(new SubscriptionHandling.HandleEventsCallback<Item>() {
             @Override
             public void onEvents(ParseQuery<Item> query, SubscriptionHandling.Event event, Item object) {
@@ -289,21 +289,22 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     // add segment header to UI
-    private void addSegmentToUI(Item newSegHeader) {
-        int pos = items.indexOf(segments.get(0).getHeader());
-        items.add(pos, newSegHeader);
-        segments.add(0, newSegHeader.getSegment());
+    private void addSegmentToUI(Item newSegHeader){
+        Item header = shopList.getCompletedHeader();
+        if (segments.size()>0)
+            header = segments.get(0).getHeader();
+        int pos = items.indexOf(header);
+        items.add(pos,newSegHeader);
+        segments.add(0,newSegHeader.getSegment());
         itemAdapter.notifyItemInserted(pos);
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
-    private void addItemToUI(@Nullable Segment segment, Item item) {
-        int newPos;
-        if (segment != null)
-            newPos = items.indexOf(segment.getHeader()) + 1;
-        else
-            newPos = 0;
-        items.add(newPos, item);
+    private void addItemToUI(Item item, @Nullable Segment segment){
+        int newPos=0;
+        if (segment!=null)
+            newPos = items.indexOf(segment.getHeader())+1;
+        items.add(newPos,item);
         itemAdapter.notifyItemInserted(newPos);
     }
 

@@ -79,7 +79,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, just close
                         // the dialog box and do nothing
-                        notifyDataSetChanged();
+                        notifyItemChanged(position);
                         dialog.cancel();
                     }
                 });

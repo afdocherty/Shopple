@@ -70,7 +70,8 @@
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/ic_create_new_folder"
-            app:useCompatPadding="true" />
+            app:useCompatPadding="true"
+            />
 
 
     </RelativeLayout>
