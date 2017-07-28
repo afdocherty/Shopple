@@ -93,6 +93,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         addSegmentToUI(segHeader);
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -115,6 +117,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
             // construct the adapter
             itemAdapter = new ItemAdapter(items, shopList, v);
+
+
             // Set layout manager to position the items
             rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
             // Attach the adapter to the recyclerview to populate items

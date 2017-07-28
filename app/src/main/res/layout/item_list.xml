@@ -10,14 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/white"
-        app:cardElevation="1dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true">
 
         <ViewSwitcher
             android:id="@+id/vsListSwitcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:measureAllChildren="false">
+            android:measureAllChildren="false"
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/tvListName"
