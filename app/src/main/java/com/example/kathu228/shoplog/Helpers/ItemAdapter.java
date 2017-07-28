@@ -2,13 +2,18 @@ package com.example.kathu228.shoplog.Helpers;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.RippleDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -178,11 +183,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Used to cache the views within the item layout for fast access
     public class ItemViewHolder extends BaseAdapter.ViewHolder {
         public CheckBox cbItem;
+        private RippleDrawable rippleDrawable;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
 
             cbItem = (CheckBox) itemView.findViewById(R.id.cbItem);
+            rippleDrawable = (RippleDrawable) cbItem.getBackground();
+
 
             //adds onclicklistener to checkbox, to update object's state once you check it
             cbItem.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +198,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 public void onClick(View v) {
                     if (isCategorizing != (null)){
                         cbItem.setChecked(!cbItem.isChecked());
+                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.divider)));
                         handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
                     }
                     else {
@@ -197,7 +206,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     }
                 }
             });
-
 
         }
 
@@ -219,7 +227,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     // TODO: replace with finding header position
                     mlist.remove(fromPos);
                     newSeg=isCategorizing;
-                    newPos=mlist.indexOf(categoryHeader)+1;
+                    newPos = getItemIndex(isCategorizing.getHeader())+1;
+                    //newPos=mlist.indexOf(categoryHeader)+1;
 
                 }
                 item.setSegment(newSeg,null);
@@ -263,7 +272,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             etHeader = (EditText)itemView.findViewById(R.id.etHeader);
             ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
 
-
+            // can edit category when click button
             ibCategorize.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -281,6 +290,36 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 }
             });
 
+            tvHeader.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if (isCategorizing!=null){
+                        final String prevHeaderName = tvHeader.getText().toString();
+                        if (prevHeaderName.equals(isCategorizing.getName())){
+                            switcher.showNext();
+                            etHeader.setSelectAllOnFocus(true);
+                            etHeader.requestFocus();
+                            final InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(etHeader, InputMethodManager.SHOW_IMPLICIT);
+                            etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                                        String body = etHeader.getText().toString();
+                                        if ((!body.equals(""))&& (!body.equals(prevHeaderName))){
+                                            tvHeader.setText(body);
+                                            isCategorizing.setName(body, null);
+
+                                        }
+                                        switcher.showPrevious();
+                                    }
+                                    return false;
+                                }
+                            });
+                        }
+                    }
+                }
+            });
 
         }
     }
