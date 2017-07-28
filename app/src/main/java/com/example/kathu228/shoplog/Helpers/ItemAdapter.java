@@ -133,36 +133,36 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 notifyItemInserted(toPosition);
             }
         }
-//        else if (item.isHeader()){
-//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-//
-//            // set title
-//            alertDialogBuilder.setTitle("Clear category");
-//
-//            // set dialog message
-//            alertDialogBuilder
-//                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
-//                    .setCancelable(false)
-//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            // if this button is clicked, get rid of segment
-//                            removeSegment(item, position);
-//                        }
-//                    })
-//                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            // if this button is clicked, just close
-//                            // the dialog box and do nothing
-//                            notifyItemChanged(position);
-//                            dialog.cancel();
-//                        }
-//                    });
-//            // create alert dialog
-//            AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//            // show it
-//            alertDialog.show();
-//        }
+        else if (item.isHeader()){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            // set title
+            alertDialogBuilder.setTitle("Clear category");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, get rid of segment
+                            removeSegment(item, position);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            notifyItemChanged(position);
+                            dialog.cancel();
+                        }
+                    });
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
 
     }
 
@@ -255,7 +255,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public ViewSwitcher switcher;
         public EditText etHeader;
         public ImageButton ibCategorize;
-        public ImageButton ibClearSegHeader;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -272,7 +271,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categoryHeader = mlist.get(getAdapterPosition());
                         isCategorizing = categoryHeader.getSegment();
-                        ibClearSegHeader.setVisibility(View.VISIBLE);
                         categorizing(isCategorizing.getName(),ibCategorize,mview);
                     }
                     else {
@@ -378,7 +376,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         else {
             Item head = curSeg.getHeader();
-            int ind = mlist.indexOf(head);
+            int ind = getItemIndex(head);
             return (1 + ind);
         }
     }
@@ -426,21 +424,28 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Removes segment and make all items uncategorized
     private void removeSegment(Item item, int pos) {
         Segment curSegment = item.getSegment();
-//        List<Item> segItems = curSegment.getItems();
-//        for (Item segItem : segItems) {
-//            if (segItem.isItem()) {
-//                int fromPos = mlist.indexOf(segItem);
-//                if (fromPos>-1){
-//                    deleteItem(fromPos);
-//                    segItem.setSegment(listTest.getUncategorizedSegment(), null);
-//                    addItem(segItem, 0);
-//                }
-//            }
-//            else {
-//                deleteItem(pos);
-//                deleteItemFromList(segItem);
-//            }
-//        }
+        deleteItem(pos);
+        List<Item> segItems = curSegment.getItems();
+        for (Item segItem : segItems) {
+            if (segItem.isItem()) {
+                int fromPos = getItemIndex(segItem);
+                if (fromPos>-1){
+                    deleteItem(fromPos);
+                    addItem(segItem, 0);
+                }
+            }
+        }
+        listTest.removeSegment(curSegment);
+
+
+    }
+
+    private int getItemIndex(Item item){
+        for (int i=0; i<mlist.size(); i++){
+            if (item.getObjectId().equals(mlist.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
     }
 
 }
