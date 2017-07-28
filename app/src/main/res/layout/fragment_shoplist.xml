@@ -49,13 +49,13 @@
         android:id="@+id/fabAddShopList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:tint="@android:color/white"
+        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:useCompatPadding="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        app:srcCompat="@drawable/ic_add"
+        app:useCompatPadding="true" />
 
 </RelativeLayout>

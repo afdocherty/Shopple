@@ -93,6 +93,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         addSegmentToUI(segHeader);
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -110,7 +112,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
         // find the RecyclerView
         rvItems = (RecyclerView) v.findViewById(R.id.rvItem);
-//        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
+
         // initialize the array of items
         items = new ArrayList<>();
         // initialize the array of segments
