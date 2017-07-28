@@ -73,7 +73,7 @@ public class Segment extends BaseParseObject {
         Item header = getHeader();
         if (header != null){
             getHeader().setBody(value);
-            getHeader().saveInBackground(new SaveCallback() {
+            getHeader().nullableSaveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     nullableSaveInBackground(callback);

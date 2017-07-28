@@ -7,6 +7,7 @@ import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseLiveQueryClient;
 import com.parse.ParseObject;
 
 /**
@@ -14,6 +15,8 @@ import com.parse.ParseObject;
  */
 
 public class ParseApplication extends Application {
+
+    public static ParseLiveQueryClient parseLiveQueryClient;
 
     @Override
     public void onCreate() {
@@ -29,5 +32,7 @@ public class ParseApplication extends Application {
                 .server(getResources().getString(R.string.server) + "/parse").build());
 
         ParseFacebookUtils.initialize(this);
+
+        parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
     }
 }

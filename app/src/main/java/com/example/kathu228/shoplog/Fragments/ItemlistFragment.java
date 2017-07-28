@@ -29,6 +29,8 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.SubscriptionHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,8 +165,14 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         super.onResume();
         // Populate the items array
         addItems();
+        startLiveQueries();
     }
 
+    @Override
+    public void onPause() {
+        shopList.stopLiveQueries();
+        super.onPause();
+    }
 
     public void addItems() {
         // Clear the items list
@@ -208,5 +216,34 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 }
             });
         }
+    }
+
+    private void startLiveQueries(){
+        //TODO- Live Queries
+        shopList.startItemLiveQuery(new SubscriptionHandling.HandleEventsCallback<Item>() {
+            @Override
+            public void onEvents(ParseQuery<Item> query, SubscriptionHandling.Event event, Item object) {
+                Log.d("debug", "Item added");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Item added", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        shopList.startSegmentLiveQuery(new SubscriptionHandling.HandleEventsCallback<Segment>() {
+            @Override
+            public void onEvents(ParseQuery<Segment> query, SubscriptionHandling.Event event, Segment object) {
+                Log.d("debug", "Segment added");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Segment added", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 }
