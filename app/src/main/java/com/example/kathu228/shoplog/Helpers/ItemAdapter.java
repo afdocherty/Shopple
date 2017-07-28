@@ -27,6 +27,7 @@ import com.example.kathu228.shoplog.R;
 
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.make;
 import static com.example.kathu228.shoplog.R.layout.item;
 import static com.example.kathu228.shoplog.R.layout.item_header;
 
@@ -251,7 +252,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 cbItem.setChecked(false);
             }
             else{
-                toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
+                toPosition = 1+getItemIndex(listTest.getCompletedHeader());
                 cbItem.setChecked(true);
 
             }
@@ -422,7 +423,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // if click undo in snackbar, item will reappear in list unchecked
     public void undoDelete(final Item item, final int position, View v){
-        Snackbar.make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
+        make(v, item.getBody()+" deleted", Snackbar.LENGTH_LONG)
                 .addCallback(new Snackbar.Callback(){
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, int event) {
@@ -439,7 +440,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         }
                         int toPosition = newSegPosition(item);
                         addItem(item, toPosition);
-                        Snackbar snackbar1 = Snackbar.make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = make(v, item.getBody()+" restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
                 })
@@ -448,8 +449,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // opens snackbar to show which category you are currently editing and enables closure
     public void categorizing(final String categoryName, final ImageButton ibEdit, View v){
-       Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE)
-               .setAction("Done", new View.OnClickListener() {
+       Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
                        ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
