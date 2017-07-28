@@ -50,7 +50,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
 
-    private String shopListObjectId;
+    public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
 
@@ -66,6 +66,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         itemlistFragment.setArguments(args);
 
         return itemlistFragment;
+    }
+
+    public String getShopListObjectId() {
+        return shopListObjectId;
     }
 
     // Call this method to launch the edit dialog
@@ -95,7 +99,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
         try {
             // get id of shoplist
-            String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+            shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
             Log.d("ItemlistFragment", "objId: " + shopListObjectId);
             shopList = ShopList.getShopListById(shopListObjectId);
 
@@ -192,6 +196,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     @Override
     public void onResume() {
         super.onResume();
+        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        shopList = ShopList.getShopListById(shopListObjectId);
         // Populate the items array
         addItems();
     }

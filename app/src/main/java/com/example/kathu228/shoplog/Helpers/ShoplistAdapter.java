@@ -121,7 +121,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         Intent intent = new Intent(context, ItemListActivity.class);
                         // Pass in ShopList ObjectId
                         intent.putExtra(ShopList.SHOPLIST_TAG, shopList.getObjectId());
-                        intent.putExtra("listName", shopList.getName());
+                        intent.putExtra(ShopList.SHOPLIST_NEW_TAG, false);
                         context.startActivity(intent);
                     }
                 }
