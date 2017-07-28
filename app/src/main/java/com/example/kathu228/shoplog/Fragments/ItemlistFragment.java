@@ -49,6 +49,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ImageButton ibAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
+    private ArrayList<Segment> segments;
 
     private String shopListObjectId;
     private FloatingActionButton fabAddSegment;
@@ -82,8 +83,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     @Override
     public void onFinishSegmentDialog(Item segHeader) {
         // find completed header and add segment header right above
-        items.add(segHeader);
-        addItems();
+        addSegmentToUI(segHeader);
     }
 
     @Nullable
@@ -97,6 +97,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 //        rvCompleted = (RecyclerView) v.findViewById(R.id.rvCompleted);
         // initialize the array of items
         items = new ArrayList<>();
+        // initialize the array of segments
+        segments = new ArrayList<>();
 
         // get id of shoplist
         String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
@@ -194,6 +196,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void addItems() {
         // Clear the items list
         items.clear();
+        segments.clear();
         //addUncheckedItems();
         // getSegments does not include completed items
         // TODO: check order
@@ -205,6 +208,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     List<Item> mItems = segment.getItems();
                     items.addAll(mItems);
                 }
+                segments.addAll(objects);
                 shopList.getCheckedItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
@@ -233,5 +237,39 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 }
             });
         }
+    }
+
+    // add segment header to UI
+    private void addSegmentToUI(Item newSegHeader){
+        int pos = items.indexOf(segments.get(0).getHeader());
+        items.add(pos,newSegHeader);
+        segments.add(0,newSegHeader.getSegment());
+        itemAdapter.notifyItemInserted(pos);
+    }
+
+    // add item to segment if passed, else add to uncategorized (front-end)
+    private void addItemToUI(@Nullable Segment segment, Item item){
+        int newPos;
+        if (segment!=null)
+            newPos = items.indexOf(segment.getHeader())+1;
+        else
+            newPos = 0;
+        items.add(newPos,item);
+        itemAdapter.notifyItemInserted(newPos);
+    }
+
+    // delete item from UI
+    private void deleteItemFromUI(Item item){
+        int pos = items.indexOf(item);
+        items.remove(item);
+        itemAdapter.notifyItemRemoved(pos);
+    }
+
+    private int getItemIndex(Item item){
+        for (int i=0; i<items.size(); i++){
+            if (item.getObjectId().equals(items.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
     }
 }
