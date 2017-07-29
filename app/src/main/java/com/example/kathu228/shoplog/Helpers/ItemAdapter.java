@@ -134,7 +134,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 item.setChecked(true, null);
                 mlist.remove(position);
                 notifyItemRemoved(position);
-                int toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
+                int toPosition = 1+getItemIndex(listTest.getCompletedHeader());
                 mlist.add(toPosition,item);
                 notifyItemInserted(toPosition);
             }
@@ -229,7 +229,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     mlist.remove(fromPos);
                     newSeg=isCategorizing;
                     newPos = getItemIndex(isCategorizing.getHeader())+1;
-                    //newPos=mlist.indexOf(categoryHeader)+1;
+                    //newPos=getItemIndex(categoryHeader)+1;
 
                 }
                 item.setSegment(newSeg,null);
