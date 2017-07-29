@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,86 +59,86 @@ public class CollaboratorsDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_collab_dialog, container);
 
-        try {
-            shopList = ShopList.getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG));
-
-            // Close Button
-            ivCloseDialog = (ImageView) v.findViewById(R.id.ivCloseDialog);
-            ivCloseDialog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
-
-            peopleAdded = new ArrayList<>();
-            //find recycler view
-            rvPeople= (RecyclerView) v.findViewById(R.id.people_list);
-            //init the ArrayList (data source) to users not in shoplist
-            shopList.getUsersNotInList(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    people = objects;
-                    //construct the adapter from this data source
-                    peopleAdapter = new ModalFriendListAdapter(people, R.layout.item_person, CollaboratorsDialogFragment.this, getActivity());
-                    //RecyclerView setup (layout manager, use adapter)
-                    rvPeople.setLayoutManager(new LinearLayoutManager(getContext()));
-                    //set the adapter
-                    rvPeople.setAdapter(peopleAdapter);
-                }
-            });
-
-            //Shows a toast with the name of the first user of this list UNNECESSARY
-            shopList.getUserList(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    //Toast.makeText(getContext(),Query.getNameOfUser(objects.get(0)),Toast.LENGTH_LONG).show();
-                }
-            });
-
-            tvPeopleAdded = (TextView) v.findViewById(R.id.tvPeopleAdded);
-            confirmBtn = (Button) v.findViewById(R.id.confirmBtn);
-
-            tvPeopleAdded.setText("No people added");
-            confirmBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    shopList.addUsers(peopleAdded, new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            // Return new people back to activity through the implemented listener
-                            CollaboratorsDialogListener listener = (CollaboratorsDialogListener) getActivity();
-                            listener.onFinishCollaboratorsDialog(peopleAdded);
-                            // Close the dialog and return back to the parent activity
-                            dismiss();
-                        }
-                    });
-                }
-            });
-        } catch (NullPointerException e) {
-            Log.d("ListDetailsFragment", "ShopList not found by id");
-            throw e;
+        // Make sure the list with the specified shopListObjectId exists
+        String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
+        if (shopListObjectId == null || ShopList.getShopListById(shopListObjectId) == null) {
+            throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
+        shopList = ShopList.getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG));
+
+        // Close Button
+        ivCloseDialog = (ImageView) v.findViewById(R.id.ivCloseDialog);
+        ivCloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        peopleAdded = new ArrayList<>();
+        //find recycler view
+        rvPeople = (RecyclerView) v.findViewById(R.id.people_list);
+        //init the ArrayList (data source) to users not in shoplist
+        shopList.getUsersNotInList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                people = objects;
+                //construct the adapter from this data source
+                peopleAdapter = new ModalFriendListAdapter(people, R.layout.item_person, CollaboratorsDialogFragment.this, getActivity());
+                //RecyclerView setup (layout manager, use adapter)
+                rvPeople.setLayoutManager(new LinearLayoutManager(getContext()));
+                //set the adapter
+                rvPeople.setAdapter(peopleAdapter);
+            }
+        });
+
+        //Shows a toast with the name of the first user of this list UNNECESSARY
+        shopList.getUserList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                //Toast.makeText(getContext(),Query.getNameOfUser(objects.get(0)),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        tvPeopleAdded = (TextView) v.findViewById(R.id.tvPeopleAdded);
+        confirmBtn = (Button) v.findViewById(R.id.confirmBtn);
+
+        tvPeopleAdded.setText("No people added");
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shopList.addUsers(peopleAdded, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        // Return new people back to activity through the implemented listener
+                        CollaboratorsDialogListener listener = (CollaboratorsDialogListener) getActivity();
+                        listener.onFinishCollaboratorsDialog(peopleAdded);
+                        // Close the dialog and return back to the parent activity
+                        dismiss();
+                    }
+                });
+            }
+        });
 
         return v;
     }
 
-    public void addPerson(ParseUser person){
+    public void addPerson(ParseUser person) {
         peopleAdded.add(person);
         tvPeopleAdded.setText(formatNumPeople(peopleAdded.size()));
     }
 
-    public void removePerson(ParseUser person){
+    public void removePerson(ParseUser person) {
         peopleAdded.remove(person);
         tvPeopleAdded.setText(formatNumPeople(peopleAdded.size()));
     }
 
-    private String formatNumPeople(int numPeople){
+    private String formatNumPeople(int numPeople) {
         if (numPeople == 1)
             return "1 person added";
         else if (numPeople == 0)
             return "No people added";
         else
-            return String.format("%s people added",numPeople);
+            return String.format("%s people added", numPeople);
     }
 }

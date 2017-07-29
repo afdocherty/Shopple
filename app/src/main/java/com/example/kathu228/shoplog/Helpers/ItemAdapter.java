@@ -453,7 +453,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightgray));
+                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.sand));
                        isCategorizing = null;
                        categoryHeader = null;
                    }

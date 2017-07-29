@@ -1,6 +1,7 @@
 package com.example.kathu228.shoplog.Fragments;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -29,10 +31,12 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SubscriptionHandling;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by afdoch on 7/18/17.
@@ -47,6 +51,21 @@ public class ShopListFragment extends Fragment {
     private FloatingActionButton fabAddShopList;
     private TextView tvDirection;
     private ImageView ivDirection;
+
+    public class OverlapDecoration extends RecyclerView.ItemDecoration {
+
+        private final static int vertOverlap = -90;
+
+        @Override
+        public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            final int itemPosition = parent.getChildAdapterPosition(view);
+            if (itemPosition == 0) {
+                return; }
+            outRect.set(0, vertOverlap, 0, 0);
+
+
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +84,8 @@ public class ShopListFragment extends Fragment {
         shopLists = new ArrayList<>();
         // construct the adapter
         shoplistAdapter = new ShoplistAdapter(shopLists, R.layout.item_list);
+
+        rvShopList.addItemDecoration(new OverlapDecoration());
         // Set layout manager to position the items
         rvShopList.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -85,9 +106,8 @@ public class ShopListFragment extends Fragment {
         fabAddShopList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                // Create a new list as the current user, automatically naming it w/ timestamp
-                ShopList.getInstance("New List on " + currentDateTimeString, new ShopList.ShoplistCallback() {
+                // Create a new list as the current user, automatically naming it w/ date
+                ShopList.getInstance("List on " + formatNewListDate(), new ShopList.ShoplistCallback() {
                     @Override
                     public void done(ShopList list) {
                         //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);
@@ -198,5 +218,15 @@ public class ShopListFragment extends Fragment {
             tvDirection.setVisibility(View.GONE);
             ivDirection.setVisibility(View.GONE);
         }
+    }
+
+    // Get date in specified format for time-stamping new, unnamed lists
+    private String formatNewListDate() {
+        // (1) get today's date
+        Date today = Calendar.getInstance().getTime();
+        // (2) create a date "formatter" (the date format we want)
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        // (3) create a new String using the date format we want
+        return formatter.format(today);
     }
 }
