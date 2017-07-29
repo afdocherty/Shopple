@@ -136,7 +136,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 item.setChecked(true, null);
                 mlist.remove(position);
                 notifyItemRemoved(position);
-                int toPosition = 1+mlist.indexOf(listTest.getCompletedHeader());
+                int toPosition = 1+getItemIndex(listTest.getCompletedHeader());
                 mlist.add(toPosition,item);
                 notifyItemInserted(toPosition);
             }

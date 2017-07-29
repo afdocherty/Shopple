@@ -6,11 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +29,7 @@ import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SubscriptionHandling;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -46,13 +45,12 @@ import java.util.List;
 public class ItemlistFragment extends Fragment implements SegmentDialogFragment.SegmentDialogListener {
 
     // parameters
-    private SwipeRefreshLayout swipeContainer;
+    //private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvItems;
     private EditText etAddItem;
     private ImageButton ibAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
-    private ArrayList<Segment> segments;
 
     public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
@@ -101,10 +99,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_itemlist, container, false);
+
         // Make sure the list with the specified shopListObjectId exists
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
 
-        if (ShopList.getShopListById(shopListObjectId) == null) {
+        if (shopListObjectId == null || ShopList.getShopListById(shopListObjectId) == null) {
             throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
 
@@ -115,8 +114,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
         // initialize the array of items
         items = new ArrayList<>();
-        // initialize the array of segments
-        segments = new ArrayList<>();
 
         // construct the adapter
         itemAdapter = new ItemAdapter(items, shopList, v);
@@ -177,23 +174,37 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     }
                 });
 
-        // attaches touchHelper to the recyclerview
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(itemAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(rvItems);
+            // 3rd-party workaround to catch keyboard open/close events
+            KeyboardVisibilityEvent.setEventListener(
+                    getActivity(),
+                    new KeyboardVisibilityEventListener() {
+                        @Override
+                        public void onVisibilityChanged(boolean isOpen) {
+                            if (isOpen) {
+                                fabAddSegment.setVisibility(View.INVISIBLE);
+                            } else {
+                                fabAddSegment.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
 
-        //find the swipe refresh layout and add the onRefreshListener
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        //swipeContainer.setColorSchemeResources(R.color.);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //call method to repopulate the timeline
-                addItems();
-                swipeContainer.setRefreshing(false);
-            }
-        });
+            // attaches touchHelper to the recyclerview
+            ItemTouchHelper.Callback callback =
+                    new SimpleItemTouchHelperCallback(itemAdapter);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            touchHelper.attachToRecyclerView(rvItems);
+
+//            //find the swipe refresh layout and add the onRefreshListener
+//            swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+//            //swipeContainer.setColorSchemeResources(R.color.);
+//            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//                @Override
+//                public void onRefresh() {
+//                    //call method to repopulate the timeline
+//                    addItems();
+//                    swipeContainer.setRefreshing(false);
+//                }
+//            });
 
         return v;
 }
@@ -218,7 +229,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void addItems() {
         // Clear the items list
         items.clear();
-        segments.clear();
         //addUncheckedItems();
         // getSegments does not include completed items
         // TODO: check order
@@ -230,7 +240,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     List<Item> mItems = segment.getItems();
                     items.addAll(mItems);
                 }
-                segments.addAll(objects);
                 shopList.getCheckedItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
@@ -265,33 +274,63 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         //Live Queries
         shopList.startItemLiveQuery(new SubscriptionHandling.HandleEventsCallback<Item>() {
             @Override
-            public void onEvents(ParseQuery<Item> query, SubscriptionHandling.Event event, Item object) {
-                Log.d("debug", "Item added");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Item added", Toast.LENGTH_LONG).show();
-                    }
-                });
+            public void onEvents(ParseQuery<Item> query, final SubscriptionHandling.Event event, final Item object) {
+                if (!object.getEditSession().equals(ParseUser.getCurrentUser().getSessionToken())){
+                    ItemlistFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (event){
+                                case CREATE:
+                                    addItemToUI(object);
+                                    break;
+                                case UPDATE:
+                                    deleteItemFromUI(object);
+                                    addItemToUI(object);
+                                    break;
+                                case LEAVE:
+                                    deleteItemFromUI(object);
+                                    break;
+                                case DELETE:
+                                    deleteItemFromUI(object);
+                                    break;
+                            }
+                        }
+                    });
+                }
             }
         });
 
         shopList.startSegmentLiveQuery(new SubscriptionHandling.HandleEventsCallback<Segment>() {
             @Override
-            public void onEvents(ParseQuery<Segment> query, SubscriptionHandling.Event event, Segment object) {
-                Log.d("debug", "Segment added");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Segment added", Toast.LENGTH_LONG).show();
-                    }
-                });
+            public void onEvents(ParseQuery<Segment> query, final SubscriptionHandling.Event event, final Segment object) {
+                if (!object.getEditSession().equals(ParseUser.getCurrentUser().getSessionToken())){
+                    ItemlistFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            switch (event){
+                                case ENTER:
+                                    addSegmentToUI(object.getHeader());
+                                    break;
+//                                case CREATE:
+//                                    addSegmentToUI(object.getHeader());
+//                                    break;
+                                case UPDATE:
+                                    updateSegmentInUI(object);
+                                    break;
+                                case DELETE:
+                                    deleteItemFromUI(object.getHeader());
+                                    break;
+                            }
+                        }
+                    });
+                }
             }
         });
     }
 
     // add segment header to UI
     private void addSegmentToUI(final Item newSegHeader){
+<<<<<<< HEAD
         Item header = shopList.getCompletedHeader();
         if (segments.size()>0)
             header = segments.get(0).getHeader();
@@ -299,26 +338,70 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         items.add(pos,newSegHeader);
         segments.add(0,newSegHeader.getSegment());
         itemAdapter.notifyItemInserted(pos);
+=======
+        shopList.getSegments(new FindCallback<Segment>() {
+            @Override
+            public void done(List<Segment> objects, ParseException e) {
+                Item header = shopList.getCompletedHeader();
+                if (objects.size()>1)
+                    header = objects.get(1).getHeader();
+                int pos = getItemIndex(header);
+                items.add(pos, newSegHeader);
+                itemAdapter.notifyItemInserted(pos);
+            }
+        });
+    }
+
+    private void updateSegmentInUI(Segment segment){
+        int index = getItemIndex(segment.getHeader());
+        items.remove(index);
+        items.add(index,segment.getHeader());
+        itemAdapter.notifyItemChanged(index);
+>>>>>>> 04606c6a8110bed0891aeaf00fb29e676f80623a
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
-    private void addItemToUI(Item item, @Nullable Segment segment){
-        int newPos=0;
-        if (segment!=null)
-            newPos = items.indexOf(segment.getHeader())+1;
-        items.add(newPos,item);
-        itemAdapter.notifyItemInserted(newPos);
+    private void addItemToUI(Item item){
+        if (item.isChecked()){
+            int newPos = getItemIndex(shopList.getCompletedHeader())+1;
+            items.add(newPos,item);
+            itemAdapter.notifyItemInserted(newPos);
+        } else {
+            Segment segment = item.getSegment();
+            int newPos = 0;
+            if (!segment.getObjectId().equals(shopList.getUncategorizedSegment().getObjectId()))
+                newPos = getItemIndex(segment.getHeader()) + 1;
+            items.add(newPos, item);
+            itemAdapter.notifyItemInserted(newPos);
+        }
     }
+
+//    private void updateItemInUI(Item item){
+//        int pos = getItemIndex(item);
+//        items.remove(pos);
+//        int newPos = 0;
+//        if (item.isChecked())
+//            newPos = getItemIndex(shopList.getCompletedHeader())+1;
+//        else if (!item.getSegment().getObjectId().equals(shopList.getUncategorizedSegment().getObjectId()))
+//            newPos = getItemIndex(item.getSegment().getHeader()) + 1;
+//        itemAdapter.notifyItemMoved(pos,newPos);
+//    }
 
     // delete item from UI
-    private void deleteItemFromUI(Item item) {
-        int pos = items.indexOf(item);
-        items.remove(item);
-        itemAdapter.notifyItemRemoved(pos);
+    private void deleteItemFromUI(Item item){
+        int pos = getItemIndex(item);
+        if (pos == -1)
+            Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
+            //throw new IndexOutOfBoundsException(String.format("Item %s wasn't found on the local arraylist", item.getBody()));
+        else {
+            items.remove(pos);
+            itemAdapter.notifyItemRemoved(pos);
+        }
     }
 
-    private int getItemIndex(Item item) {
-        for (int i = 0; i < items.size(); i++) {
+    private int getItemIndex(Item item){
+        for (int i=0; i<items.size(); i++){
+            item.fetchWhenNeeded();
             if (item.getObjectId().equals(items.get(i).getObjectId()))
                 return i;
         }

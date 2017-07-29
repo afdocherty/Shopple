@@ -61,7 +61,7 @@ public class CollaboratorsDialogFragment extends DialogFragment {
 
         // Make sure the list with the specified shopListObjectId exists
         String shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        if (ShopList.getShopListById(shopListObjectId) == null) {
+        if (shopListObjectId == null || ShopList.getShopListById(shopListObjectId) == null) {
             throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
         shopList = ShopList.getShopListById(getArguments().getString(ShopList.SHOPLIST_TAG));
