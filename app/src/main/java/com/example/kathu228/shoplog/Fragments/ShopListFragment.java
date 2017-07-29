@@ -1,13 +1,11 @@
 package com.example.kathu228.shoplog.Fragments;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -51,21 +49,6 @@ public class ShopListFragment extends Fragment {
     private TextView tvDirection;
     private ImageView ivDirection;
 
-    public class OverlapDecoration extends RecyclerView.ItemDecoration {
-
-        private final static int vertOverlap = -90;
-
-        @Override
-        public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            final int itemPosition = parent.getChildAdapterPosition(view);
-            if (itemPosition == 0) {
-                return; }
-            outRect.set(0, vertOverlap, 0, 0);
-
-
-        }
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,17 +67,10 @@ public class ShopListFragment extends Fragment {
         // construct the adapter
         shoplistAdapter = new ShoplistAdapter(shopLists, R.layout.item_list);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        //rvShopList.addItemDecoration(new OverlapDecoration());
         // Set layout manager to position the items
-        rvShopList.setLayoutManager(mLayoutManager);
+        rvShopList.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
         rvShopList.setAdapter(shoplistAdapter);
-
-
-        RecyclerView.ItemDecoration mDividerItemDecoration = new DividerItemDecoration(rvShopList.getContext(),
-                mLayoutManager.getOrientation());
-        rvShopList.addItemDecoration(mDividerItemDecoration);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(shoplistAdapter);
