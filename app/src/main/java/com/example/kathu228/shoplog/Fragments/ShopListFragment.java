@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -83,11 +84,17 @@ public class ShopListFragment extends Fragment {
         // construct the adapter
         shoplistAdapter = new ShoplistAdapter(shopLists, R.layout.item_list);
 
-        rvShopList.addItemDecoration(new OverlapDecoration());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        //rvShopList.addItemDecoration(new OverlapDecoration());
         // Set layout manager to position the items
-        rvShopList.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvShopList.setLayoutManager(mLayoutManager);
         // Attach the adapter to the recyclerview to populate items
         rvShopList.setAdapter(shoplistAdapter);
+
+
+        RecyclerView.ItemDecoration mDividerItemDecoration = new DividerItemDecoration(rvShopList.getContext(),
+                mLayoutManager.getOrientation());
+        rvShopList.addItemDecoration(mDividerItemDecoration);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(shoplistAdapter);

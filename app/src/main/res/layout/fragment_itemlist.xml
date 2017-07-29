@@ -29,18 +29,20 @@
                 android:background="@null"
                 android:elevation="0dp"
                 android:gravity="center"
-                android:tint="@color/colorAccent"
+                android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add" />
 
             <EditText
                 android:id="@+id/etAddItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/checkbox_margin"
                 android:layout_toEndOf="@+id/ibAddItem"
+                android:backgroundTint="@color/colorPrimaryLight"
                 android:hint="@string/item_hint"
                 android:inputType="textCapSentences"
-                android:textColor="@color/lightgray"
+                android:textColor="@color/secondary_text"
                 android:textSize="@dimen/body_size" />
 
         </RelativeLayout>
@@ -66,7 +68,7 @@
             android:layout_alignParentEnd="true"
             android:clickable="true"
             android:tint="@color/white"
-            app:backgroundTint="@color/colorAccent"
+            app:backgroundTint="@color/colorPrimary"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/ic_create_new_folder"

@@ -42,15 +42,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private List<Item> mlist;
     ShopList listTest;
     View mview;
-    Segment isCategorizing;
+    Segment categorySegment;
     Item categoryHeader;
+    Boolean isEditing;
 
     public ItemAdapter(List<Item> mlist, ShopList listTest, View v) {
         this.mlist = mlist;
         this.listTest = listTest;
         this.mview = v;
-        this.isCategorizing = null;
+        this.categorySegment = null;
         this.categoryHeader = null;
+        this.isEditing = false;
     }
 
     @Override
@@ -197,9 +199,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             cbItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isCategorizing != (null)){
+                    if (categorySegment != (null)){
                         cbItem.setChecked(!cbItem.isChecked());
-                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.divider)));
+                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
                         handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
                     }
                     else {
@@ -216,7 +218,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             if (!item.isChecked()){
                 Segment itemSeg = item.getSegment();
                 String itemSegName = itemSeg.getName();
-                String segName = isCategorizing.getName();
+                String segName = categorySegment.getName();
                 Segment newSeg;
                 int newPos;
                 if (itemSegName.equals(segName)){
@@ -227,8 +229,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 else{
                     // TODO: replace with finding header position
                     mlist.remove(fromPos);
-                    newSeg=isCategorizing;
-                    newPos = getItemIndex(isCategorizing.getHeader())+1;
+                    newSeg= categorySegment;
+                    newPos = getItemIndex(categorySegment.getHeader())+1;
                     //newPos=mlist.indexOf(categoryHeader)+1;
 
                 }
@@ -277,11 +279,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ibCategorize.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isCategorizing==null){
+                    if (categorySegment ==null){
                         ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categoryHeader = mlist.get(getAdapterPosition());
-                        isCategorizing = categoryHeader.getSegment();
-                        categorizing(isCategorizing.getName(),ibCategorize,mview);
+                        categorySegment = categoryHeader.getSegment();
+                        categorizing(categorySegment.getName(),ibCategorize,mview);
                     }
                     else {
                         return;
@@ -294,9 +296,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             tvHeader.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    if (isCategorizing!=null){
+                    if (categorySegment !=null){
                         final String prevHeaderName = tvHeader.getText().toString();
-                        if (prevHeaderName.equals(isCategorizing.getName())){
+                        if (prevHeaderName.equals(categorySegment.getName())){
                             switcher.showNext();
                             etHeader.setSelectAllOnFocus(true);
                             etHeader.requestFocus();
@@ -309,7 +311,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                                         String body = etHeader.getText().toString();
                                         if ((!body.equals(""))&& (!body.equals(prevHeaderName))){
                                             tvHeader.setText(body);
-                                            isCategorizing.setName(body, null);
+                                            categorySegment.setName(body, null);
 
                                         }
                                         switcher.showPrevious();
@@ -449,16 +451,21 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // opens snackbar to show which category you are currently editing and enables closure
     public void categorizing(final String categoryName, final ImageButton ibEdit, View v){
-       Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
+       final Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.sand));
-                       isCategorizing = null;
+                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
+                       categorySegment = null;
                        categoryHeader = null;
                    }
                })
-               .show();
+                .show();
+    }
+
+    private void closeSnackbar(Snackbar snackbar, ImageButton ibEdit){
+        snackbar.dismiss();
+        ibEdit = null;
     }
 
     // Removes segment and make all items uncategorized

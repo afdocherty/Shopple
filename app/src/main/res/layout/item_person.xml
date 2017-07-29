@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="@dimen/body_size"
         android:layout_marginLeft="@dimen/checkbox_margin"
-        app:buttonTint="@color/secondary_text"
+        app:buttonTint="@color/primary_text"
         android:layout_marginTop="@dimen/padding"
         />
 </LinearLayout>

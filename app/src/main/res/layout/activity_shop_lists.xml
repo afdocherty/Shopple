@@ -21,13 +21,12 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/your_lists"
-                android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_textSize"
-                android:id="@+id/textView3" />
+                android:textSize="@dimen/toolbar_textSize" />
 
             <ImageView
                 android:id="@+id/ivLogoutBtn"

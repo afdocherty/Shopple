@@ -291,7 +291,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     // add segment header to UI
-    private void addSegmentToUI(Item newSegHeader){
+    private void addSegmentToUI(final Item newSegHeader){
         Item header = shopList.getCompletedHeader();
         if (segments.size()>0)
             header = segments.get(0).getHeader();

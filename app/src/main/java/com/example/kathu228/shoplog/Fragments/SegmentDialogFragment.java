@@ -22,6 +22,7 @@ import com.example.kathu228.shoplog.R;
  * Created by kathu228 on 7/23/17.
  * Pops up when adding a segment and asks for name of new segment
  */
+//TODO: Check if category is adding when dialog "add" is clicked
 public class SegmentDialogFragment extends DialogFragment {
     private EditText etNewSegment;
     private Button bCancelSegment;
