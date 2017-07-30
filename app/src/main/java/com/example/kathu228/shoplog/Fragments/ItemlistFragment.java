@@ -330,15 +330,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     // add segment header to UI
     private void addSegmentToUI(final Item newSegHeader){
-<<<<<<< HEAD
-        Item header = shopList.getCompletedHeader();
-        if (segments.size()>0)
-            header = segments.get(0).getHeader();
-        int pos = items.indexOf(header);
-        items.add(pos,newSegHeader);
-        segments.add(0,newSegHeader.getSegment());
-        itemAdapter.notifyItemInserted(pos);
-=======
         shopList.getSegments(new FindCallback<Segment>() {
             @Override
             public void done(List<Segment> objects, ParseException e) {
@@ -357,7 +348,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         items.remove(index);
         items.add(index,segment.getHeader());
         itemAdapter.notifyItemChanged(index);
->>>>>>> 04606c6a8110bed0891aeaf00fb29e676f80623a
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
