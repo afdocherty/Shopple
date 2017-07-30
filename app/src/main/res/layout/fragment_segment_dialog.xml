@@ -3,54 +3,81 @@
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:layout_gravity="center" android:orientation="vertical"  >
 
-    <TextView
-        android:id="@+id/tvNewSegment"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Category:"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_margin="@dimen/add_margin"/>
+        android:background="@color/colorPrimary">
 
-    <EditText
-        android:id="@+id/etNewSegment"
-        android:layout_width="254dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvNewSegment"
-        android:hint="e.g. Fruits and Vegetables"
-        android:imeOptions="actionDone"
-        android:textColor="@color/white"
-        android:layout_marginLeft="@dimen/add_margin"
-        android:layout_marginRight="@dimen/add_margin"
-        android:inputType="textCapSentences"/>
+        <TextView
+            android:id="@+id/tvNewSegment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/add_margin"
+            android:text="Create New Category"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/body_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_weight"
+        android:background="@color/colorPrimaryLight"/>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTitle"
+        android:background="@color/white">
 
-        <Button
-            android:id="@+id/bCancelSegment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary"
-            android:text="Cancel"
-            android:textStyle="bold"
-            android:layout_margin="@dimen/add_margin"/>
-
-        <Button
-            android:id="@+id/bAddSegment"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etNewSegment"
+            android:layout_width="254dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary"
-            android:text="Create"
-            android:textStyle="bold"
-            android:layout_margin="@dimen/add_margin"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/add_margin"
+            android:layout_marginRight="@dimen/add_margin"
+            android:backgroundTint="@color/colorPrimaryLight"
+            android:hint="e.g. Fruits and Vegetables"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/sub_size"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/etNewSegment">
+
+            <Button
+                android:id="@+id/bCancelSegment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="84dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Cancel"
+                android:textColor="@color/lightGray"
+                android:textStyle="bold"
+                android:layout_alignBaseline="@+id/bAddSegment"
+                android:layout_alignBottom="@+id/bAddSegment"
+                android:layout_alignEnd="@+id/bAddSegment" />
+
+            <Button
+                android:id="@+id/bAddSegment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Create"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
     </RelativeLayout>
+
 
 </LinearLayout>
