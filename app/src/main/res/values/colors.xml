@@ -17,10 +17,7 @@
     <color name="darkOrange">#C64700</color>
     <color name="darkerOrange">#B72C00</color>
 
-    <color name="blue">#69D2E7</color>
-    <color name="lightBlue">#A7DBD8</color>
-    <color name="sand">#E0E4CC</color>
-
+    <!-- Kelly's 20 distinct colors -->
     <color name="kelly_1">#C10020</color>
     <color name="kelly_2">#00538A</color>
     <color name="kelly_3">#F4C800</color>
