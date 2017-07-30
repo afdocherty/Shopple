@@ -263,21 +263,19 @@ public class ShopList extends BaseParseObject {
     }
 
     public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
-        ParseQuery<Item> query = ParseQuery.getQuery(Item.class);
-        query.whereEqualTo("parent",this);
-        query.whereEqualTo("visible",true);
-        query.whereEqualTo("type",Item.ITEM);
-        query.whereNotEqualTo("edit_session",ParseUser.getCurrentUser().getSessionToken());
-        SubscriptionHandling<Item> subscriptionHandling = parseLiveQueryClient.subscribe(query);
+        currentItemLiveQuery = ParseQuery.getQuery(Item.class);
+        currentItemLiveQuery.whereEqualTo("parent",this);
+        currentItemLiveQuery.whereEqualTo("visible",true);
+        currentItemLiveQuery.whereEqualTo("type",Item.ITEM);
+        SubscriptionHandling<Item> subscriptionHandling = parseLiveQueryClient.subscribe(currentItemLiveQuery);
         subscriptionHandling.handleEvents(callback);
     }
 
     public void startSegmentLiveQuery(SubscriptionHandling.HandleEventsCallback<Segment> callback){
-        ParseQuery<Segment> query = new ParseQuery<>(Segment.class);
-        query.whereEqualTo("parent_list",this);
-        query.whereExists("header");
-        query.whereNotEqualTo("edit_session",ParseUser.getCurrentUser().getSessionToken());
-        SubscriptionHandling<Segment> subscriptionHandling = parseLiveQueryClient.subscribe(query);
+        currentSegmentLiveQuery = new ParseQuery<>(Segment.class);
+        currentSegmentLiveQuery.whereEqualTo("parent_list",this);
+        currentSegmentLiveQuery.whereExists("header");
+        SubscriptionHandling<Segment> subscriptionHandling = parseLiveQueryClient.subscribe(currentSegmentLiveQuery);
         subscriptionHandling.handleEvents(callback);
     }
 

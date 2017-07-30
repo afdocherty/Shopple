@@ -36,4 +36,9 @@ public class BaseParseObject extends ParseObject {
             e.printStackTrace();
         }
     }
+
+    public String getEditSession(){
+        fetchWhenNeeded();
+        return getString("edit_session");
+    }
 }

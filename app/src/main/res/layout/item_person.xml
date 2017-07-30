@@ -8,11 +8,10 @@
         android:id="@+id/cbName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/checkbox_margin"
+        android:layout_marginTop="@dimen/padding"
         android:text="Name"
         android:textColor="@color/secondary_text"
-        android:textSize="@dimen/body_size"
-        android:layout_marginLeft="@dimen/checkbox_margin"
-        app:buttonTint="@color/secondary_text"
-        android:layout_marginTop="@dimen/padding"
-        />
+        android:textSize="@dimen/sub_size"
+        app:buttonTint="@color/secondary_text" />
 </LinearLayout>

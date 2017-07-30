@@ -3,6 +3,9 @@ package com.example.kathu228.shoplog.Helpers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.RippleDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -98,6 +101,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         public TextView tvListName;
         public EditText etListName;
         public ViewSwitcher switcher;
+        private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
             // Stores the itemView in a public final member variable that can be used
@@ -107,10 +111,12 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
             switcher = (ViewSwitcher) itemView.findViewById(R.id.vsListSwitcher);
             etListName = (EditText) itemView.findViewById(R.id.etListName);
+            rippleDrawable = (RippleDrawable) tvListName.getBackground();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
                     // Gets ShopList position
                     int position = getAdapterPosition();
                     // Make sure the position is valid, i.e. actually exists in the view

@@ -2,18 +2,21 @@
 <resources>
     <color name="colorPrimary">@color/orange</color>
     <color name="colorPrimaryDark">@color/darkOrange</color>
-    <color name="colorPrimaryLight">@color/lightBlue</color>
-    <color name="colorAccent">@color/blue</color>
+    <color name="colorPrimaryLight">@color/lighterOrange</color>
+    <color name="colorAccent">@color/lightOrange</color>
     <color name="white">#ffffff</color>
-    <color name="lightgray">#9c9f8e</color>
-    <color name="divider">@color/sand</color>
-    <color name="secondary_text">#707266</color>
+    <color name="lightGray">#d3c9c5</color>
+    <color name="lighterGray">#f2f0ef</color>
+    <color name="divider">@color/lighterOrange</color>
+    <color name="primary_text">#433734</color>
+    <color name="secondary_text">#7b6b5e</color>
     <color name="black">#000000</color>
-    <color name="blue">#69D2E7</color>
-    <color name="lightBlue">#A7DBD8</color>
-    <color name="sand">#E0E4CC</color>
-    <color name="orange">#ff9122</color>
-    <color name="darkOrange">#FA6900</color>
+    <color name="lighterOrange">#ffa470</color>
+    <color name="lightOrange">#FF8039</color>
+    <color name="orange">#ff5c00</color>
+    <color name="darkOrange">#C64700</color>
+    <color name="darkerOrange">#B72C00</color>
+
     <!-- Kelly's 20 distinct colors -->
     <color name="kelly_1">#C10020</color>
     <color name="kelly_2">#00538A</color>

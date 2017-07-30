@@ -12,8 +12,9 @@
         android:layout_marginBottom="@dimen/padding"
         android:layout_marginLeft="@dimen/checkbox_margin"
         android:text="Item"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="@dimen/body_size"
-        app:buttonTint="@color/secondary_text" />
+        app:buttonTint="@color/primary_text"
+        android:background="?android:attr/selectableItemBackground"/>
 
 </RelativeLayout>
