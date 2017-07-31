@@ -1,19 +1,23 @@
 package com.example.kathu228.shoplog.Fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Activities.ShopListsActivity;
@@ -36,10 +40,11 @@ import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
  */
 public class ListDetailsFragment extends Fragment {
 
-    private CardView cvListName;
-    private CardView cvNotifications;
-    private CardView cvCollaborators;
-    private CardView cvLeaveList;
+    private RelativeLayout rlListName;
+    private RelativeLayout rlCollaboratorsTitle;
+    private RelativeLayout rlNotifications;
+    private RelativeLayout rlChangeIcon;
+    private RelativeLayout rlLeaveList;
 
     private TextView tvListName;
     private TextView tvNotifications;
@@ -48,6 +53,7 @@ public class ListDetailsFragment extends Fragment {
     private RecyclerView rvCollabs;
     private DetailsAdapter collabAdapter;
     private String shopListObjectId;
+    private ShopList shopList;
 
     private static final int M_NOTIFICATIONS_ID = 001; // Constant id to use for ItemListActivity
 
@@ -77,12 +83,14 @@ public class ListDetailsFragment extends Fragment {
             throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
 
-        // List Name Card
+        shopList = ShopList.getShopListById(shopListObjectId);
+
+        // List Name
         // Click on ivEditName to edit the name of the list
         tvListName = (TextView) v.findViewById(R.id.tvListName);
         tvListName.setText((ShopList.getShopListById(shopListObjectId)).getName());
-        cvListName = (CardView) v.findViewById(R.id.cvListName);
-        cvListName.setOnClickListener(new View.OnClickListener() {
+        rlListName = (RelativeLayout) v.findViewById(R.id.rlListName);
+        rlListName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -90,21 +98,38 @@ public class ListDetailsFragment extends Fragment {
 
                 // Set up the input
                 final EditText input = new EditText(getActivity());
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                // Specify the type of input expected
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(shopList.getName());
                 builder.setView(input);
+
+                // Adds item from edittext if press enter or done on keyboard
+                input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        }
+                        return false;
+                    }
+                });
 
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        (ShopList.getShopListById(shopListObjectId)).setName(input.getText().toString(), null);
+                        shopList.setName(input.getText().toString(), null);
                         tvListName.setText(input.getText().toString());
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        dialog.dismiss();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         dialog.cancel();
                     }
                 });
@@ -113,22 +138,7 @@ public class ListDetailsFragment extends Fragment {
             }
         });
 
-        // Notifications Card
-        cvNotifications = (CardView) v.findViewById(R.id.cvNotifications);
-        tvNotifications = (TextView) v.findViewById(R.id.tvNotifications);
-        // Set the notification text to the current notification state
-        tvNotifications.setText(toggleNotificationText(NotificationHandler.getNotificationStatus(shopListObjectId, getActivity())));
-        cvNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Toggle notifications
-                boolean result = NotificationHandler.toggleNotifications(shopListObjectId, getActivity());
-                // Set the notification text to the new notification state
-                tvNotifications.setText(toggleNotificationText(result));
-            }
-        });
-
-        // Collaborators Card
+        // Collaborators
         //find recycler view
         rvCollabs = (RecyclerView) v.findViewById(R.id.rvCollabs);
         //init the ArrayList (data source)
@@ -140,8 +150,8 @@ public class ListDetailsFragment extends Fragment {
         //set the adapter
         rvCollabs.setAdapter(collabAdapter);
 
-        cvCollaborators = (CardView) v.findViewById(R.id.cvCollaborators);
-        cvCollaborators.setOnClickListener(new View.OnClickListener() {
+        rlCollaboratorsTitle = (RelativeLayout) v.findViewById(R.id.rlCollaboratorsTitle);
+        rlCollaboratorsTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                    Intent i = new Intent(getActivity(), AddPeopleActivity.class);
@@ -155,9 +165,33 @@ public class ListDetailsFragment extends Fragment {
             }
         });
 
-        // Leave List Card
-        cvLeaveList = (CardView) v.findViewById(R.id.cvLeaveList);
-        cvLeaveList.setOnClickListener(new View.OnClickListener() {
+        // Notifications
+        rlNotifications = (RelativeLayout) v.findViewById(R.id.rlNotifications);
+        tvNotifications = (TextView) v.findViewById(R.id.tvNotifications);
+        // Set the notification text to the current notification state
+        tvNotifications.setText(toggleNotificationText(NotificationHandler.getNotificationStatus(shopListObjectId, getActivity())));
+        rlNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle notifications
+                boolean result = NotificationHandler.toggleNotifications(shopListObjectId, getActivity());
+                // Set the notification text to the new notification state
+                tvNotifications.setText(toggleNotificationText(result));
+            }
+        });
+
+        // Change Icon
+        rlChangeIcon = (RelativeLayout) v.findViewById(R.id.rlChangeIcon);
+        rlChangeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO change icon dialog
+            }
+        });
+
+        // Leave List
+        rlLeaveList = (RelativeLayout) v.findViewById(R.id.rlLeaveList);
+        rlLeaveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Prompt the user to confirm leaving the list
@@ -179,14 +213,13 @@ public class ListDetailsFragment extends Fragment {
                         }
                     }
                 };
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(), R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Leaving "+tvListName.getText().toString()).setMessage("Are you sure you want to leave?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
             }
         });
 
         return v;
-
     }
 
     @Override

@@ -8,12 +8,11 @@
     <color name="lightGray">#d3c9c5</color>
     <color name="lighterGray">#f2f0ef</color>
     <color name="divider">@color/lighterOrange</color>
-    <color name="primary_text">#464341</color>
+    <color name="primary_text">#433734</color>
     <color name="secondary_text">#7b6b5e</color>
     <color name="black">#000000</color>
-
     <color name="lighterOrange">#ffa470</color>
-    <color name="lightOrange">#FF8039</color>
+    <color name="lightOrange">#ff8039</color>
     <color name="orange">#ff5c00</color>
     <color name="darkOrange">#C64700</color>
     <color name="darkerOrange">#B72C00</color>

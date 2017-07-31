@@ -1,12 +1,12 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.RippleDrawable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -35,7 +36,7 @@ import static com.example.kathu228.shoplog.R.layout.item_header;
  * Created by kathu228 on 7/12/17.
  */
 
-public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter, YesNoDialogFragment.YesNoDialogListener{
 
     public Context context;
 
@@ -102,6 +103,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+
     @Override
     public int getItemViewType(int position) {
         if (mlist != null) {
@@ -142,34 +144,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         else if (item.isHeader()){
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-            // set title
-            alertDialogBuilder.setTitle("Clear category");
-
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, get rid of segment
-                            removeSegment(item, position);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
-                            notifyItemChanged(position);
-                            dialog.cancel();
-                        }
-                    });
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
+            showYesNoDialog("Clear Category", "Are you sure you want to delete the category, "+item.getBody()+"?", item);
         }
 
     }
@@ -340,39 +315,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
-
-                    // set title
-                    alertDialogBuilder.setTitle("Delete completed");
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setMessage("Are you sure you want to delete all completed items?")
-                            .setCancelable(false)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // if this button is clicked, delete all completed items
-                                    deleteItems(getAdapterPosition() + 1);
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // if this button is clicked, just close
-                                    // the dialog box and do nothing
-                                    dialog.cancel();
-                                }
-                            });
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
-
+                    showYesNoDialog("Empty Completed","Are you sure you want to delete all completed items?", mlist.get(getAdapterPosition()));
                 }
             });
         }
 
     }
+
+
 
     //deletes all completed items
     public void deleteItems(final int position) {
@@ -483,16 +433,49 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         listTest.removeSegment(curSegment);
-
-
     }
 
+    // handles deleting completed items
+    private void deleteCompleted(Boolean clear, Item completedHeader){
+        int position = getItemIndex(completedHeader);
+        if (clear)
+            deleteItems(position+1);
+    }
+
+    // handles clearing categories
+    private void clearCategory(Boolean clear, Item item){
+        int position = getItemIndex(item);
+        if (clear)
+            removeSegment(item,position);
+        else
+            notifyItemChanged(position);
+    }
+
+    // finds index of item in mlist
     private int getItemIndex(Item item){
         for (int i=0; i<mlist.size(); i++){
             if (item.getObjectId().equals(mlist.get(i).getObjectId()))
                 return i;
         }
         return -1;
+    }
+
+    // shows yes/no dialog
+    public void showYesNoDialog(String title, String question, Item mitem){
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem);
+//        YesNoDialogFragment yesNoDialogFragment = new YesNoDialogFragment();
+        yesNoDialogFragment.setListener(ItemAdapter.this);
+        yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+    }
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem) {
+        if (title.equals("Clear Category"))
+            clearCategory(yes,mitem);
+        else if (title.equals("Empty Completed"))
+            deleteCompleted(yes,mitem);
+
     }
 
 }

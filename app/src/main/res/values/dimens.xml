@@ -12,4 +12,7 @@
     <dimen name="trash_margin">20dp</dimen>
     <dimen name="toolbar_textSize">24sp</dimen>
     <dimen name="toolbar_iconSize">28dp</dimen>
+    <dimen name="neg_margin">-12dp</dimen>
+    <dimen name="divider_weight">2dp</dimen>
+    <dimen name="yesno_button_width">64dp</dimen>
 </resources>

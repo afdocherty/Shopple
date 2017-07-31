@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shoplog</string>
+    <string name="app_name">Shopple</string>
     <string name="fragment_friendlist_text">Test</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="login_button_message">Log in with Facebook</string>

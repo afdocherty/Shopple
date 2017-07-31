@@ -1,12 +1,14 @@
 package com.example.kathu228.shoplog.Activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Models.Query;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public Button loginButton;
     public ProgressBar pbLoading;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,15 @@ public class LoginActivity extends AppCompatActivity {
         // Fetch widgets
         loginButton = (Button) findViewById(R.id.login);
         pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
 
         // Set button invisible and progress bar visible
         loginButton.setVisibility(View.INVISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
+
+        // Set the font of the title & subtitle
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Billabong.ttf");
+        tvTitle.setTypeface(font);
 
         // Try login, in case already logged in
         attemptLoginSavedSession();

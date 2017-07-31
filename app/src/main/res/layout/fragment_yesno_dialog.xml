@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/edit_segment"
+    android:id="@+id/yesno"
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:layout_gravity="center" android:orientation="vertical"  >
 
@@ -10,11 +11,11 @@
         android:background="@color/colorPrimary">
 
         <TextView
-            android:id="@+id/tvNewSegment"
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/add_margin"
-            android:text="Create New Category"
+            android:text="Title"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/body_size"
@@ -31,8 +32,9 @@
         android:layout_below="@+id/rlTitle"
         android:background="@color/white">
 
-        <EditText
-            android:id="@+id/etNewSegment"
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_marginTop="@dimen/add_margin"
             android:layout_width="254dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -40,42 +42,40 @@
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
             android:backgroundTint="@color/colorPrimaryLight"
-            android:hint="e.g. Fruits and Vegetables"
-            android:imeOptions="actionDone"
-            android:inputType="textCapSentences"
+            android:text="Are you sure?"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/sub_size"/>
+            android:textSize="@dimen/sub_size" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/etNewSegment">
+            android:layout_below="@+id/tvQuestion">
 
             <Button
-                android:id="@+id/bCancelSegment"
+                android:id="@+id/bNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="84dp"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/bYes"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="Cancel"
-                android:textColor="@color/lightGray"
-                android:textStyle="bold"
-                android:layout_alignBaseline="@+id/bAddSegment"
-                android:layout_alignBottom="@+id/bAddSegment"
-                android:layout_alignEnd="@+id/bAddSegment" />
+                android:minWidth="@dimen/yesno_button_width"
+                android:text="No"
+                android:textColor="@color/secondary_text"
+                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/bAddSegment"
+                android:id="@+id/bYes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="Create"
+                android:text="Yes"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
-                />
+                android:minWidth="@dimen/yesno_button_width"
+                android:layout_marginRight="@dimen/add_margin"/>
         </RelativeLayout>
     </RelativeLayout>
 
