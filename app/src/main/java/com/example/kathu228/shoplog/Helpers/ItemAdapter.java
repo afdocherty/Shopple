@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -35,7 +36,7 @@ import static com.example.kathu228.shoplog.R.layout.item_header;
  * Created by kathu228 on 7/12/17.
  */
 
-public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter, YesNoDialogFragment.YesNoDialogListener{
 
     public Context context;
 
@@ -101,6 +102,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
 
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -493,6 +495,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 return i;
         }
         return -1;
+    }
+    public void showYesNoDialog(String title, String question){
+        //FragmentManager fm = ((Activity)context).getFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question);
+       // yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+    }
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title) {
+
     }
 
 }
