@@ -29,9 +29,6 @@ public class SegmentDialogFragment extends DialogFragment {
     private Button bAddSegment;
     private ShopList shopList;
 
-
-
-
     // Defines the listener interface
     public interface SegmentDialogListener {
         void onFinishSegmentDialog(Item segHeader);

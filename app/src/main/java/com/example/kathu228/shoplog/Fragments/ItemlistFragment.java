@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -42,7 +41,7 @@ import java.util.List;
  *
  */
 
-public class ItemlistFragment extends Fragment implements SegmentDialogFragment.SegmentDialogListener {
+public class ItemlistFragment extends Fragment implements SegmentDialogFragment.SegmentDialogListener{
 
     // parameters
     //private SwipeRefreshLayout swipeContainer;
@@ -77,7 +76,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     // Call this method to launch the edit dialog
     private void showSegmentDialog() {
         FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+//        FragmentTransaction ft = fm.beginTransaction();
         shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
         SegmentDialogFragment segmentDialogFragment = SegmentDialogFragment.newInstance(shopListObjectId);
         // SETS the target fragment for use later when sending results
@@ -90,7 +89,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // find completed header and add segment header right above
         addSegmentToUI(segHeader);
     }
-
 
 
     @Nullable
