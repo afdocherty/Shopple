@@ -1,5 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context="com.example.kathu228.shoplog.Fragments.ListDetailsFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivListIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/ic_check_box" />
+
+        <TextView
+            android:id="@+id/tvListName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/ivListIcon"
+            android:text="Groceries"
+            android:textColor="@color/black"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:id="@+id/ivEditName"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvListName"
+            app:srcCompat="@drawable/ic_edit"
+            android:tint="@color/black"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlCollaborators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlListName"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/tvEditCollab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Edit Collaborators"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivEditCollab"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignTop="@+id/tvEditCollab"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvEditCollab"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_people" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCollabs"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/ivEditCollab" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlCollaborators">
+
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Enable Notifications"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivToggleNotification"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignTop="@+id/tvNotifications"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvNotifications"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_add_alert" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlChangeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlNotifications">
+
+        <TextView
+            android:id="@+id/tvChangeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Change List Icon"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivChangeIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignTop="@+id/tvChangeIcon"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvChangeIcon"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_color_lens" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlLeaveList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlChangeIcon">
+
+        <TextView
+            android:id="@+id/tvLeaveList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Leave List"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivLeaveList"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignTop="@+id/tvLeaveList"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvLeaveList"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_add_alert" />
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

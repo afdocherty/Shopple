@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighterGray"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.kathu228.shoplog.Fragments.ListDetailsFragment">
 
