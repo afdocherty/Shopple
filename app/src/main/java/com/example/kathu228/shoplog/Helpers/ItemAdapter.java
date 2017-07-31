@@ -461,7 +461,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // shows yes/no dialog
-    public void showYesNoDialog(String title, String question, Item mitem){
+    public void showYesNoDialog(String title, String question, final Item mitem){
         FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
 //        FragmentTransaction ft = fm.beginTransaction();
         YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem);
@@ -475,7 +475,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             clearCategory(yes,mitem);
         else if (title.equals("Empty Completed"))
             deleteCompleted(yes,mitem);
-
     }
 
 }
