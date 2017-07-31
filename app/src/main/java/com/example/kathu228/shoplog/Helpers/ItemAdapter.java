@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.RippleDrawable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
@@ -144,34 +147,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         else if (item.isHeader()){
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            showYesNoDialog("Clear Category", "Are you sure you want to delete the category, "+item.getBody()+"?", item);
 
-            // set title
-            alertDialogBuilder.setTitle("Clear category");
-
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("Are you sure you want to delete category"+item.getBody()+" and move items to uncategorized?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, get rid of segment
-                            removeSegment(item, position);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
-                            notifyItemChanged(position);
-                            dialog.cancel();
-                        }
-                    });
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
         }
 
     }
@@ -485,8 +462,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         listTest.removeSegment(curSegment);
+    }
 
-
+    private void clearCategory(Boolean clear, Item item, int position){
+        if (clear)
+            removeSegment(item,position);
+        else
+            notifyItemChanged(position);
     }
 
     private int getItemIndex(Item item){
@@ -496,14 +478,20 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         return -1;
     }
-    public void showYesNoDialog(String title, String question){
-        //FragmentManager fm = ((Activity)context).getFragmentManager();
+    public void showYesNoDialog(String title, String question, Item mitem){
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
 //        FragmentTransaction ft = fm.beginTransaction();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question);
-       // yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem);
+//        YesNoDialogFragment yesNoDialogFragment = new YesNoDialogFragment();
+        yesNoDialogFragment.setListener(ItemAdapter.this);
+        yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title) {
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem) {
+        if (title.equals("Clear Category")){
+            Toast.makeText(context, "Cleared category",Toast.LENGTH_SHORT).show();
+        }
+            //clearCategory(yes,item,pos);
 
     }
 

@@ -30,11 +30,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlTitle"
-        android:layout_marginTop="@dimen/add_margin"
         android:background="@color/white">
 
         <TextView
             android:id="@+id/tvQuestion"
+            android:layout_marginTop="@dimen/add_margin"
             android:layout_width="254dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

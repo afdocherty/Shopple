@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
 
 /**
@@ -26,27 +27,30 @@ public class YesNoDialogFragment extends DialogFragment{
         mListener = listener;
     }
 
+
+
     // Defines the listener interface
     public interface YesNoDialogListener {
-        void onFinishYesNoDialog(Boolean yes, String title);
+        void onFinishYesNoDialog(Boolean yes, String title, Item mitem);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult(Boolean yes, String title) {
+    public void sendBackResult(Boolean yes, String title, Item mitem) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         YesNoDialogListener listener = (YesNoDialogListener) getTargetFragment();
-        listener.onFinishYesNoDialog(yes, title);
+        listener.onFinishYesNoDialog(yes, title, mitem);
         dismiss();
     }
 
     public YesNoDialogFragment(){
     }
 
-    public static YesNoDialogFragment newInstance(String title, String question) {
+    public static YesNoDialogFragment newInstance(String title, String question, Item mitem) {
         YesNoDialogFragment frag = new YesNoDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("question", question);
+        args.putParcelable("item", mitem);
         frag.setArguments(args);
         return frag;
     }
@@ -68,19 +72,39 @@ public class YesNoDialogFragment extends DialogFragment{
         // Fetch arguments from bundle and set title/question
         final String title = getArguments().getString("title");
         String question = getArguments().getString("question");
+        final Item item = getArguments().getParcelable("item");
         mTitle.setText(title);
         mQuestion.setText(question);
         // See if user selects yes or no
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(false, title);
+                sendBackResult(false, title, item);
             }
         });
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(true, title);
+                sendBackResult(true, title, item);
+            }
+        });
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+        final String title = getArguments().getString("title");
+        final Item item = getArguments().getParcelable("item");
+        mNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFinishYesNoDialog(false,title, item);
+            }
+        });
+        mYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFinishYesNoDialog(true, title, item);
             }
         });
     }
