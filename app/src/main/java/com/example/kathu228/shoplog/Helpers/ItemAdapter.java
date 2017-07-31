@@ -92,6 +92,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     ((HeaderViewHolder) holder).etHeader.setText(item.getBody());
+                    //((HeaderViewHolder) holder).vColor.
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -242,6 +243,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public ViewSwitcher switcher;
         public EditText etHeader;
         public ImageButton ibCategorize;
+        public View vColor;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -249,6 +251,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             etHeader = (EditText)itemView.findViewById(R.id.etHeader);
             ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
+            vColor = itemView.findViewById(R.id.vColor);
 
             // can edit category when click button
             ibCategorize.setOnClickListener(new View.OnClickListener() {

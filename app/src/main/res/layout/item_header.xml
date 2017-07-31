@@ -10,7 +10,7 @@
         android:layout_width="4dp"
         android:layout_height="20dp"
         android:background="@color/kelly_1"
-        android:id="@+id/view"
+        android:id="@+id/vColor"
         android:layout_marginStart="@dimen/checkbox_margin"
         android:layout_marginEnd="@dimen/segment_bar"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:measureAllChildren="false"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/view">
+        android:layout_toEndOf="@+id/vColor">
 
         <TextView
             android:id="@+id/tvHeader"
@@ -62,6 +62,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/vsHeaderSwitcher"
         android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:layout_weight="1.0"/>
 
 </RelativeLayout>
