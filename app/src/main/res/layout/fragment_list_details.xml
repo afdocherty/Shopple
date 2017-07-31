@@ -1,238 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lighterGray"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp"
     tools:context="com.example.kathu228.shoplog.Fragments.ListDetailsFragment">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvListName"
+    <RelativeLayout
+        android:id="@+id/rlListName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
+        android:padding="8dp">
 
-        <RelativeLayout
-            android:id="@+id/rlListName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvListName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="@dimen/add_margin"
-                android:layout_marginTop="8dp"
-                android:layout_toStartOf="@+id/ivEditName"
-                android:inputType="text"
-                android:text="Shoplist Name"
-                android:textAlignment="viewStart"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/title_size"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/ivEditName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                app:srcCompat="@drawable/ic_edit" />
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <!--<android.support.v7.widget.CardView
-        android:id="@+id/cvColor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cvListName"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true">
-
-        <RelativeLayout
-            android:id="@+id/rlColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+        <ImageView
+            android:id="@+id/ivListIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/cvListName">
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_check_box" />
 
-            <ImageView
-                android:id="@+id/ivColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvColor"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/tvColor"
-                android:background="@null"
-                app:srcCompat="@drawable/ic_color_lens"
-                android:padding="@dimen/details_padding"/>
+        <TextView
+            android:id="@+id/tvListName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/ivListIcon"
+            android:layout_toStartOf="@+id/ivEditName"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="List Name"
+            android:textColor="@color/black"
+            android:textSize="32sp" />
 
-            <TextView
-                android:id="@+id/tvColor"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@null"
-                android:text="@string/change_color"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="24sp"
-                android:padding="@dimen/details_padding"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>-->
+        <ImageView
+            android:id="@+id/ivEditName"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_edit" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvNotifications"
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/div1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cvListName"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
+        android:layout_below="@+id/rlListName"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/divider" />
 
-        <RelativeLayout
-            android:id="@+id/rlNotifications"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/ivToggleNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvNotifications"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/tvNotifications"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                app:srcCompat="@drawable/ic_add_alert" />
-
-            <TextView
-                android:id="@+id/tvNotifications"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                android:text="@string/enable_notifications"
-                android:textAlignment="center"
-                android:textColor="@color/primary_text"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvCollaborators"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/rlCollaborators"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cvLeaveList"
-        android:layout_below="@+id/cvNotifications"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
+        android:layout_above="@+id/div2"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/div1"
+        android:padding="8dp">
 
         <RelativeLayout
-            android:id="@+id/rlCollaborators"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/ivEditCollab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvEditCollab"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/tvEditCollab"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                app:srcCompat="@drawable/ic_people" />
+            android:id="@+id/rlCollaboratorsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:id="@+id/tvEditCollab"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                android:text="@string/edit_collaborators"
-                android:textAlignment="center"
-                android:textColor="@color/primary_text"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvCollabs"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ivEditCollab" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvLeaveList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
-
-        <RelativeLayout
-            android:id="@+id/rlLeaveList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/ivLeaveList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvLeaveList"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/tvLeaveList"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                app:srcCompat="@drawable/account_remove" />
+                android:layout_centerVertical="true"
+                android:text="Edit Collaborators"
+                android:textColor="@color/black"
+                android:textSize="24dp" />
 
-            <TextView
-                android:id="@+id/tvLeaveList"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="@null"
-                android:padding="@dimen/details_padding"
-                android:text="@string/leave_list"
-                android:textAlignment="center"
-                android:textColor="@color/primary_text"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/ivEditCollab"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/tvEditCollab"
+                android:tint="@color/black"
+                app:srcCompat="@drawable/ic_people" />
+
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCollabs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rlCollaboratorsTitle" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/div2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rlNotifications"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/divider" />
+
+    <RelativeLayout
+        android:id="@+id/rlNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/div3"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Enable Notifications"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivToggleNotification"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvNotifications"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_add_alert" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/div3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rlChangeIcon"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/divider" />
+
+    <RelativeLayout
+        android:id="@+id/rlChangeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/div4"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvChangeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Change List Icon"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivChangeIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvChangeIcon"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_color_lens" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/div4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rlLeaveList"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/divider" />
+
+    <RelativeLayout
+        android:id="@+id/rlLeaveList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvLeaveList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Leave List"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/ivLeaveList"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/tvLeaveList"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/account_remove" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
