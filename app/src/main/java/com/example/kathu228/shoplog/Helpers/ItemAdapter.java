@@ -8,17 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
@@ -91,7 +87,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     break;
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
-                    ((HeaderViewHolder) holder).etHeader.setText(item.getBody());
+                    //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).vColor.
                     break;
                 case 2:
@@ -240,28 +236,28 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class HeaderViewHolder extends BaseAdapter.ViewHolder{
         public TextView tvHeader;
-        public ViewSwitcher switcher;
-        public EditText etHeader;
-        public ImageButton ibCategorize;
+        //public ViewSwitcher switcher;
+        //public EditText etHeader;
+        public ImageView ivCategorize;
         public View vColor;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             tvHeader = (TextView)itemView.findViewById(R.id.tvHeader);
-            switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
-            etHeader = (EditText)itemView.findViewById(R.id.etHeader);
-            ibCategorize = (ImageButton) itemView.findViewById(R.id.ibCategorize);
+            //switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
+            //etHeader = (EditText)itemView.findViewById(R.id.etHeader);
+            ivCategorize = (ImageView) itemView.findViewById(R.id.ivCategorize);
             vColor = itemView.findViewById(R.id.vColor);
 
             // can edit category when click button
-            ibCategorize.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (categorySegment ==null){
-                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
+                        ivCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categoryHeader = mlist.get(getAdapterPosition());
                         categorySegment = categoryHeader.getSegment();
-                        categorizing(categorySegment.getName(),ibCategorize,mview);
+                        categorizing(categorySegment.getName(),ivCategorize,mview);
                     }
                     else {
                         return;
@@ -271,36 +267,36 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 }
             });
 
-            tvHeader.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    if (categorySegment !=null){
-                        final String prevHeaderName = tvHeader.getText().toString();
-                        if (prevHeaderName.equals(categorySegment.getName())){
-                            switcher.showNext();
-                            etHeader.setSelectAllOnFocus(true);
-                            etHeader.requestFocus();
-                            final InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(etHeader, InputMethodManager.SHOW_IMPLICIT);
-                            etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                                        String body = etHeader.getText().toString();
-                                        if ((!body.equals(""))&& (!body.equals(prevHeaderName))){
-                                            tvHeader.setText(body);
-                                            categorySegment.setName(body, null);
-
-                                        }
-                                        switcher.showPrevious();
-                                    }
-                                    return false;
-                                }
-                            });
-                        }
-                    }
-                }
-            });
+//            tvHeader.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//                    if (categorySegment !=null){
+//                        final String prevHeaderName = tvHeader.getText().toString();
+//                        if (prevHeaderName.equals(categorySegment.getName())){
+//                            switcher.showNext();
+//                            etHeader.setSelectAllOnFocus(true);
+//                            etHeader.requestFocus();
+//                            final InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                            imm.showSoftInput(etHeader, InputMethodManager.SHOW_IMPLICIT);
+//                            etHeader.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+//                                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                                        String body = etHeader.getText().toString();
+//                                        if ((!body.equals(""))&& (!body.equals(prevHeaderName))){
+//                                            tvHeader.setText(body);
+//                                            categorySegment.setName(body, null);
+//
+//                                        }
+//                                        switcher.showPrevious();
+//                                    }
+//                                    return false;
+//                                }
+//                            });
+//                        }
+//                    }
+//                }
+//            });
 
         }
     }
@@ -403,12 +399,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // opens snackbar to show which category you are currently editing and enables closure
-    public void categorizing(final String categoryName, final ImageButton ibEdit, View v){
+    public void categorizing(final String categoryName, final ImageView ivEdit, View v){
        final Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       ibEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
+                       ivEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
                        categorySegment = null;
                        categoryHeader = null;
                    }

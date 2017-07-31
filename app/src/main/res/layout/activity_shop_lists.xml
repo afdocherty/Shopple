@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/your_lists"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_textSize" />
+                android:textSize="@dimen/toolbar_textSize"
+                android:layout_centerVertical="true"/>
 
             <ImageView
                 android:id="@+id/ivLogoutBtn"
@@ -36,7 +37,7 @@
                 android:onClick="onLogout"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp" />
 
         </RelativeLayout>
 

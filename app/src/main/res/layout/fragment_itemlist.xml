@@ -1,66 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:fitsSystemWindows="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/add_new"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_centerHorizontal="true">
 
-            <ImageButton
-                android:id="@+id/ibOCR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:tint="@color/colorPrimaryLight"
-                app:srcCompat="@drawable/ic_add_a_photo"
-                android:layout_alignBottom="@+id/etAddItem"
-                android:layout_marginRight="@dimen/checkbox_margin"
-                android:layout_marginBottom="@dimen/neg_margin"
-                android:layout_alignParentTop="true" />
-
-            <ImageButton
-                android:id="@+id/ibAddItem"
+            <ImageView
+                android:id="@+id/ivAddItem"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/etAddItem"
-                android:layout_marginLeft="@dimen/add_margin"
-                android:background="@null"
-                android:elevation="0dp"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/add_margin"
                 android:tint="@color/colorPrimaryLight"
-                app:srcCompat="@drawable/ic_add"
-                android:layout_alignParentStart="true" />
+                app:srcCompat="@drawable/ic_add" />
 
             <EditText
                 android:id="@+id/etAddItem"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/checkbox_margin"
                 android:backgroundTint="@color/colorPrimaryLight"
                 android:hint="@string/item_hint"
                 android:inputType="textCapSentences"
                 android:textColor="@color/secondary_text"
                 android:textSize="@dimen/body_size"
-                android:layout_toStartOf="@+id/ibOCR"
-                android:layout_toEndOf="@+id/ibAddItem"/>
+                android:layout_weight="1.0"/>
 
-        </RelativeLayout>
+            <ImageView
+                android:id="@+id/ivOCR"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:tint="@color/colorPrimaryLight"
+                app:srcCompat="@drawable/ic_add_a_photo"
+                android:layout_marginEnd="@dimen/add_margin" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"

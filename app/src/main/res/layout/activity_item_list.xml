@@ -15,7 +15,11 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,7 +36,8 @@
                 android:text="List Name"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_textSize"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginStart="@dimen/add_margin"
+                android:layout_centerVertical="true"/>
 
             <ImageView
                 android:id="@+id/ivMapsBtn"
@@ -42,7 +47,8 @@
                 android:onClick="initMaps"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/ivDetailsBtn"
-                android:layout_marginEnd="16dp" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
 
             <ImageView
                 android:id="@+id/ivDetailsBtn"
@@ -52,7 +58,8 @@
                 android:onClick="onListInfo"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"/>
+                android:paddingStart="12dp"
+                android:paddingEnd="16dp"/>
 
         </RelativeLayout>
 
