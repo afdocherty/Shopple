@@ -15,4 +15,5 @@
     <dimen name="neg_margin">-12dp</dimen>
     <dimen name="divider_weight">2dp</dimen>
     <dimen name="yesno_button_width">64dp</dimen>
+    <dimen name="segment_bar">4dp</dimen>
 </resources>
