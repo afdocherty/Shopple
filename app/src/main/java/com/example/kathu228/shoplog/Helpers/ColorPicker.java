@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 /**
@@ -34,16 +35,15 @@ public class ColorPicker {
 
     // Method to return a new color for the list to use
     public static int getNewColor(String shopListObjectId) {
-//        ShopList shopList = ShopList.getShopListById(shopListObjectId);
-//        if (shopList == null) {
-//            throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
-//        }
-//        // Get the current color number of the list
-//        int currentColorNum = ShopList.getColorNum();
-//        // Increment for future use
-//        ShopList.incrementColorNum();
-//        // Return the color associated with the current list (wraps around)
-//        return colors[currentColorNum % 20];
-        return 0;
+        ShopList shopList = ShopList.getShopListById(shopListObjectId);
+        if (shopList == null) {
+            throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
+        }
+        // Get the current color number of the list
+        int currentColorNum = shopList.getColorNum();
+        // Increment for future use
+        shopList.incrementColorNum(null);
+        // Return the color associated with the current list (wraps around)
+        return colors[currentColorNum % 20];
     }
 }
