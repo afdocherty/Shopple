@@ -166,6 +166,16 @@ public class Segment extends BaseParseObject {
             throw new NullPointerException("uncategorized segment doesn't have a header");
     }
 
+    public int getColorNum(){
+        fetchWhenNeeded();
+        return getInt("color_number");
+    }
+
+    public void setColorNum(int colorNum, @Nullable SaveCallback callback){
+        put("color_number", colorNum);
+        nullableSaveInBackground(callback);
+    }
+
     @Nullable
     public static Segment getSegmentById(String id){
         try {

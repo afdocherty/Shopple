@@ -262,6 +262,16 @@ public class ShopList extends BaseParseObject {
         segment.deleteInBackground();
     }
 
+    public void incrementColorNum(@Nullable SaveCallback callback){
+        increment("color_number");
+        nullableSaveInBackground(callback);
+    }
+
+    public int getColorNum(){
+        fetchWhenNeeded();
+        return getInt("color_number");
+    }
+
     public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
         currentItemLiveQuery = ParseQuery.getQuery(Item.class);
         currentItemLiveQuery.whereEqualTo("parent",this);
