@@ -186,7 +186,6 @@ public class ListDetailsFragment extends Fragment {
         });
 
         return v;
-
     }
 
     @Override
