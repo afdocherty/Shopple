@@ -33,17 +33,20 @@ public class ColorPicker {
             R.color.kelly_20,
     };
 
-    // Method to return a new color for the list to use
-    public static int getNewColor(String shopListObjectId) {
+    // Method to return a new color and color number for the list to use
+    public static int[] getNewColor(String shopListObjectId) {
         ShopList shopList = ShopList.getShopListById(shopListObjectId);
         if (shopList == null) {
             throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
         }
+        int[] results = new int[2];
         // Get the current color number of the list
-        int currentColorNum = shopList.getColorNum();
-        // Increment for future use
+        results[0] = shopList.getColorNum();
+        // Get the color associated with that number (wraps around)
+        results[1] = colors[results[0] % 20];
+        // Increment color number for future use
         shopList.incrementColorNum(null);
-        // Return the color associated with the current list (wraps around)
-        return colors[currentColorNum % 20];
+        // Return the results bundled in an array
+        return results;
     }
 }
