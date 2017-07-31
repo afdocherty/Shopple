@@ -27,8 +27,6 @@ public class YesNoDialogFragment extends DialogFragment{
         mListener = listener;
     }
 
-
-
     // Defines the listener interface
     public interface YesNoDialogListener {
         void onFinishYesNoDialog(Boolean yes, String title, Item mitem);
@@ -37,8 +35,8 @@ public class YesNoDialogFragment extends DialogFragment{
     // Call this method to send the data back to the parent fragment
     public void sendBackResult(Boolean yes, String title, Item mitem) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
-        YesNoDialogListener listener = (YesNoDialogListener) getTargetFragment();
-        listener.onFinishYesNoDialog(yes, title, mitem);
+        //YesNoDialogListener listener = (YesNoDialogListener) getTargetFragment();
+        mListener.onFinishYesNoDialog(yes, title, mitem);
         dismiss();
     }
 
@@ -92,19 +90,20 @@ public class YesNoDialogFragment extends DialogFragment{
 
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-
         final String title = getArguments().getString("title");
         final Item item = getArguments().getParcelable("item");
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFinishYesNoDialog(false,title, item);
+                sendBackResult(false,title,item);
+                //mListener.onFinishYesNoDialog(false,title, item);
             }
         });
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFinishYesNoDialog(true, title, item);
+                sendBackResult(true,title,item);
+//                mListener.onFinishYesNoDialog(true, title, item);
             }
         });
     }
