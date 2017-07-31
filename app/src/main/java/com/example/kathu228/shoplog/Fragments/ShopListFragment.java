@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class ShopListFragment extends Fragment {
     private FloatingActionButton fabAddShopList;
     private TextView tvDirection;
     private ImageView ivDirection;
+    private LinearLayout llDummy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,9 +120,7 @@ public class ShopListFragment extends Fragment {
             }
         });
 
-
-        //TODO- Live queries
-
+        // Live Queries
         ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
 
         ParseQuery<ShopList> query = ParseQuery.getQuery(ShopList.class);
@@ -162,6 +162,11 @@ public class ShopListFragment extends Fragment {
         super.onResume();
         // Populate the ShopList array
         addShopListsFromDatabase();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     // Add the ShopLists for the current user to the database
