@@ -32,7 +32,7 @@
                 android:text="List Name"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_textSize"
-                android:layout_marginRight="@dimen/section_margin" />
+                android:layout_marginEnd="16dp" />
 
             <ImageView
                 android:id="@+id/ivMapsBtn"
@@ -42,7 +42,7 @@
                 android:onClick="initMaps"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/ivDetailsBtn"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="16dp" />
 
             <ImageView
                 android:id="@+id/ivDetailsBtn"
