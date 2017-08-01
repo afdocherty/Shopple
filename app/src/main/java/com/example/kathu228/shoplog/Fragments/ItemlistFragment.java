@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +47,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     //private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvItems;
     private EditText etAddItem;
-    private ImageButton ibAddItem;
+    private ImageView ivAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
 
@@ -128,10 +128,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
 
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
-        ibAddItem = (ImageButton) v.findViewById(R.id.ibAddItem);
+        ivAddItem = (ImageView) v.findViewById(R.id.ivAddItem);
 
         // Put onclicklistener onto add button to add item to list
-        ibAddItem.setOnClickListener(new View.OnClickListener() {
+        ivAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addItem();

@@ -26,8 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="List Details"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_textSize"
-                android:textStyle="bold" />
+                android:textSize="@dimen/toolbar_textSize" />
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
