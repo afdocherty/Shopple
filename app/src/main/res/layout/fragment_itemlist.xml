@@ -48,7 +48,8 @@
                 android:layout_height="match_parent"
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add_a_photo"
-                android:layout_marginEnd="@dimen/add_margin" />
+                android:layout_marginEnd="@dimen/add_margin"
+                android:onClick="launchCamera"/>
 
         </LinearLayout>
 
