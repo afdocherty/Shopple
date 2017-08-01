@@ -18,4 +18,7 @@
     <dimen name="segment_bar">4dp</dimen>
     <dimen name="progress_padding">40dp</dimen>
     <dimen name="text_list_name">28sp</dimen>
+    <dimen name="fragment_padding">8dp</dimen>
+    <dimen name="list_icon_size">72dp</dimen>
+    <dimen name="details_icon_size">32dp</dimen>
 </resources>
