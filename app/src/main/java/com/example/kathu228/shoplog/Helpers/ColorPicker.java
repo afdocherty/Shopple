@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Helpers;
 
+import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 /**
@@ -10,10 +11,10 @@ public class ColorPicker {
 
     // Kelly's 22 colors of maximum contrast (20 below since white and black are excluded)
     private static final int[] colors = {
-            R.color.kelly_1,
-            R.color.kelly_2,
-            R.color.kelly_3,
-            R.color.kelly_4,
+            R.color.new_1,
+            R.color.new_2,
+            R.color.new_3,
+            R.color.new_4,
             R.color.kelly_5,
             R.color.kelly_6,
             R.color.kelly_7,
@@ -32,18 +33,24 @@ public class ColorPicker {
             R.color.kelly_20,
     };
 
-    // Method to return a new color for the list to use
-    public static int getNewColor(String shopListObjectId) {
-//        ShopList shopList = ShopList.getShopListById(shopListObjectId);
-//        if (shopList == null) {
-//            throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
-//        }
-//        // Get the current color number of the list
-//        int currentColorNum = ShopList.getColorNum();
-//        // Increment for future use
-//        ShopList.incrementColorNum();
-//        // Return the color associated with the current list (wraps around)
-//        return colors[currentColorNum % 20];
-        return 0;
+    // Method to return a new color and color number for the list to use
+    public static int[] getNewColor(String shopListObjectId) {
+        ShopList shopList = ShopList.getShopListById(shopListObjectId);
+        if (shopList == null) {
+            throw new IllegalStateException("ShopList " + shopListObjectId + " is null");
+        }
+        int[] results = new int[2];
+        // Get the current color number of the list
+        results[0] = shopList.getColorNum();
+        // Get the color associated with that number (wraps around)
+        results[1] = colors[results[0] % 20];
+        // Increment color number for future use
+        shopList.incrementColorNum(null);
+        // Return the results bundled in an array
+        return results;
+    }
+
+    public static int getColor(int colorNum){
+        return colors[colorNum%20];
     }
 }
