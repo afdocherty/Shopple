@@ -41,8 +41,7 @@ public class EdittextDialogFragment extends DialogFragment{
     public void sendBackResult(Boolean yes, String title, ShopList mshopList, String newName) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         //YesNoDialogListener listener = (YesNoDialogListener) getTargetFragment();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(mText.getWindowToken(), 0);
         mListener.onFinishEdittextDialog(yes, title, mshopList, newName);
         dismiss();
     }
@@ -79,14 +78,16 @@ public class EdittextDialogFragment extends DialogFragment{
         final ShopList shopList = getArguments().getParcelable("shoplist");
         mText.setText(shopList.getName());
         mTitle.setText(title);
-        mText.requestFocus();
-        final String name = mText.getText().toString();
+        //mText.requestFocus();
+        mText.setSelectAllOnFocus(true);
+        mText.selectAll();
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         //Adds item from edittext if press enter or done on keyboard
         mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String name = mText.getText().toString();
                     if (!(name.replaceAll("\\s+","")).equals("")) {
-                        shopList.setName(name, null);
                         sendBackResult(true, title, shopList, name);
                     }
                 }
@@ -97,14 +98,15 @@ public class EdittextDialogFragment extends DialogFragment{
         mCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = mText.getText().toString();
                 sendBackResult(false, title, shopList,name);
             }
         });
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = mText.getText().toString();
                 if (!(name.replaceAll("\\s+","")).equals("")) {
-                    shopList.setName(name, null);
                     sendBackResult(true, title, shopList, name);
                 }
             }
@@ -115,17 +117,32 @@ public class EdittextDialogFragment extends DialogFragment{
         super.onActivityCreated(savedInstanceState);
         final String title = getArguments().getString("title");
         final ShopList shopList = getArguments().getParcelable("shoplist");
+        //Adds item from edittext if press enter or done on keyboard
+        mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String name = mText.getText().toString();
+                    if (!(name.replaceAll("\\s+","")).equals("")) {
+                        sendBackResult(true, title, shopList, name);
+                    }
+                }
+                return false;
+            }
+        });
         mCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(false,title,shopList,mText.getText().toString());
+                String name = mText.getText().toString();
+                sendBackResult(false,title,shopList,name);
             }
         });
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shopList.setName(mText.getText().toString(), null);
-                sendBackResult(true,title,shopList,mText.getText().toString());
+                String name = mText.getText().toString();
+                if (!(name.replaceAll("\\s+","")).equals("")) {
+                    sendBackResult(true, title, shopList, name);
+                }
             }
         });
     }
