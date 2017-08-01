@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center_vertical">
 
-    <View
+    <!--<View
         android:layout_width="4dp"
         android:layout_height="20dp"
         android:background="@color/kelly_1"
@@ -17,9 +17,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true" />-->
 
-    
+
 
     <!--<ViewSwitcher
         android:id="@+id/vsHeaderSwitcher"
@@ -27,12 +27,15 @@
         android:layout_height="wrap_content"
         android:measureAllChildren="false"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/vColor">-->
+        android:layout_toEndOf="@+id/vColor">
+
+android:layout_toEndOf="@+id/vColor"
+        -->
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/vColor"
+
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_centerVertical="true">

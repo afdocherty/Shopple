@@ -48,15 +48,20 @@
                 android:layout_height="match_parent"
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add_a_photo"
-                android:layout_marginEnd="@dimen/add_margin" />
+                android:layout_marginEnd="@dimen/add_margin"
+                android:onClick="launchCamera"/>
 
         </LinearLayout>
-        <View
+
+        <ImageView
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_weight"
-            android:background="@color/lighterGray"
-            android:layout_below="@+id/add_new"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_new"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/divider"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"

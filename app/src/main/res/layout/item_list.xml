@@ -4,49 +4,85 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="1">
+    android:paddingTop="@dimen/fragment_padding"
+    android:paddingStart="@dimen/fragment_padding"
+    android:paddingEnd="@dimen/fragment_padding">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/rlItem"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="-8dp">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/fragment_padding">
 
-        <ViewSwitcher
-            android:id="@+id/vsListSwitcher"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/ivListIcon"
+            android:layout_width="@dimen/list_icon_size"
+            android:layout_height="@dimen/list_icon_size"
+            app:srcCompat="@drawable/ic_food"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="-4dp"
-            android:measureAllChildren="false">
+            android:orientation="vertical"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1.0">
 
             <TextView
                 android:id="@+id/tvListName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:layout_weight="8.31"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="List Name"
-                android:textAlignment="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="List Name name name name "
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/body_size" />
+                android:textSize="@dimen/text_list_name" />
 
-            <EditText
-                android:id="@+id/etListName"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:maxLines="1"
-                android:paddingTop="0dp"
-                android:text="Hello World"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="@color/secondary_text"
-                android:textSize="@dimen/body_size" />
-        </ViewSwitcher>
-    </android.support.v7.widget.CardView>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCollaborators"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:srcCompat="@drawable/ic_people"
+                    android:tint="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tvCollaborators"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Person, Person, Person, Person, Person"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/div1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlItem"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/divider"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/divider_side_margins"
+        android:layout_marginEnd="@dimen/divider_side_margins"/>
 
 </RelativeLayout>
