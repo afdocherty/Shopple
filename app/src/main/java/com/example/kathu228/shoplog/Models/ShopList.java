@@ -171,13 +171,16 @@ public class ShopList extends BaseParseObject {
         });
     }
 
-    public void getUncheckedItems(FindCallback<Item> callback){
+    public void getUncheckedSegmentItems(FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<>(Item.class);
         query.whereEqualTo("parent",this);
         query.whereEqualTo("checked",false);
         query.whereEqualTo("visible",true);
-        query.whereEqualTo("type",Item.ITEM);
-        query.orderByDescending("_updated_at");
+        query.whereNotEqualTo("type",Item.COMPLETED_HEADER);
+        query.whereNotEqualTo("segment",getUncategorizedSegment());
+        query.orderByDescending("segment_created_at");
+        query.addDescendingOrder("type");
+        query.addDescendingOrder("_updated_at");
         query.findInBackground(callback);
     }
 

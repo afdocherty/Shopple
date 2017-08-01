@@ -15,7 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
@@ -174,13 +174,27 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 public void onClick(View v) {
                     if (categorySegment != (null)){
                         cbItem.setChecked(!cbItem.isChecked());
+
                         int segColor = ColorPicker.getColor(categorySegment.getColorNum());
                         rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,segColor)));
-                        handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
+
+                        int adapterPos = getAdapterPosition();
+                        if (adapterPos<0) {
+                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+                        }else {
+                            handleCategorizing(mlist.get(adapterPos), adapterPos);
+                        }
                     }
                     else {
                         rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorPrimaryLight)));
-                        handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition());
+                        int adapterPos = getAdapterPosition();
+                        if (adapterPos<0) {
+                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+                        }else {
+                            handleCheckbox(mlist.get(adapterPos), adapterPos);
+                        }
                     }
                 }
             });
