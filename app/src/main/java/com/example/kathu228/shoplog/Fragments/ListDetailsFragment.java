@@ -1,22 +1,17 @@
 package com.example.kathu228.shoplog.Fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,7 +33,7 @@ import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListDetailsFragment extends Fragment {
+public class ListDetailsFragment extends Fragment implements EdittextDialogFragment.EdittextDialogListener{
 
     private RelativeLayout rlListName;
     private RelativeLayout rlCollaboratorsTitle;
@@ -88,53 +83,56 @@ public class ListDetailsFragment extends Fragment {
         // List Name
         // Click on ivEditName to edit the name of the list
         tvListName = (TextView) v.findViewById(R.id.tvListName);
-        tvListName.setText((ShopList.getShopListById(shopListObjectId)).getName());
+        final String name =  shopList.getName();
+        tvListName.setText(name);
         rlListName = (RelativeLayout) v.findViewById(R.id.rlListName);
         rlListName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Change List Name");
+                showEdittextDialog(name,shopList);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                builder.setTitle("Change List Name");
+//
+//                // Set up the input
+//                final EditText input = new EditText(getActivity());
+//                // Specify the type of input expected
+//                input.setInputType(InputType.TYPE_CLASS_TEXT);
+//                input.setText(shopList.getName());
+//                builder.setView(input);
+//
+//                // Adds item from edittext if press enter or done on keyboard
+//                input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+//                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                            imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                        }
+//                        return false;
+//                    }
+//                });
+//
+//                // Set up the buttons
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        shopList.setName(input.getText().toString(), null);
+//                        tvListName.setText(input.getText().toString());
+//                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                        dialog.dismiss();
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                builder.show();
 
-                // Set up the input
-                final EditText input = new EditText(getActivity());
-                // Specify the type of input expected
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(shopList.getName());
-                builder.setView(input);
-
-                // Adds item from edittext if press enter or done on keyboard
-                input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        }
-                        return false;
-                    }
-                });
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        shopList.setName(input.getText().toString(), null);
-                        tvListName.setText(input.getText().toString());
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
             }
         });
 
@@ -262,4 +260,18 @@ public class ListDetailsFragment extends Fragment {
         }
     }
 
+
+    private void showEdittextDialog(String listName, ShopList shopList){
+        FragmentManager fm = getFragmentManager();
+        EdittextDialogFragment edittextDialogFragment = EdittextDialogFragment.newInstance("Change List Name", shopList);
+        edittextDialogFragment.setListener(this);
+        edittextDialogFragment.show(fm, "fragment_edittext_dialog");
+    }
+
+    @Override
+    public void onFinishEdittextDialog(Boolean yes, String title, ShopList mshopList, String newName) {
+        if (yes){
+            tvListName.setText(newName);
+        }
+    }
 }
