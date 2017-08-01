@@ -49,4 +49,8 @@ public class ColorPicker {
         // Return the results bundled in an array
         return results;
     }
+
+    public static int getColor(int colorNum){
+        return colors[colorNum%20];
+    }
 }

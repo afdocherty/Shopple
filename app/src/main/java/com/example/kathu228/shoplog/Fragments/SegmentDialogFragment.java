@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.kathu228.shoplog.Helpers.ColorPicker;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -113,6 +114,8 @@ public class SegmentDialogFragment extends DialogFragment {
         shopList.addSegment(segmentName, new Segment.SegmentCallback() {
             @Override
             public void done(Segment segment) {
+                int colorNum = ColorPicker.getNewColor(getArguments().getString("shopListId"))[0];
+                segment.setColorNum(colorNum,null);
                 sendBackResult(segment.getHeader());
             }
         });

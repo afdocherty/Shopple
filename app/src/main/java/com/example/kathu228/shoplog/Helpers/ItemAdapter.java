@@ -92,7 +92,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     ((HeaderViewHolder) holder).etHeader.setText(item.getBody());
-                    //((HeaderViewHolder) holder).vColor.
+                    int colorNum = item.getSegment().getColorNum();
+                    ((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -177,10 +178,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 public void onClick(View v) {
                     if (categorySegment != (null)){
                         cbItem.setChecked(!cbItem.isChecked());
-                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
+                        int segColor = ColorPicker.getColor(categorySegment.getColorNum());
+                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,segColor)));
                         handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
                     }
                     else {
+                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorPrimaryLight)));
                         handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition());
                     }
                 }
@@ -258,9 +261,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 @Override
                 public void onClick(View v) {
                     if (categorySegment ==null){
-                        ibCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categoryHeader = mlist.get(getAdapterPosition());
                         categorySegment = categoryHeader.getSegment();
+                        int segColor = ColorPicker.getColor(categorySegment.getColorNum());
+                        ibCategorize.setColorFilter(ContextCompat.getColor(context,segColor));
                         categorizing(categorySegment.getName(),ibCategorize,mview);
                     }
                     else {
