@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
@@ -177,10 +178,22 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if (categorySegment != (null)){
                         cbItem.setChecked(!cbItem.isChecked());
                         rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
-                        handleCategorizing(mlist.get(getAdapterPosition()),getAdapterPosition());
+                        int adapterPos = getAdapterPosition();
+                        if (adapterPos<0) {
+                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+                        }else {
+                            handleCategorizing(mlist.get(adapterPos), adapterPos);
+                        }
                     }
                     else {
-                        handleCheckbox(mlist.get(getAdapterPosition()), getAdapterPosition());
+                        int adapterPos = getAdapterPosition();
+                        if (adapterPos<0) {
+                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+                        }else {
+                            handleCheckbox(mlist.get(adapterPos), adapterPos);
+                        }
                     }
                 }
             });

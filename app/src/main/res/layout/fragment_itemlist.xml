@@ -31,7 +31,8 @@
                 android:layout_alignBottom="@+id/etAddItem"
                 android:layout_marginRight="@dimen/checkbox_margin"
                 android:layout_marginBottom="@dimen/neg_margin"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:onClick="launchCamera"/>
 
             <ImageButton
                 android:id="@+id/ibAddItem"
