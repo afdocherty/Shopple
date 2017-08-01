@@ -17,4 +17,5 @@
     <dimen name="yesno_button_width">80dp</dimen>
     <dimen name="segment_bar">4dp</dimen>
     <dimen name="progress_padding">40dp</dimen>
+    <dimen name="text_list_name">28sp</dimen>
 </resources>

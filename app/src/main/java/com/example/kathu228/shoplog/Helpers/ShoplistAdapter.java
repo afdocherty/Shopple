@@ -8,14 +8,9 @@ import android.graphics.drawable.RippleDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -48,7 +43,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         ShopList shopList = mlist.get(position);
 
         holder.tvListName.setText(shopList.getName());
-        holder.etListName.setText(shopList.getName());
     }
 
     @Override
@@ -99,8 +93,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
-        public EditText etListName;
-        public ViewSwitcher switcher;
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -109,8 +101,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
-            switcher = (ViewSwitcher) itemView.findViewById(R.id.vsListSwitcher);
-            etListName = (EditText) itemView.findViewById(R.id.etListName);
             rippleDrawable = (RippleDrawable) tvListName.getBackground();
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -130,38 +120,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         intent.putExtra(ShopList.SHOPLIST_NEW_TAG, false);
                         context.startActivity(intent);
                     }
-                }
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    switcher.showNext();
-                    etListName.setSelectAllOnFocus(true);
-                    etListName.selectAll();
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null){
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                    }
-                    etListName.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                String body = etListName.getText().toString();
-                                // Does not add empty item
-                                if (!body.equals("")) {
-                                    final ShopList shopList = mlist.get(getAdapterPosition());
-                                    shopList.setName(body, null);
-                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(etListName.getWindowToken(), 0);
-                                    tvListName.setText(body);
-                                    switcher.showPrevious();
-                                    etListName.setText(body);
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                    return true;
                 }
             });
         }
