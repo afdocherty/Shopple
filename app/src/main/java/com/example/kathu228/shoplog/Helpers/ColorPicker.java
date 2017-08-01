@@ -15,22 +15,10 @@ public class ColorPicker {
             R.color.new_2,
             R.color.new_3,
             R.color.new_4,
-            R.color.kelly_5,
-            R.color.kelly_6,
-            R.color.kelly_7,
-            R.color.kelly_8,
-            R.color.kelly_9,
-            R.color.kelly_10,
-            R.color.kelly_11,
-            R.color.kelly_12,
-            R.color.kelly_13,
-            R.color.kelly_14,
-            R.color.kelly_15,
-            R.color.kelly_16,
-            R.color.kelly_17,
-            R.color.kelly_18,
-            R.color.kelly_19,
-            R.color.kelly_20,
+            R.color.new_5,
+            R.color.new_6,
+            R.color.new_7,
+            R.color.new_8,
     };
 
     // Method to return a new color and color number for the list to use
@@ -43,7 +31,7 @@ public class ColorPicker {
         // Get the current color number of the list
         results[0] = shopList.getColorNum();
         // Get the color associated with that number (wraps around)
-        results[1] = colors[results[0] % 20];
+        results[1] = colors[results[0] % colors.length];
         // Increment color number for future use
         shopList.incrementColorNum(null);
         // Return the results bundled in an array
@@ -51,6 +39,6 @@ public class ColorPicker {
     }
 
     public static int getColor(int colorNum){
-        return colors[colorNum%20];
+        return colors[colorNum % colors.length];
     }
 }

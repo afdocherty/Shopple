@@ -89,7 +89,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     int colorNum = item.getSegment().getColorNum();
-                    ((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    //((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -242,7 +242,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         //public ViewSwitcher switcher;
         //public EditText etHeader;
         public ImageView ivCategorize;
-        public View vColor;
+        //public View vColor;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -250,7 +250,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             //switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             //etHeader = (EditText)itemView.findViewById(R.id.etHeader);
             ivCategorize = (ImageView) itemView.findViewById(R.id.ivCategorize);
-            vColor = itemView.findViewById(R.id.vColor);
+            //vColor = itemView.findViewById(R.id.vColor);
 
             // can edit category when click button
             itemView.setOnClickListener(new View.OnClickListener() {
