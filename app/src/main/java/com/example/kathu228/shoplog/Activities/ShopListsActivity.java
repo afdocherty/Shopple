@@ -9,10 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.kathu228.shoplog.Fragments.ShopListFragment;
+import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.R;
 import com.parse.ParseUser;
 
-public class ShopListsActivity extends AppCompatActivity {
+public class ShopListsActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,5 +65,17 @@ public class ShopListsActivity extends AppCompatActivity {
 
 //        Intent i = new Intent(this, AddPeopleActivity.class);
 //        startActivityForResult(i,20);
+    }
+
+    private void logout(Boolean logOut){
+        if (logOut){
+            ParseUser.logOut();
+            ShopListsActivity.this.finish();
+        }
+    }
+
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem) {
+
     }
 }

@@ -14,6 +14,7 @@
     <dimen name="toolbar_iconSize">30dp</dimen>
     <dimen name="neg_margin">-12dp</dimen>
     <dimen name="divider_weight">2dp</dimen>
-    <dimen name="yesno_button_width">64dp</dimen>
+    <dimen name="yesno_button_width">80dp</dimen>
     <dimen name="segment_bar">4dp</dimen>
+    <dimen name="progress_padding">40dp</dimen>
 </resources>

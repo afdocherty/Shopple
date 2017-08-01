@@ -109,7 +109,7 @@ public class ShopListFragment extends Fragment {
         });
 
         //find the swipe refresh layout and add the onRefreshListener
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.rlContainer);
         //swipeContainer.setColorSchemeResources(R.color.);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

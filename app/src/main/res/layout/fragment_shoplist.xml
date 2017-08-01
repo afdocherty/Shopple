@@ -7,7 +7,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swipeContainer"
+        android:id="@+id/rlContainer"
         android:layout_below="@+id/toolbar">
 
         <android.support.v7.widget.RecyclerView

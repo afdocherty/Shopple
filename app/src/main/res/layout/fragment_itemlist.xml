@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeContainer"
+    android:id="@+id/rlContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:id="@+id/add_new"
@@ -20,21 +22,6 @@
             android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true">
-
-            <!--<ImageButton-->
-                <!--android:id="@+id/ibOCR"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:background="@null"-->
-                <!--android:tint="@color/colorPrimaryLight"-->
-                <!--app:srcCompat="@drawable/ic_add_a_photo"-->
-                <!--android:layout_alignBottom="@+id/etAddItem"-->
-                <!--android:layout_marginRight="@dimen/checkbox_margin"-->
-                <!--android:layout_marginBottom="@dimen/neg_margin"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:onClick="launchCamera"-->
-                <!--android:layout_centerHorizontal="true"/>-->
 
             <ImageView
                 android:id="@+id/ivAddItem"
@@ -64,13 +51,19 @@
                 android:layout_marginEnd="@dimen/add_margin" />
 
         </LinearLayout>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_weight"
+            android:background="@color/lighterGray"
+            android:layout_below="@+id/add_new"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/add_new" />
+            android:layout_below="@+id/add_new"
+            android:layout_alignParentStart="true" />
 
         <LinearLayout
             android:id="@+id/llDummy"
