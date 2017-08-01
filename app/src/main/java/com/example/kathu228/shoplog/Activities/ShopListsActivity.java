@@ -34,38 +34,6 @@ public class ShopListsActivity extends AppCompatActivity implements YesNoDialogF
     //ran when user presses the info button on the toolbar (allows user to add people to list)
     public void onLogout(View view) {
         showYesNoDialog();
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//
-//        // set title
-//        alertDialogBuilder.setTitle("Log out");
-//
-//        // set dialog message
-//        alertDialogBuilder
-//                .setMessage("Are you sure you want to log out?")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        // if this button is clicked, close
-//                        // current activity
-//                        ParseUser.logOut();
-//                        ShopListsActivity.this.finish();
-//                    }
-//                })
-//                .setNegativeButton("No",new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        // if this button is clicked, just close
-//                        // the dialog box and do nothing
-//                        dialog.cancel();
-//                    }
-//                });
-//        // create alert dialog
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // show it
-//        alertDialog.show();
-
-//        Intent i = new Intent(this, AddPeopleActivity.class);
-//        startActivityForResult(i,20);
     }
 
     private void logout(Boolean logOut){

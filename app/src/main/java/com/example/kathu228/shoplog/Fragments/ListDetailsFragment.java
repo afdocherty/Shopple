@@ -1,22 +1,15 @@
 package com.example.kathu228.shoplog.Fragments;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +17,7 @@ import android.widget.TextView;
 import com.example.kathu228.shoplog.Activities.ShopListsActivity;
 import com.example.kathu228.shoplog.Helpers.DetailsAdapter;
 import com.example.kathu228.shoplog.Helpers.NotificationHandler;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
@@ -39,7 +33,7 @@ import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListDetailsFragment extends Fragment {
+public class ListDetailsFragment extends Fragment implements EdittextDialogFragment.EdittextDialogListener, YesNoDialogFragment.YesNoDialogListener{
 
     private LinearLayout llListName;
     private RelativeLayout rlCollaboratorsTitle;
@@ -89,53 +83,13 @@ public class ListDetailsFragment extends Fragment {
         // List Name
         // Click on ivEditName to edit the name of the list
         tvListName = (TextView) v.findViewById(R.id.tvListName);
-        tvListName.setText((ShopList.getShopListById(shopListObjectId)).getName());
-        llListName = (LinearLayout) v.findViewById(R.id.llListName);
+        final String name =  shopList.getName();
+        tvListName.setText(name);
+        llListName = (LinearLayout) v.findViewById(R.id.llListNameContent);
         llListName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Change List Name");
-
-                // Set up the input
-                final EditText input = new EditText(getActivity());
-                // Specify the type of input expected
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(shopList.getName());
-                builder.setView(input);
-
-                // Adds item from edittext if press enter or done on keyboard
-                input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        }
-                        return false;
-                    }
-                });
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        shopList.setName(input.getText().toString(), null);
-                        tvListName.setText(input.getText().toString());
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                showEdittextDialog(name,shopList);
             }
         });
 
@@ -195,28 +149,7 @@ public class ListDetailsFragment extends Fragment {
         rlLeaveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Prompt the user to confirm leaving the list
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button clicked, remove from list
-                                removeUserFromShoplist();
-                                Intent i = new Intent(getActivity(), ShopListsActivity.class);
-                                startActivity(i);
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked, close the dialog
-                                dialog.cancel();
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(), R.style.AppCompatAlertDialogStyle);
-                builder.setTitle("Leaving "+tvListName.getText().toString()).setMessage("Are you sure you want to leave?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                showYesNoDialog(shopList.getName(),shopList);
             }
         });
 
@@ -263,4 +196,34 @@ public class ListDetailsFragment extends Fragment {
         }
     }
 
+
+    private void showEdittextDialog(String listName, ShopList shopList){
+        FragmentManager fm = getFragmentManager();
+        EdittextDialogFragment edittextDialogFragment = EdittextDialogFragment.newInstance("Change List Name", shopList);
+        edittextDialogFragment.setListener(this);
+        edittextDialogFragment.show(fm, "fragment_edittext_dialog");
+    }
+
+    @Override
+    public void onFinishEdittextDialog(Boolean yes, String title, ShopList mshopList, String newName) {
+        if (yes){
+            shopList.setName(newName, null);
+            tvListName.setText(newName);
+        }
+    }
+
+    private void showYesNoDialog(String name, ShopList shopList){
+        FragmentManager fm = getFragmentManager();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance("Leaving "+name, "Are you sure you want to leave?",null,shopList);
+        yesNoDialogFragment.setListener(this);
+        yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+    }
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+        if (yes){
+            removeUserFromShoplist();
+            Intent i = new Intent(getActivity(), ShopListsActivity.class);
+            startActivity(i);
+        }
+    }
 }

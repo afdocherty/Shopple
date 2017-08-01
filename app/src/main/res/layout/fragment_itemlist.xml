@@ -61,13 +61,28 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/divider"/>
+            app:srcCompat="@drawable/divider" />
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            style="?android:attr/progressBarStyle"
+            android:indeterminateTint="@color/colorPrimaryLight"
+            android:indeterminate="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/divider"
+            android:layout_marginTop="4dp"
+            android:visibility="invisible"
+            android:animationResolution="10"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add_new"
+            android:layout_below="@+id/divider"
+            android:layout_marginTop="4dp"
             android:layout_alignParentStart="true" />
 
         <LinearLayout
