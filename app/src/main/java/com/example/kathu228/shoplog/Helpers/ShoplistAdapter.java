@@ -1,12 +1,12 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.RippleDrawable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
+import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.ParseUser;
@@ -28,7 +30,7 @@ import java.util.List;
  * Created by afdoch on 7/13/17.
  */
 
-public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter{
+public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter, YesNoDialogFragment.YesNoDialogListener{
 
     public Context context;
 
@@ -59,39 +61,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
     @Override
     public void onItemDismiss(final int position) {
-
-        final ShopList shopList = mlist.get(position);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-        // set title
-        alertDialogBuilder.setTitle("Delete list");
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Are you sure you want to delete "+shopList.getName()+"?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, delete all completed items
-                        shopList.removeUser(ParseUser.getCurrentUser(),null);
-                        mlist.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        notifyItemChanged(position);
-                        dialog.cancel();
-                    }
-                });
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-
+        showYesNoDialog("Leave List", "Are you sure you want to leave "+mlist.get(position).getName()+"?",mlist.get(position));
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -164,6 +134,26 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                     return true;
                 }
             });
+        }
+    }
+
+    // shows yes/no dialog
+    public void showYesNoDialog(String title, String question, final ShopList mshopList){
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,null,mshopList);
+        yesNoDialogFragment.setListener(ShoplistAdapter.this);
+        yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+    }
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+        int position = mlist.indexOf(mshopList);
+        if (yes){
+            mshopList.removeUser(ParseUser.getCurrentUser(),null);
+            mlist.remove(position);
+            notifyItemRemoved(position);
+        }
+        else {
+            notifyItemChanged(position);
         }
     }
 }
