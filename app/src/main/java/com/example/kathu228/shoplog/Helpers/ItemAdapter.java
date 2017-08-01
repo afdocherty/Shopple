@@ -276,8 +276,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         int segColor = ColorPicker.getColor(categorySegment.getColorNum());
                         ivCategorize.setColorFilter(ContextCompat.getColor(context,segColor));
                         categorizing(categorySegment.getName(),ivCategorize,mview);
-                        ivCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
-                        categorizing(categorySegment.getName(),ivCategorize,mview);
                     }
                     else {
                         return;
