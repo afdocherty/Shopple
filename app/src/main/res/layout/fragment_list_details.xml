@@ -7,61 +7,60 @@
     android:padding="8dp"
     tools:context="com.example.kathu228.shoplog.Fragments.ListDetailsFragment">
 
-    <RelativeLayout
-        android:id="@+id/rlListName"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/llListName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:padding="8dp"
+        android:orientation="horizontal"
         android:layout_alignParentTop="true"
-        android:padding="8dp">
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/ivListIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_check_box" />
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:srcCompat="@drawable/ic_food"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/ivListIcon"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginStart="8dp">
 
             <TextView
                 android:id="@+id/tvListName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_weight="1.0"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="List Name"
                 android:textColor="@color/black"
-                android:textSize="32sp"
-                android:layout_weight="1.0"/>
+                android:textSize="@dimen/text_list_name" />
 
             <ImageView
                 android:id="@+id/ivEditName"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:tint="@color/black"
                 app:srcCompat="@drawable/ic_edit" />
-
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/div1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rlListName"
+        android:layout_below="@+id/llListName"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/divider" />
+        app:srcCompat="@drawable/divider"
+        android:layout_marginTop="8dp"/>
 
     <RelativeLayout
         android:id="@+id/rlCollaborators"

@@ -50,7 +50,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ImageView ivAddItem;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
-
     public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
@@ -214,6 +213,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 //        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
 //        shopList = ShopList.getShopListById(shopListObjectId);
         // Populate the items array
+
         addItems();
         startLiveQueries();
     }

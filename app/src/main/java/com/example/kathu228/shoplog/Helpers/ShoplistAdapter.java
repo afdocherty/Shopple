@@ -1,23 +1,20 @@
 package com.example.kathu228.shoplog.Helpers;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.RippleDrawable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
+import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
+import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.ParseUser;
@@ -28,7 +25,7 @@ import java.util.List;
  * Created by afdoch on 7/13/17.
  */
 
-public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter{
+public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, ShopList> implements ItemTouchHelperAdapter, YesNoDialogFragment.YesNoDialogListener{
 
     public Context context;
 
@@ -48,7 +45,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         ShopList shopList = mlist.get(position);
 
         holder.tvListName.setText(shopList.getName());
-        holder.etListName.setText(shopList.getName());
     }
 
     @Override
@@ -59,39 +55,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
     @Override
     public void onItemDismiss(final int position) {
-
-        final ShopList shopList = mlist.get(position);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-        // set title
-        alertDialogBuilder.setTitle("Delete list");
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Are you sure you want to delete "+shopList.getName()+"?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, delete all completed items
-                        shopList.removeUser(ParseUser.getCurrentUser(),null);
-                        mlist.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        notifyItemChanged(position);
-                        dialog.cancel();
-                    }
-                });
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-
+        showYesNoDialog("Leave List", "Are you sure you want to leave "+mlist.get(position).getName()+"?",mlist.get(position));
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -99,8 +63,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
-        public EditText etListName;
-        public ViewSwitcher switcher;
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -109,8 +71,6 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
-            switcher = (ViewSwitcher) itemView.findViewById(R.id.vsListSwitcher);
-            etListName = (EditText) itemView.findViewById(R.id.etListName);
             rippleDrawable = (RippleDrawable) tvListName.getBackground();
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -132,38 +92,26 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                     }
                 }
             });
+        }
+    }
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    switcher.showNext();
-                    etListName.setSelectAllOnFocus(true);
-                    etListName.selectAll();
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null){
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                    }
-                    etListName.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if ((event != null) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode()==KeyEvent.KEYCODE_BACK) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                                String body = etListName.getText().toString();
-                                // Does not add empty item
-                                if (!body.equals("")) {
-                                    final ShopList shopList = mlist.get(getAdapterPosition());
-                                    shopList.setName(body, null);
-                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(etListName.getWindowToken(), 0);
-                                    tvListName.setText(body);
-                                    switcher.showPrevious();
-                                    etListName.setText(body);
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                    return true;
-                }
-            });
+    // shows yes/no dialog
+    public void showYesNoDialog(String title, String question, final ShopList mshopList){
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,null,mshopList);
+        yesNoDialogFragment.setListener(ShoplistAdapter.this);
+        yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
+    }
+    @Override
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+        int position = mlist.indexOf(mshopList);
+        if (yes){
+            mshopList.removeUser(ParseUser.getCurrentUser(),null);
+            mlist.remove(position);
+            notifyItemRemoved(position);
+        }
+        else {
+            notifyItemChanged(position);
         }
     }
 }

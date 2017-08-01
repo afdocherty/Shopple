@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ import static com.example.kathu228.shoplog.Models.ShopList.getShopListById;
  */
 public class ListDetailsFragment extends Fragment {
 
-    private RelativeLayout rlListName;
+    private LinearLayout llListName;
     private RelativeLayout rlCollaboratorsTitle;
     private RelativeLayout rlNotifications;
     private RelativeLayout rlChangeIcon;
@@ -89,8 +90,8 @@ public class ListDetailsFragment extends Fragment {
         // Click on ivEditName to edit the name of the list
         tvListName = (TextView) v.findViewById(R.id.tvListName);
         tvListName.setText((ShopList.getShopListById(shopListObjectId)).getName());
-        rlListName = (RelativeLayout) v.findViewById(R.id.rlListName);
-        rlListName.setOnClickListener(new View.OnClickListener() {
+        llListName = (LinearLayout) v.findViewById(R.id.llListName);
+        llListName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

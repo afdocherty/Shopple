@@ -89,7 +89,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     int colorNum = item.getSegment().getColorNum();
-                    ((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    //((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -256,7 +256,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         //public ViewSwitcher switcher;
         //public EditText etHeader;
         public ImageView ivCategorize;
-        public View vColor;
+        //public View vColor;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -264,7 +264,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             //switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             //etHeader = (EditText)itemView.findViewById(R.id.etHeader);
             ivCategorize = (ImageView) itemView.findViewById(R.id.ivCategorize);
-            vColor = itemView.findViewById(R.id.vColor);
+            //vColor = itemView.findViewById(R.id.vColor);
 
             // can edit category when click button
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -275,8 +275,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         categorySegment = categoryHeader.getSegment();
                         int segColor = ColorPicker.getColor(categorySegment.getColorNum());
                         ivCategorize.setColorFilter(ContextCompat.getColor(context,segColor));
-                        categorizing(categorySegment.getName(),ivCategorize,mview);
-                        ivCategorize.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimaryLight));
                         categorizing(categorySegment.getName(),ivCategorize,mview);
                     }
                     else {
@@ -482,14 +480,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // shows yes/no dialog
     public void showYesNoDialog(String title, String question, final Item mitem){
         FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem);
-//        YesNoDialogFragment yesNoDialogFragment = new YesNoDialogFragment();
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem,null);
         yesNoDialogFragment.setListener(ItemAdapter.this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem) {
+    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
         if (title.equals("Clear Category"))
             clearCategory(yes,mitem);
         else if (title.equals("Empty Completed"))
