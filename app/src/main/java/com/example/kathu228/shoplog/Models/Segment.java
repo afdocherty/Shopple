@@ -46,18 +46,22 @@ public class Segment extends BaseParseObject {
         }
     }
 
-    void initializeVariables(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
+    void initializeVariables(final String name, final ShopList parentList, final int segmentType, @Nullable final SaveCallback callback){
         put("name", name);
         setParent(parentList);
-
-        switch (segmentType){
-            case ADDITIONAL_SEGMENT:
-                addHeaderItem(name, parentList, callback);
-                break;
-            default:
-                nullableSaveInBackground(callback);
-                break;
-        }
+        saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                switch (segmentType){
+                    case ADDITIONAL_SEGMENT:
+                        addHeaderItem(name, parentList, callback);
+                        break;
+                    default:
+                        nullableSaveInBackground(callback);
+                        break;
+                }
+            }
+        });
     }
 
     // Get the name of the Segment

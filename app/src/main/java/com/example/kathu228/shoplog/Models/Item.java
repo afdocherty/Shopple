@@ -29,6 +29,8 @@ public class Item extends BaseParseObject{
     }
 
     Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
+        if (segment != null)
+            put("segment_created_at",segment.getCreatedAt());
         setBody(body);
         setParent(parent);
         if (segment != null)
@@ -40,6 +42,8 @@ public class Item extends BaseParseObject{
     }
 
     void initializeVariables(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
+        if (segment != null)
+            put("segment_created_at",segment.getCreatedAt());
         setBody(body);
         setParent(parent);
         put("segment",segment);
@@ -117,6 +121,7 @@ public class Item extends BaseParseObject{
     public void setSegment(Segment segment, @Nullable SaveCallback callback) {
         if (isCompletedHeader())
             throw new NullPointerException("CompleteHeader doesn't have a segment");
+        put("segment_created_at",segment.getCreatedAt());
         put("segment",segment);
         nullableSaveInBackground(callback);
     }

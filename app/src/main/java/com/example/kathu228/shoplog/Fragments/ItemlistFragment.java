@@ -230,23 +230,28 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         //addUncheckedItems();
         // getSegments does not include completed items
         // TODO: check order
-        shopList.getSegments(new FindCallback<Segment>() {
+        shopList.getUncategorizedSegment().getItemsInBackground(new FindCallback<Item>() {
             @Override
-            public void done(List<Segment> objects, ParseException e) {
-                items.addAll(shopList.getUncategorizedSegment().getItems());
-                for (Segment segment : objects) {
-                    List<Item> mItems = segment.getItems();
-                    items.addAll(mItems);
-                }
-                shopList.getCheckedItems(new FindCallback<Item>() {
+            public void done(List<Item> objects, ParseException e) {
+                items.addAll(objects);
+                itemAdapter.notifyItemRangeInserted(0,objects.size());
+                shopList.getUncheckedSegmentItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
                         items.addAll(objects);
-                        itemAdapter.notifyDataSetChanged();
+                        itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                        shopList.getCheckedItems(new FindCallback<Item>() {
+                            @Override
+                            public void done(List<Item> objects, ParseException e) {
+                                items.addAll(objects);
+                                itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                            }
+                        });
                     }
                 });
             }
         });
+
     }
 
 
