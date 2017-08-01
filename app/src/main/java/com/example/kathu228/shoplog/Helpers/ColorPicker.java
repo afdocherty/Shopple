@@ -11,10 +11,10 @@ public class ColorPicker {
 
     // Kelly's 22 colors of maximum contrast (20 below since white and black are excluded)
     private static final int[] colors = {
-            R.color.kelly_1,
-            R.color.kelly_2,
-            R.color.kelly_3,
-            R.color.kelly_4,
+            R.color.new_1,
+            R.color.new_2,
+            R.color.new_3,
+            R.color.new_4,
             R.color.kelly_5,
             R.color.kelly_6,
             R.color.kelly_7,

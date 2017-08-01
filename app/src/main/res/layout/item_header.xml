@@ -19,6 +19,8 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"/>
 
+    
+
     <!--<ViewSwitcher
         android:id="@+id/vsHeaderSwitcher"
         android:layout_width="wrap_content"
