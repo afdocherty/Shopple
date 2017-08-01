@@ -21,7 +21,7 @@
             android:id="@+id/ivListIcon"
             android:layout_width="@dimen/list_icon_size"
             android:layout_height="@dimen/list_icon_size"
-            app:srcCompat="@drawable/ic_food"
+            app:srcCompat="@drawable/ic_grocery_bag"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp" />
 
