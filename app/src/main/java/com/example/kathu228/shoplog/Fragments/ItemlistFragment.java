@@ -234,17 +234,20 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             @Override
             public void done(List<Item> objects, ParseException e) {
                 items.addAll(objects);
-                itemAdapter.notifyItemRangeInserted(0,objects.size());
+                //itemAdapter.notifyDataSetChanged();
+                //itemAdapter.notifyItemRangeInserted(0,objects.size());
                 shopList.getUncheckedSegmentItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
                         items.addAll(objects);
-                        itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                        itemAdapter.notifyDataSetChanged();
+                        //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
                         shopList.getCheckedItems(new FindCallback<Item>() {
                             @Override
                             public void done(List<Item> objects, ParseException e) {
                                 items.addAll(objects);
-                                itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                                itemAdapter.notifyDataSetChanged();
+                                //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
                             }
                         });
                     }

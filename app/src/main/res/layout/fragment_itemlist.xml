@@ -21,21 +21,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true">
 
-            <!--<ImageButton-->
-                <!--android:id="@+id/ibOCR"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:background="@null"-->
-                <!--android:tint="@color/colorPrimaryLight"-->
-                <!--app:srcCompat="@drawable/ic_add_a_photo"-->
-                <!--android:layout_alignBottom="@+id/etAddItem"-->
-                <!--android:layout_marginRight="@dimen/checkbox_margin"-->
-                <!--android:layout_marginBottom="@dimen/neg_margin"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:onClick="launchCamera"-->
-                <!--android:layout_centerHorizontal="true"/>-->
-
             <ImageView
                 android:id="@+id/ivAddItem"
                 android:layout_width="wrap_content"
@@ -61,7 +46,8 @@
                 android:layout_height="match_parent"
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add_a_photo"
-                android:layout_marginEnd="@dimen/add_margin" />
+                android:layout_marginEnd="@dimen/add_margin"
+                android:onClick="launchCamera"/>
 
         </LinearLayout>
 
