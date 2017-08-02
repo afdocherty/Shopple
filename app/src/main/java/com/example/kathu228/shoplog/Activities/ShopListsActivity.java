@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,7 +40,10 @@ public class ShopListsActivity extends AppCompatActivity implements YesNoDialogF
     private void logout(Boolean logOut){
         if (logOut){
             ParseUser.logOut();
-            ShopListsActivity.this.finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 

@@ -3,7 +3,9 @@ package com.example.kathu228.shoplog.Activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,12 +26,17 @@ import com.example.kathu228.shoplog.Helpers.NotificationHandler;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.Text;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ItemListActivity extends AppCompatActivity{
 
@@ -214,9 +222,70 @@ public class ItemListActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBitmap.getHeight();
+            try{
+                Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                List<String> newItems = callMobileVisionOcr(imageBitmap);
+                //TODO - CREATE A MODAL OVERLAY WHERE THE USER CAN SELECT WHICH ITEMS TO ADD,
+                //TODO - WHICH TO EDIT OR WHICH TO DELETE (OR CAN RETAKE THE PICTURE)
+                itemlistFragment.addItems(newItems);
+            }catch (Exception e){
+                Toast.makeText(this,"Oops. Something went wrong.", Toast.LENGTH_LONG);
+            }
+
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            imageBitmap.getHeight();
         }
+    }
+
+    protected List<String> callMobileVisionOcr(Bitmap imageBitmap){
+
+        //list to be returned
+        List<String> newItems = new ArrayList<>();
+
+        // imageBitmap is the Bitmap image you're trying to process for text
+        if(imageBitmap != null) {
+
+            TextRecognizer textRecognizer = new TextRecognizer.Builder(this).build();
+
+            if(!textRecognizer.isOperational()) {
+                // Note: The first time that an app using a Vision API is installed on a
+                // device, GMS will download a native libraries to the device in order to do detection.
+                // Usually this completes before the app is run for the first time.  But if that
+                // download has not yet completed, then the above call will not detect any text,
+                // barcodes, or faces.
+                // isOperational() can be used to check if the required native libraries are currently
+                // available.  The detectors will automatically become operational once the library
+                // downloads complete on device.
+                Log.d("OCR", "Detector dependencies are not yet available.");
+
+                // Check for low storage.  If there is low storage, the native library will not be
+                // downloaded, so detection will not become operational.
+                IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+                boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+                if (hasLowStorage) {
+                    Toast.makeText(this,"Low Storage", Toast.LENGTH_LONG).show();
+                    Log.d("OCR", "Low Storage");
+                }
+            }
+
+
+            Frame imageFrame = new Frame.Builder()
+                    .setBitmap(imageBitmap)
+                    .build();
+
+            SparseArray<TextBlock> textBlocks = textRecognizer.detect(imageFrame);
+
+            for (int i = 0; i < textBlocks.size(); i++) {
+                TextBlock textBlock = textBlocks.get(textBlocks.keyAt(i));
+                List<? extends Text> lines = textBlock.getComponents();
+                for (Text line : lines){
+                    String lineString = line.getValue();
+                    Log.d("OCR",lineString);
+                    newItems.add(lineString);
+                }
+            }
+        }
+        return newItems;
     }
 }

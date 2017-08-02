@@ -49,8 +49,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private RecyclerView rvItems;
     private EditText etAddItem;
     private ImageView ivAddItem;
-    private ItemAdapter itemAdapter;
-    private ArrayList<Item> items;
+    public ItemAdapter itemAdapter;
+    public ArrayList<Item> items;
     public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
@@ -213,12 +213,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     @Override
     public void onResume() {
         super.onResume();
-        // TODO Test to make sure commenting this doesn't break the notification intents
-//        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-//        shopList = ShopList.getShopListById(shopListObjectId);
+        //clear current items
+        items.clear();
         // Populate the items array
-        addItems();
-        startLiveQueries();
+        populateList();
     }
 
     @Override
@@ -227,32 +225,22 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         super.onPause();
     }
 
-    public void addItems() {
-
-        // Clear the items list
-        items.clear();
-        //addUncheckedItems();
-        // getSegments does not include completed items
-        // TODO: check order
+    public void populateList() {
         shopList.getUncategorizedSegment().getItemsInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 items.addAll(objects);
-                //itemAdapter.notifyDataSetChanged();
-                //itemAdapter.notifyItemRangeInserted(0,objects.size());
                 shopList.getUncheckedSegmentItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
                         items.addAll(objects);
-                        itemAdapter.notifyDataSetChanged();
-                        //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
                         shopList.getCheckedItems(new FindCallback<Item>() {
                             @Override
                             public void done(List<Item> objects, ParseException e) {
                                 items.addAll(objects);
                                 pbLoading.setVisibility(View.INVISIBLE);
                                 itemAdapter.notifyDataSetChanged();
-                                //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                                startLiveQueries();
                             }
                         });
                     }
@@ -279,6 +267,21 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 }
             });
         }
+    }
+
+    //TODO- FOX BUG WHERE ITEMS ARE ADDED TO THE UI TWICE
+    public void addItems(List<String> newItems){
+        final ArrayList<Item> itemsCopy = items;
+        for (String itemName : newItems){
+            shopList.addItem(itemName, new Item.ItemCallback() {
+                @Override
+                public void done(final Item item) {
+                    items.add(0,item);
+                    itemAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
     }
 
     private void startLiveQueries() {
@@ -376,17 +379,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             itemAdapter.notifyItemInserted(newPos);
         }
     }
-
-//    private void updateItemInUI(Item item){
-//        int pos = getItemIndex(item);
-//        items.remove(pos);
-//        int newPos = 0;
-//        if (item.isChecked())
-//            newPos = getItemIndex(shopList.getCompletedHeader())+1;
-//        else if (!item.getSegment().getObjectId().equals(shopList.getUncategorizedSegment().getObjectId()))
-//            newPos = getItemIndex(item.getSegment().getHeader()) + 1;
-//        itemAdapter.notifyItemMoved(pos,newPos);
-//    }
 
     // delete item from UI
     private void deleteItemFromUI(Item item){

@@ -50,7 +50,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.LoginActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

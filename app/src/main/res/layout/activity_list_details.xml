@@ -20,13 +20,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="@dimen/toolbar_iconSize"
+                android:layout_height="@dimen/toolbar_iconSize"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                app:srcCompat="@drawable/ic_double_check" />
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List Details"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_textSize" />
+                android:textSize="@dimen/toolbar_textSize"
+                android:layout_toEndOf="@id/ivLogo"/>
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
