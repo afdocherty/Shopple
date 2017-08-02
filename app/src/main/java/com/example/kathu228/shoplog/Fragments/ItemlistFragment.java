@@ -215,7 +215,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         super.onResume();
         //clear current items
         items.clear();
-        itemAdapter.notifyDataSetChanged();
         // Populate the items array
         addItems();
     }
@@ -239,9 +238,9 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                             @Override
                             public void done(List<Item> objects, ParseException e) {
                                 items.addAll(objects);
-                                itemAdapter.notifyItemRangeInserted(0,items.size());
-                                startLiveQueries();
                                 pbLoading.setVisibility(View.INVISIBLE);
+                                itemAdapter.notifyDataSetChanged();
+                                startLiveQueries();
                             }
                         });
                     }
