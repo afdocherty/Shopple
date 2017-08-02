@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/fragment_padding">
+        android:padding="@dimen/fragment_padding"
+        android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/ivListIcon"

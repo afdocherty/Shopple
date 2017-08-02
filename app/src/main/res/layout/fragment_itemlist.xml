@@ -49,7 +49,7 @@
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add_a_photo"
                 android:layout_marginEnd="@dimen/add_margin"
-                android:onClick="launchCamera"/>
+                android:onClick="launchCamera" />
 
         </LinearLayout>
 

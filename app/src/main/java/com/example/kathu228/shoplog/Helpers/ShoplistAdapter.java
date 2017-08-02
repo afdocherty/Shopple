@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
@@ -63,6 +64,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
+        public LinearLayout llList;
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -71,7 +73,8 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
-            rippleDrawable = (RippleDrawable) tvListName.getBackground();
+            llList = (LinearLayout) itemView.findViewById(R.id.rlItem) ;
+            rippleDrawable = (RippleDrawable) llList.getBackground();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
