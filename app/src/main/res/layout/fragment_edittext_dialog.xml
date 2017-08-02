@@ -32,8 +32,8 @@
         android:layout_below="@+id/rlTitle"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tvQuestion"
+        <EditText
+            android:id="@+id/etName"
             android:layout_marginTop="@dimen/add_margin"
             android:layout_width="254dp"
             android:layout_height="wrap_content"
@@ -42,7 +42,6 @@
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
             android:backgroundTint="@color/colorPrimaryLight"
-            android:text="Are you sure?"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size" />
 
@@ -50,28 +49,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvQuestion">
+            android:layout_below="@+id/etName">
 
             <Button
-                android:id="@+id/bNo"
+                android:id="@+id/bCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/bYes"
+                android:layout_toStartOf="@+id/bOk"
                 android:background="?android:attr/selectableItemBackground"
                 android:minWidth="@dimen/yesno_button_width"
-                android:text="No"
+                android:text="Cancel"
                 android:textColor="@color/secondary_text"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/bYes"
+                android:id="@+id/bOk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="Yes"
+                android:text="OK"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:minWidth="@dimen/yesno_button_width" />

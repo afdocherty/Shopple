@@ -4,9 +4,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="8dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:paddingTop="@dimen/fragment_padding"
+    android:paddingStart="@dimen/fragment_padding"
+    android:paddingEnd="@dimen/fragment_padding">
 
     <LinearLayout
         android:id="@+id/rlItem"
@@ -14,13 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:padding="8dp">
+        android:padding="@dimen/fragment_padding">
 
         <ImageView
             android:id="@+id/ivListIcon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            app:srcCompat="@drawable/ic_food"
+            android:layout_width="@dimen/list_icon_size"
+            android:layout_height="@dimen/list_icon_size"
+            app:srcCompat="@drawable/ic_solo_cup"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"/>
 
@@ -81,6 +81,8 @@
         android:layout_below="@+id/rlItem"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/divider"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/divider_side_margins"
+        android:layout_marginEnd="@dimen/divider_side_margins"/>
 
 </RelativeLayout>

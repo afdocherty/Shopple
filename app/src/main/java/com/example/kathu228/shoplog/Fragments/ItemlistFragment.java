@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
+    private ProgressBar pbLoading;
 
     ShopList shopList;
 
@@ -128,7 +130,9 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ivAddItem = (ImageView) v.findViewById(R.id.ivAddItem);
+        pbLoading = (ProgressBar) v.findViewById(R.id.pbLoading);
 
+        pbLoading.setVisibility(View.VISIBLE);
         // Put onclicklistener onto add button to add item to list
         ivAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +241,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                                 items.addAll(objects);
                                 itemAdapter.notifyItemRangeInserted(0,items.size());
                                 startLiveQueries();
+                                pbLoading.setVisibility(View.INVISIBLE);
                             }
                         });
                     }
