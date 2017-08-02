@@ -209,13 +209,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     @Override
     public void onResume() {
         super.onResume();
-        // TODO Test to make sure commenting this doesn't break the notification intents
-//        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-//        shopList = ShopList.getShopListById(shopListObjectId);
+        //clear current items
+        items.clear();
+        itemAdapter.notifyDataSetChanged();
         // Populate the items array
-
         addItems();
-        startLiveQueries();
     }
 
     @Override
@@ -225,29 +223,20 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     }
 
     public void addItems() {
-        // Clear the items list
-        items.clear();
-        //addUncheckedItems();
-        // getSegments does not include completed items
-        // TODO: check order
         shopList.getUncategorizedSegment().getItemsInBackground(new FindCallback<Item>() {
             @Override
             public void done(List<Item> objects, ParseException e) {
                 items.addAll(objects);
-                //itemAdapter.notifyDataSetChanged();
-                //itemAdapter.notifyItemRangeInserted(0,objects.size());
                 shopList.getUncheckedSegmentItems(new FindCallback<Item>() {
                     @Override
                     public void done(List<Item> objects, ParseException e) {
                         items.addAll(objects);
-                        itemAdapter.notifyDataSetChanged();
-                        //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
                         shopList.getCheckedItems(new FindCallback<Item>() {
                             @Override
                             public void done(List<Item> objects, ParseException e) {
                                 items.addAll(objects);
-                                itemAdapter.notifyDataSetChanged();
-                                //itemAdapter.notifyItemRangeInserted(items.size()-objects.size(),objects.size());
+                                itemAdapter.notifyItemRangeInserted(0,items.size());
+                                startLiveQueries();
                             }
                         });
                     }
@@ -371,17 +360,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             itemAdapter.notifyItemInserted(newPos);
         }
     }
-
-//    private void updateItemInUI(Item item){
-//        int pos = getItemIndex(item);
-//        items.remove(pos);
-//        int newPos = 0;
-//        if (item.isChecked())
-//            newPos = getItemIndex(shopList.getCompletedHeader())+1;
-//        else if (!item.getSegment().getObjectId().equals(shopList.getUncategorizedSegment().getObjectId()))
-//            newPos = getItemIndex(item.getSegment().getHeader()) + 1;
-//        itemAdapter.notifyItemMoved(pos,newPos);
-//    }
 
     // delete item from UI
     private void deleteItemFromUI(Item item){

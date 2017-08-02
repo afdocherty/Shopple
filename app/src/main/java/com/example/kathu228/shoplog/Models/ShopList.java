@@ -45,6 +45,7 @@ public class ShopList extends BaseParseObject {
 
     @Deprecated
     public ShopList(String name, @Nullable final SaveCallback callback){
+        put("icon_number",0);
         put("name", name);
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
@@ -61,6 +62,7 @@ public class ShopList extends BaseParseObject {
     }
 
     private void initializeVariables(String name, @Nullable final SaveCallback callback){
+        put("icon_number",0);
         put("name", name);
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
@@ -275,6 +277,16 @@ public class ShopList extends BaseParseObject {
         return getInt("color_number");
     }
 
+    public void setIconNum(int iconNum, @Nullable SaveCallback callback){
+        put("icon_number", iconNum);
+        nullableSaveInBackground(callback);
+    }
+
+    public int getIconNum(){
+        fetchWhenNeeded();
+        return getInt("icon_number");
+    }
+
     public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
         currentItemLiveQuery = ParseQuery.getQuery(Item.class);
         currentItemLiveQuery.whereEqualTo("parent",this);
@@ -297,6 +309,8 @@ public class ShopList extends BaseParseObject {
         parseLiveQueryClient.unsubscribe(currentSegmentLiveQuery);
     }
 
+
+
     public static void getInstance(String name, @NonNull final ShoplistCallback callback){
         final ShopList list = new ShopList();
         list.initializeVariables(name, new SaveCallback() {
@@ -306,7 +320,6 @@ public class ShopList extends BaseParseObject {
                     callback.done(list);
                 else
                     e.printStackTrace();
-
             }
         });
     }
