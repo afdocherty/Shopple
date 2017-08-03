@@ -39,7 +39,7 @@ public class DeleteCompletedDialogFragment extends DialogFragment{
     public static DeleteCompletedDialogFragment newInstance(String title) {
         DeleteCompletedDialogFragment frag = new DeleteCompletedDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString(YesNoDialogFragment.TITLE, title);
         frag.setArguments(args);
         return frag;
     }
