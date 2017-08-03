@@ -89,8 +89,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
-                    int colorNum = item.getSegment().getColorNum();
-                    ((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    //int colorNum = item.getSegment().getColorNum();
+                    //((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
@@ -26,10 +25,7 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseLiveQueryClient;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SubscriptionHandling;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,39 +115,6 @@ public class ShopListFragment extends Fragment {
                 swipeContainer.setRefreshing(false);
             }
         });
-
-        // Live Queries
-        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
-
-        ParseQuery<ShopList> query = ParseQuery.getQuery(ShopList.class);
-        query.whereEqualTo("users", ParseUser.getCurrentUser());
-        SubscriptionHandling<ShopList> subscriptionHandling = parseLiveQueryClient.subscribe(query);
-        subscriptionHandling.handleEvents(new SubscriptionHandling.HandleEventsCallback<ShopList>() {
-            @Override
-            public void onEvents(ParseQuery<ShopList> query, SubscriptionHandling.Event event, ShopList object) {
-                Log.d("debug", "User has been added to a list");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "User has been added to a list", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new SubscriptionHandling.HandleEventCallback<ShopList>() {
-            @Override
-            public void onEvent(ParseQuery<ShopList> query, ShopList object) {
-                Log.d("debug", "User has been added to a list 1");
-            }
-        });
-
-//        Query.listenForNewLists(ParseUser.getCurrentUser(), new SubscriptionHandling.HandleEventCallback() {
-//            @Override
-//            public void onEvent(ParseQuery query, ParseObject object) {
-//                Toast.makeText(getContext(),"User added to new list",Toast.LENGTH_LONG).show();
-//                //shopLists.add(0,(ShopList)object);
-//            }
-//        });
 
         return v;
     }
