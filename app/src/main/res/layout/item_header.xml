@@ -10,7 +10,7 @@
     <View
         android:layout_width="4dp"
         android:layout_height="20dp"
-        android:background="@color/kelly_1"
+        android:background="@color/colorPrimaryLight"
         android:id="@+id/vColor"
         android:layout_marginStart="@dimen/checkbox_margin"
         android:layout_marginEnd="@dimen/checkbox_margin"
@@ -51,16 +51,25 @@ android:layout_toEndOf="@+id/vColor"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/body_size"
             android:textStyle="bold"
-            android:layout_weight="1.0"/>
+            android:layout_weight="1.0"
+            android:layout_marginRight="@dimen/checkbox_margin"/>
 
         <ImageView
             android:id="@+id/ivCategorize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
             android:background="@null"
-            app:srcCompat="@drawable/ic_edit"
-            android:backgroundTint="@color/lightGray" />
+            app:srcCompat="@drawable/marker"
+            android:padding="@dimen/checkbox_margin"/>
+
+        <ImageView
+            android:id="@+id/ivFinishEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="@dimen/checkbox_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/marker2" />
 
         <!--
         <EditText

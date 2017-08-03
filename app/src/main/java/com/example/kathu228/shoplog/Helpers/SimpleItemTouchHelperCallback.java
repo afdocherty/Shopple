@@ -16,7 +16,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return false;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
         if (viewHolder instanceof ItemAdapter.CompletedHeaderViewHolder){
             return 0;
         }
-        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+        int dragFlags = 0;
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
@@ -37,7 +37,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                           RecyclerView.ViewHolder target) {
-        mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        //mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return false;
     }
 

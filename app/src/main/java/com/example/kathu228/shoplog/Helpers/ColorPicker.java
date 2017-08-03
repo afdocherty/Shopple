@@ -11,6 +11,7 @@ public class ColorPicker {
 
     // Kelly's 22 colors of maximum contrast (20 below since white and black are excluded)
     private static final int[] colors = {
+            R.color.new_0,
             R.color.new_1,
             R.color.new_2,
             R.color.new_3,
@@ -19,6 +20,11 @@ public class ColorPicker {
             R.color.new_6,
             R.color.new_7,
             R.color.new_8,
+            R.color.new_9,
+            R.color.new_10,
+            R.color.new_11,
+            R.color.new_12,
+            R.color.new_13,
     };
 
     // Method to return a new color and color number for the list to use

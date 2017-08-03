@@ -42,7 +42,7 @@ public class Item extends BaseParseObject{
     }
 
     void initializeVariables(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
-        if (segment != null)
+        if (segment != null )
             put("segment_created_at",segment.getCreatedAt());
         setBody(body);
         setParent(parent);

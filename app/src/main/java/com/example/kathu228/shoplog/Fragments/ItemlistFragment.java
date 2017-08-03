@@ -401,4 +401,5 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         return -1;
 
     }
+
 }

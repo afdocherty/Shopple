@@ -34,15 +34,16 @@
 
         <TextView
             android:id="@+id/tvQuestion"
-            android:layout_marginTop="@dimen/add_margin"
             android:layout_width="254dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
+            android:layout_marginTop="@dimen/add_margin"
             android:backgroundTint="@color/colorPrimaryLight"
             android:text="Are you sure?"
+            android:textAlignment="center"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size" />
 
@@ -61,7 +62,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:minWidth="@dimen/yesno_button_width"
                 android:text="No"
-                android:textColor="@color/secondary_text"
+                android:textColor="@color/lightGray"
                 android:textStyle="bold" />
 
             <Button

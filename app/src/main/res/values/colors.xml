@@ -2,22 +2,23 @@
 <resources>
     <color name="colorPrimary">@color/orange</color>
     <color name="colorPrimaryDark">@color/darkOrange</color>
-    <color name="colorPrimaryLight">@color/lighterOrange</color>
+    <color name="colorPrimaryLight">@color/lightOrange</color>
     <color name="colorAccent">@color/lightOrange</color>
     <color name="white">#ffffff</color>
     <color name="lightGray">#d3c9c5</color>
     <color name="lighterGray">#f2f0ef</color>
     <color name="divider">@color/lighterOrange</color>
-    <color name="primary_text">#433734</color>
-    <color name="secondary_text">#7b6b5e</color>
+    <color name="primary_text">#2e2624</color>
+    <color name="secondary_text">#554b48</color>
     <color name="black">#000000</color>
     <color name="lighterOrange">#ffa470</color>
     <color name="lightOrange">#ff8039</color>
     <color name="orange">#ff5c00</color>
-    <color name="darkOrange">#C64700</color>
+    <color name="darkOrange">#F53B00</color>
     <color name="darkerOrange">#B72C00</color>
+    <color name="yellow">#FFD500</color>
 
-    <!-- Kelly's 20 distinct colors -->
+    <!-- Kelly's 20 distinct colors
     <color name="kelly_1">#C10020</color>
     <color name="kelly_2">#00538A</color>
     <color name="kelly_3">#F4C800</color>
@@ -37,14 +38,22 @@
     <color name="kelly_17">#F13A13</color>
     <color name="kelly_18">#232C16</color>
     <color name="kelly_19">#817066</color>
-    <color name="kelly_20">#7F180D</color>
+    <color name="kelly_20">#7F180D</color>-->
 
-    <color name="new_1">#AD6B6B</color>
-    <color name="new_2">#ADA26B</color>
-    <color name="new_3">#584F77</color>
-    <color name="new_4">#568B56</color>
-    <color name="new_5">#FFDBAA</color>
-    <color name="new_6">#F4FBA7</color>
-    <color name="new_7">#9D72A9</color>
-    <color name="new_8">#718EA4</color>
+    <color name="new_0">#15679E</color>
+    <color name="new_1">#339194</color>
+    <color name="new_2">#ED303C</color>
+    <color name="new_3">#A70267</color>
+    <color name="new_4">#E97F02</color>
+    <color name="new_5">#F8CA00</color>
+    <color name="new_6">#8A9B0F</color>
+    <color name="new_7">#BD1550</color>
+    <color name="new_8">#79ADDC</color>
+    <color name="new_9">#FB6B41</color>
+    <color name="new_10">#584F77</color>
+    <color name="new_11">#490A3D</color>
+    <color name="new_12">#F10C49</color>
+    <color name="new_13">#EDAE49</color>
+
+
 </resources>

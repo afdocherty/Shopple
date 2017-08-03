@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/checkbox_margin"
         android:text="Collab 1"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="@dimen/sub_size" />
 
 </LinearLayout>

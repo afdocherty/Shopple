@@ -51,7 +51,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/ivDetailsBtn"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"/>
+                android:paddingEnd="8dp"
+                android:background="?attr/selectableItemBackground"/>
 
             <ImageView
                 android:id="@+id/ivDetailsBtn"
@@ -62,7 +63,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:paddingStart="8dp"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp"
+                android:background="?attr/selectableItemBackground"/>
 
         </RelativeLayout>
 

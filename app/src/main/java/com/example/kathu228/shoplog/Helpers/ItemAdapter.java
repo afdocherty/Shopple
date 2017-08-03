@@ -26,6 +26,7 @@ import com.example.kathu228.shoplog.R;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.make;
+import static com.example.kathu228.shoplog.R.id.vColor;
 import static com.example.kathu228.shoplog.R.layout.item;
 import static com.example.kathu228.shoplog.R.layout.item_header;
 
@@ -90,7 +91,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     int colorNum = item.getSegment().getColorNum();
-                    ((HeaderViewHolder) holder).vColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    ((HeaderViewHolder) holder).viewColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    ((HeaderViewHolder) holder).ivFinishEdit.setColorFilter(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -188,7 +190,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         }
                     }
                     else {
-                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorPrimaryLight)));
+                        rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
                         int adapterPos = getAdapterPosition();
                         if (adapterPos<0) {
                             Toast.makeText(context, String.format("ERROR: There was a problem with the " +
@@ -257,7 +259,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         //public ViewSwitcher switcher;
         //public EditText etHeader;
         public ImageView ivCategorize;
-        public View vColor;
+        public ImageView ivFinishEdit;
+        public View viewColor;
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
@@ -265,7 +268,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             //switcher = (ViewSwitcher)itemView.findViewById(R.id.vsHeaderSwitcher);
             //etHeader = (EditText)itemView.findViewById(R.id.etHeader);
             ivCategorize = (ImageView) itemView.findViewById(R.id.ivCategorize);
-            vColor = itemView.findViewById(R.id.vColor);
+            ivFinishEdit = (ImageView) itemView.findViewById(R.id.ivFinishEdit);
+            viewColor = itemView.findViewById(vColor);
 
             // can edit category when click button
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -274,9 +278,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if (categorySegment ==null){
                         categoryHeader = mlist.get(getAdapterPosition());
                         categorySegment = categoryHeader.getSegment();
-                        int segColor = ColorPicker.getColor(categorySegment.getColorNum());
-                        ivCategorize.setColorFilter(ContextCompat.getColor(context,segColor));
-                        categorizing(categorySegment.getName(),ivCategorize,mview);
+                        //int segColor = ColorPicker.getColor(categorySegment.getColorNum());
+                        //ivFinishEdit.setColorFilter(ContextCompat.getColor(context,segColor));
+                        categorizing(categorySegment.getName(),ivCategorize,ivFinishEdit,mview);
                     }
                     else {
                         return;
@@ -418,17 +422,32 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // opens snackbar to show which category you are currently editing and enables closure
-    public void categorizing(final String categoryName, final ImageView ivEdit, View v){
+    public void categorizing(final String categoryName, final ImageView ivEdit, final ImageView ivDone, View v){
+        ivEdit.setVisibility(View.GONE);
+        ivDone.setVisibility(View.VISIBLE);
        final Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       ivEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
+                       //ivEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
                        categorySegment = null;
                        categoryHeader = null;
+                       ivDone.setVisibility(View.GONE);
+                       ivEdit.setVisibility(View.VISIBLE);
                    }
                })
                 .show();
+        ivDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivEdit.setColorFilter(ContextCompat.getColor(context,R.color.lightGray));
+                categorySegment = null;
+                categoryHeader = null;
+                ivDone.setVisibility(View.GONE);
+                ivEdit.setVisibility(View.VISIBLE);
+                snackbar.dismiss();
+            }
+        });
     }
 
     private void closeSnackbar(Snackbar snackbar, ImageButton ibEdit){

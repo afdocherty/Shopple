@@ -1,7 +1,6 @@
 package com.example.kathu228.shoplog.Activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -10,9 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,8 +19,11 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.*;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
+import com.example.kathu228.shoplog.Fragments.OcrItemListDialogFragment;
+import com.example.kathu228.shoplog.Fragments.TripDialogFragment;
 import com.example.kathu228.shoplog.Helpers.NotificationHandler;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ItemListActivity extends AppCompatActivity{
+public class ItemListActivity extends AppCompatActivity implements TripDialogFragment.TripDialogListener, OcrItemListDialogFragment.OcrItemListDialogListener{
 
     ArrayList<Item> items;
     private ItemlistFragment itemlistFragment;
@@ -126,50 +128,51 @@ public class ItemListActivity extends AppCompatActivity{
 
     // Initialize dialog to start map for My Store or Nearby Stores
     public void initMaps(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set titlexw
-        alertDialogBuilder.setTitle("Start my Trip");
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Route me to:")
-                .setCancelable(true)
-                .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // Activate notifications automatically
-                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
-                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
-
-                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
-                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(mapIntent);
-                        }
-                    }
-                })
-                .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // Activate notifications automatically
-                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
-                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
-
-                        // Search grocery stores that are nearby FB Seattle Office
-                        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(mapIntent);
-                        }
-                    }
-                });
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+        showTripDialog();
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//
+//        // set titlexw
+//        alertDialogBuilder.setTitle("Start my Trip");
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setMessage("Route me to:")
+//                .setCancelable(true)
+//                .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,int id) {
+//                        // Activate notifications automatically
+//                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+//                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+//
+//                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
+//                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
+//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                        mapIntent.setPackage("com.google.android.apps.maps");
+//                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+//                            startActivity(mapIntent);
+//                        }
+//                    }
+//                })
+//                .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,int id) {
+//                        // Activate notifications automatically
+//                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+//                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+//
+//                        // Search grocery stores that are nearby FB Seattle Office
+//                        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
+//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                        mapIntent.setPackage("com.google.android.apps.maps");
+//                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+//                            startActivity(mapIntent);
+//                        }
+//                    }
+//                });
+//        // create alert dialog
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
     }
 
     public void launchCamera(View view) {
@@ -224,18 +227,35 @@ public class ItemListActivity extends AppCompatActivity{
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try{
                 Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-                List<String> newItems = callMobileVisionOcr(imageBitmap);
+                final List<String> newItems = callMobileVisionOcr(imageBitmap);
                 //TODO - CREATE A MODAL OVERLAY WHERE THE USER CAN SELECT WHICH ITEMS TO ADD,
                 //TODO - WHICH TO EDIT OR WHICH TO DELETE (OR CAN RETAKE THE PICTURE)
-                itemlistFragment.addItems(newItems);
+
+                final FragmentManager fm = getSupportFragmentManager();
+                String shopListObjectId;
+                if (getIntent().hasExtra(ShopList.SHOPLIST_PENDINTENT_TAG)) {
+                    shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_PENDINTENT_TAG);
+                } else {
+                    shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_TAG);
+                }
+                final OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(listToArrayList(newItems),shopListObjectId);
+                ocrItemListDialogFragment.setListener(this);
+                new Handler().post(new Runnable() {
+                    @Override public void run() {
+                        // for some reason this must be called in the next loop
+                        ocrItemListDialogFragment.show(fm, "fragment_ocritemlist_dialog");
+                    }
+                });
+
             }catch (Exception e){
-                Toast.makeText(this,"Oops. Something went wrong.", Toast.LENGTH_LONG);
+                Toast.makeText(this,"Oops. Something went wrong.", Toast.LENGTH_LONG).show();
             }
 
 //            Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            imageBitmap.getHeight();
         }
     }
+
 
     protected List<String> callMobileVisionOcr(Bitmap imageBitmap){
 
@@ -287,5 +307,69 @@ public class ItemListActivity extends AppCompatActivity{
             }
         }
         return newItems;
+    }
+
+    private ArrayList<String> listToArrayList(List<String> list){
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.addAll(list);
+        return arrayList;
+    }
+
+    private void showMyStore(){
+        // Activate notifications automatically
+        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+
+        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
+    }
+
+    private void showNearbyStores(){
+        // Activate notifications automatically
+        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
+        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
+
+        // Search grocery stores that are nearby FB Seattle Office
+        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
+    }
+
+    private void showTripDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        TripDialogFragment tripDialogFragment = TripDialogFragment.newInstance();
+        tripDialogFragment.setListener(this);
+        tripDialogFragment.show(fm, "fragment_trip_dialog");
+    }
+
+    @Override
+    public void onFinishTripDialog(Boolean favStore) {
+        if (favStore){
+            showMyStore();
+        }
+        else{
+            showNearbyStores();
+        }
+    }
+
+    private void showOcrItemListDialog(ArrayList<String> newItems, String shoplistID) {
+        FragmentManager fm = getSupportFragmentManager();
+        OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(newItems,shoplistID);
+        ocrItemListDialogFragment.setListener(this);
+        ocrItemListDialogFragment.show(fm, "fragment_ocritemlist_dialog");
+    }
+
+
+    @Override
+    public void onFinishOcrItemListDialog(List<String> addItems) {
+        itemlistFragment.addItems(addItems);
     }
 }
