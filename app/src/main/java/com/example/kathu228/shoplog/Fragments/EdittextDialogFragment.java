@@ -52,8 +52,8 @@ public class EdittextDialogFragment extends DialogFragment{
     public static EdittextDialogFragment newInstance(String title, ShopList mshopList) {
         EdittextDialogFragment frag = new EdittextDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
-        args.putParcelable("shoplist", mshopList);
+        args.putString(YesNoDialogFragment.TITLE, title);
+        args.putParcelable(YesNoDialogFragment.SHOPLIST, mshopList);
         frag.setArguments(args);
         return frag;
     }
@@ -74,8 +74,8 @@ public class EdittextDialogFragment extends DialogFragment{
         mCancel = (Button) view.findViewById(R.id.bCancel);
         mOk = (Button) view.findViewById(R.id.bOk);
         // Fetch arguments from bundle and set title
-        final String title = getArguments().getString("title");
-        final ShopList shopList = getArguments().getParcelable("shoplist");
+        final String title = getArguments().getString(YesNoDialogFragment.TITLE);
+        final ShopList shopList = getArguments().getParcelable(YesNoDialogFragment.SHOPLIST);
         mText.setText(shopList.getName());
         mTitle.setText(title);
         //mText.requestFocus();
@@ -115,8 +115,8 @@ public class EdittextDialogFragment extends DialogFragment{
 
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        final String title = getArguments().getString("title");
-        final ShopList shopList = getArguments().getParcelable("shoplist");
+        final String title = getArguments().getString(YesNoDialogFragment.TITLE);
+        final ShopList shopList = getArguments().getParcelable(YesNoDialogFragment.SHOPLIST);
         //Adds item from edittext if press enter or done on keyboard
         mText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

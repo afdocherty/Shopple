@@ -24,6 +24,11 @@ public class YesNoDialogFragment extends DialogFragment{
     private Button mNo;
     private YesNoDialogListener mListener;
 
+    public static final String TITLE = "title";
+    public static final String QUESTION = "question";
+    public static final String ITEM = "item";
+    public static final String SHOPLIST = "shoplist";
+
     public void setListener(YesNoDialogListener listener) {
         mListener = listener;
     }
@@ -41,16 +46,16 @@ public class YesNoDialogFragment extends DialogFragment{
         dismiss();
     }
 
-    public YesNoDialogFragment(){
-    }
+//    public YesNoDialogFragment(){
+//    }
 
     public static YesNoDialogFragment newInstance(String title, String question, @Nullable Item mitem, @Nullable ShopList mshopList) {
         YesNoDialogFragment frag = new YesNoDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
-        args.putString("question", question);
-        args.putParcelable("item", mitem);
-        args.putParcelable("shoplist", mshopList);
+        args.putString(TITLE, title);
+        args.putString(QUESTION, question);
+        args.putParcelable(ITEM, mitem);
+        args.putParcelable(SHOPLIST, mshopList);
         frag.setArguments(args);
         return frag;
     }
@@ -71,10 +76,10 @@ public class YesNoDialogFragment extends DialogFragment{
         mNo = (Button) view.findViewById(R.id.bNo);
         mYes = (Button) view.findViewById(R.id.bYes);
         // Fetch arguments from bundle and set title/question
-        final String title = getArguments().getString("title");
-        String question = getArguments().getString("question");
-        final Item item = getArguments().getParcelable("item");
-        final ShopList shopList = getArguments().getParcelable("shoplist");
+        final String title = getArguments().getString(TITLE);
+        String question = getArguments().getString(QUESTION);
+        final Item item = getArguments().getParcelable(ITEM);
+        final ShopList shopList = getArguments().getParcelable(SHOPLIST);
         mTitle.setText(title);
         mQuestion.setText(question);
         // See if user selects yes or no
@@ -94,9 +99,9 @@ public class YesNoDialogFragment extends DialogFragment{
 
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        final String title = getArguments().getString("title");
-        final Item item = getArguments().getParcelable("item");
-        final ShopList shopList = getArguments().getParcelable("shoplist");
+        final String title = getArguments().getString(TITLE);
+        final Item item = getArguments().getParcelable(ITEM);
+        final ShopList shopList = getArguments().getParcelable(SHOPLIST);
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

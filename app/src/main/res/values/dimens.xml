@@ -23,4 +23,6 @@
     <dimen name="details_icon_size">28dp</dimen>
     <dimen name="divider_side_margins">8dp</dimen>
     <dimen name="text_list_details">24sp</dimen>
+    <dimen name="padding_icon_picker">16dp</dimen>
+    <dimen name="spacing_icon_picker">24dp</dimen>
 </resources>
