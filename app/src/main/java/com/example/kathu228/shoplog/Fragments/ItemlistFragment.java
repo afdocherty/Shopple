@@ -359,9 +359,14 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     private void updateSegmentInUI(Segment segment){
         int index = getItemIndex(segment.getHeader());
-        items.remove(index);
-        items.add(index,segment.getHeader());
-        itemAdapter.notifyItemChanged(index);
+        if (index != -1){
+            items.remove(index);
+            items.add(index,segment.getHeader());
+            itemAdapter.notifyItemChanged(index);
+        }
+        else
+            Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
+                    segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)

@@ -82,8 +82,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
+
         public LinearLayout llList;
+
         public ImageView ivListIcon;
+
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -92,8 +95,10 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
+
             llList = (LinearLayout) itemView.findViewById(R.id.rlItem) ;
             rippleDrawable = (RippleDrawable) llList.getBackground();
+
             ivListIcon = (ImageView) itemView.findViewById(R.id.ivListIcon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
