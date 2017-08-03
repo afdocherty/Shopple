@@ -1,6 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/icon_picker"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rlTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/add_margin"
+            android:text="Title"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/body_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_weight"
+        android:background="@color/colorPrimaryLight"/>
+
+    <LinearLayout
+        android:id="@+id/llIcons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/padding_icon_picker">
+
+        <ImageView
+            android:id="@+id/icon_groceries"
+            android:layout_width="@dimen/list_icon_size"
+            android:layout_height="@dimen/list_icon_size"
+            android:src="@drawable/ic_grocery_bag"
+            android:layout_marginEnd="@dimen/spacing_icon_picker" />
+
+        <ImageView
+            android:id="@+id/icon_party"
+            android:layout_width="@dimen/list_icon_size"
+            android:layout_height="@dimen/list_icon_size"
+            android:src="@drawable/ic_solo_cup"/>
+
+        <ImageView
+            android:id="@+id/icon_bbq"
+            android:layout_width="@dimen/list_icon_size"
+            android:layout_height="@dimen/list_icon_size"
+            android:src="@drawable/ic_bbq_grill"
+            android:layout_marginStart="@dimen/spacing_icon_picker"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTitle"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvQuestion">
+
+            <Button
+                android:id="@+id/bCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/bConfirm"
+                android:background="?android:attr/selectableItemBackground"
+                android:minWidth="@dimen/yesno_button_width"
+                android:text="Cancel"
+                android:textColor="@color/secondary_text"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/bConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Confirm"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:minWidth="@dimen/yesno_button_width" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>
