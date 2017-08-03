@@ -10,10 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
 import android.widget.LinearLayout;
+=======
+import android.widget.ImageView;
+>>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
+import com.example.kathu228.shoplog.Fragments.IconPickerDialogFragment;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -46,6 +51,22 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         ShopList shopList = mlist.get(position);
 
         holder.tvListName.setText(shopList.getName());
+
+        setListIcon(shopList, holder);
+    }
+
+    private void setListIcon(ShopList shopList, ViewHolder holder) {
+        switch (shopList.getIconNum()) {
+            case IconPickerDialogFragment.ICON_NUM_GROCERY:
+                holder.ivListIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_grocery_bag));
+                break;
+            case IconPickerDialogFragment.ICON_NUM_PARTY:
+                holder.ivListIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_solo_cup));
+                break;
+            case IconPickerDialogFragment.ICON_NUM_BBQ:
+                holder.ivListIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_bbq_grill));
+                break;
+        }
     }
 
     @Override
@@ -64,7 +85,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
+<<<<<<< HEAD
         public LinearLayout llList;
+=======
+        public ImageView ivListIcon;
+>>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -73,8 +98,13 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
+<<<<<<< HEAD
             llList = (LinearLayout) itemView.findViewById(R.id.rlItem) ;
             rippleDrawable = (RippleDrawable) llList.getBackground();
+=======
+            ivListIcon = (ImageView) itemView.findViewById(R.id.ivListIcon);
+            rippleDrawable = (RippleDrawable) tvListName.getBackground();
+>>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
