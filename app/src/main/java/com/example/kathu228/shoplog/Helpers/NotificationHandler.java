@@ -115,7 +115,7 @@ public class NotificationHandler {
         // Build Notification , setOngoing keeps the notification always in status bar. Specify the list in the Content Text
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_stat_name)
+                        .setSmallIcon(R.drawable.ic_double_check)
                         .setContentTitle(context.getResources().getString(R.string.app_name))
                         .setContentText("Click to go to " + shopListName)
                         .setOngoing(true)
