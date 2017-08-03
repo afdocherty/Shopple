@@ -132,7 +132,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         ivAddItem = (ImageView) v.findViewById(R.id.ivAddItem);
         pbLoading = (ProgressBar) v.findViewById(R.id.pbLoading);
 
-        pbLoading.setVisibility(View.VISIBLE);
+        //pbLoading.setVisibility(View.VISIBLE);
         // Put onclicklistener onto add button to add item to list
         ivAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,7 +238,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                             @Override
                             public void done(List<Item> objects, ParseException e) {
                                 items.addAll(objects);
-                                pbLoading.setVisibility(View.INVISIBLE);
+                                //pbLoading.setVisibility(View.INVISIBLE);
                                 itemAdapter.notifyDataSetChanged();
                                 startLiveQueries();
                             }
