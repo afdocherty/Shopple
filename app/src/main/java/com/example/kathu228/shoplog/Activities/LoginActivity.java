@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+// Login Activity
 public class LoginActivity extends AppCompatActivity {
 
     public Button loginButton;
