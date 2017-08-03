@@ -10,11 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< HEAD
 import android.widget.LinearLayout;
-=======
 import android.widget.ImageView;
->>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
@@ -85,11 +82,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     public class ViewHolder extends BaseAdapter.ViewHolder{
 
         public TextView tvListName;
-<<<<<<< HEAD
+
         public LinearLayout llList;
-=======
+
         public ImageView ivListIcon;
->>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
+
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -98,13 +95,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             super(itemView);
 
             tvListName = (TextView) itemView.findViewById(R.id.tvListName);
-<<<<<<< HEAD
+
             llList = (LinearLayout) itemView.findViewById(R.id.rlItem) ;
             rippleDrawable = (RippleDrawable) llList.getBackground();
-=======
+
             ivListIcon = (ImageView) itemView.findViewById(R.id.ivListIcon);
-            rippleDrawable = (RippleDrawable) tvListName.getBackground();
->>>>>>> 207a512baef17d39f154b99d8236cd677eb0f5cc
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
