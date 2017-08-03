@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.example.kathu228.shoplog.Helpers.OcrItemAdapter;
-import com.example.kathu228.shoplog.Models.Item;
-import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 
 import java.util.ArrayList;
@@ -32,9 +30,6 @@ public class OcrItemListDialogFragment extends DialogFragment{
     private CheckBox selectBox;
 
     private List<String> namesAdded;
-    private List<Item> itemsAdded;
-    private ShopList shopList;
-    private String shopListObjectId;
 
     private OcrItemListDialogListener mListener;
 
@@ -60,11 +55,10 @@ public class OcrItemListDialogFragment extends DialogFragment{
     public OcrItemListDialogFragment(){
     }
 
-    public static OcrItemListDialogFragment newInstance(ArrayList<String> items, String shopListObjectId) {
+    public static OcrItemListDialogFragment newInstance(ArrayList<String> items) {
         OcrItemListDialogFragment frag = new OcrItemListDialogFragment();
         Bundle args = new Bundle();
         args.putStringArrayList("newItems", items);
-        args.putString(ShopList.SHOPLIST_TAG, shopListObjectId);
         frag.setArguments(args);
         return frag;
     }
@@ -74,8 +68,6 @@ public class OcrItemListDialogFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //inflate layout with recycler view
         View v = inflater.inflate(R.layout.fragment_ocritemlist_dialog, container, false);
-        shopListObjectId = getArguments().getString(ShopList.SHOPLIST_TAG);
-        shopList = ShopList.getShopListById(shopListObjectId);
         // items keeps track of all the new items from ocr
         items = new ArrayList<String>();
         items = getArguments().getStringArrayList("newItems");
@@ -86,9 +78,6 @@ public class OcrItemListDialogFragment extends DialogFragment{
         adapter = new OcrItemAdapter(items, R.layout.item, OcrItemListDialogFragment.this, getActivity());
         rvOcrItems.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOcrItems.setAdapter(adapter);
-
-        // itemsAdded are all the items selected
-        itemsAdded = new ArrayList<Item>();
 
         // namesAdded are all the names of the items selected
         namesAdded = new ArrayList<String>();
@@ -138,7 +127,12 @@ public class OcrItemListDialogFragment extends DialogFragment{
     // add item name to namesAdded list
     public void addItem(String itemName) {
         namesAdded.add(itemName);
-        //tvPeopleAdded.setText(formatNumPeople(peopleAdded.size()));
+    }
+
+    // change item name
+    public void changeItem(int pos, String newName) {
+        namesAdded.remove(pos);
+        namesAdded.add(pos, newName);
     }
 
     // remove item from namesAdded list
@@ -146,17 +140,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
         namesAdded.remove(itemName);
     }
 
-    // make items from strings in namesAdded to add to shoplist
-    public void addItems(){
-        for (String name: namesAdded){
-            shopList.addItem(name, new Item.ItemCallback() {
-                @Override
-                public void done(final Item item) {
-                    itemsAdded.add(item);
-                }
-            });
-        }
-    }
+    // if click something, change to unselected
     public void turnSelectOff(){
         selectBox.setChecked(false);
         selectBox.setText("Select All");

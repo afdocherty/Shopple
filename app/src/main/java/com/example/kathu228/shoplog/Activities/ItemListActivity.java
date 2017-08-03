@@ -232,13 +232,7 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
                 //TODO - WHICH TO EDIT OR WHICH TO DELETE (OR CAN RETAKE THE PICTURE)
 
                 final FragmentManager fm = getSupportFragmentManager();
-                String shopListObjectId;
-                if (getIntent().hasExtra(ShopList.SHOPLIST_PENDINTENT_TAG)) {
-                    shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_PENDINTENT_TAG);
-                } else {
-                    shopListObjectId = getIntent().getStringExtra(ShopList.SHOPLIST_TAG);
-                }
-                final OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(listToArrayList(newItems),shopListObjectId);
+                final OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(listToArrayList(newItems));
                 ocrItemListDialogFragment.setListener(this);
                 new Handler().post(new Runnable() {
                     @Override public void run() {
@@ -359,14 +353,6 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
             showNearbyStores();
         }
     }
-
-    private void showOcrItemListDialog(ArrayList<String> newItems, String shoplistID) {
-        FragmentManager fm = getSupportFragmentManager();
-        OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(newItems,shoplistID);
-        ocrItemListDialogFragment.setListener(this);
-        ocrItemListDialogFragment.show(fm, "fragment_ocritemlist_dialog");
-    }
-
 
     @Override
     public void onFinishOcrItemListDialog(List<String> addItems) {

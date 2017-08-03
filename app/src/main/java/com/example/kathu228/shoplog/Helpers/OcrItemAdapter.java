@@ -76,6 +76,7 @@ public class OcrItemAdapter extends BaseAdapter<OcrItemAdapter.ViewHolder, Strin
                     }
                 }
             });
+
         }
     }
 
