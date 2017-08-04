@@ -55,6 +55,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
     private ProgressBar pbLoading;
+    private Boolean isEditing;
+    private Segment addingSegment;
 
     ShopList shopList;
 
@@ -115,7 +117,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         items = new ArrayList<>();
 
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, shopList, v);
+        itemAdapter = new ItemAdapter(items, shopList, v, this);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -137,7 +139,17 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         ivAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addItem();
+                if (isEditing!=null){
+                    if (isEditing){
+                        addItemToSegment();
+                    }
+                    else {
+                        addItem();
+                    }
+                }
+                else {
+                    addItem();
+                }
             }
         });
 
@@ -264,6 +276,25 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     items.add(0, item);
                     itemAdapter.notifyItemInserted(0);
                     rvItems.scrollToPosition(0);
+                }
+            });
+        }
+
+    }
+
+    // add item to segment
+    public void addItemToSegment() {
+        String body = etAddItem.getText().toString();
+        // Does not add empty item
+        if (!body.equals("")) {
+            final int pos = getItemIndex(addingSegment.getHeader())+1;
+            addingSegment.addItem(body, new Item.ItemCallback() {
+                @Override
+                public void done(Item item) {
+                    etAddItem.setText("");
+                    items.add(pos, item);
+                    itemAdapter.notifyItemInserted(pos);
+                    rvItems.scrollToPosition(pos);
                 }
             });
         }
@@ -405,6 +436,18 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
         return -1;
 
+    }
+
+    public void changeAddHintText(Boolean isCategorizing, @Nullable String segmentName, @Nullable Segment segment){
+        if (isCategorizing) {
+            etAddItem.setHint("e.g. Apples to " + segmentName);
+            isEditing = true;
+            addingSegment = segment;
+        }
+        else {
+            etAddItem.setHint("e.g. Apples");
+            isEditing = false;
+        }
     }
 
 }

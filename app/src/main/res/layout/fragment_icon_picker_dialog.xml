@@ -79,7 +79,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/bConfirm"
                 android:background="?android:attr/selectableItemBackground"
-                android:minWidth="@dimen/yesno_button_width"
+                android:minWidth="@dimen/cancel_button_width"
                 android:text="Cancel"
                 android:textColor="@color/secondary_text"
                 android:textStyle="bold" />
@@ -91,10 +91,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
+                android:minWidth="@dimen/confirm_button_width"
                 android:text="Confirm"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:minWidth="@dimen/yesno_button_width" />
+                android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
 

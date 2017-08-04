@@ -25,4 +25,7 @@
     <dimen name="text_list_details">24sp</dimen>
     <dimen name="padding_icon_picker">16dp</dimen>
     <dimen name="spacing_icon_picker">24dp</dimen>
+    <dimen name="button_text_size">18sp</dimen>
+    <dimen name="confirm_button_width">104dp</dimen>
+    <dimen name="cancel_button_width">88dp</dimen>
 </resources>
