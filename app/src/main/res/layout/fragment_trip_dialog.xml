@@ -48,10 +48,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:layout_marginLeft="@dimen/checkbox_margin"
-            android:layout_marginRight="@dimen/checkbox_margin"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
+            android:layout_below="@+id/div1"
+            android:layout_marginEnd="@dimen/divider_side_margins"
+            android:layout_marginStart="@dimen/divider_side_margins"
+            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/checkbox_margin">
 
             <TextView
                 android:id="@+id/textView6"
@@ -79,7 +80,7 @@
             android:id="@+id/div1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rlNearbyStores"
+            android:layout_below="@+id/rlMyStore"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="@dimen/divider_side_margins"
             android:layout_marginStart="@dimen/divider_side_margins"
@@ -90,9 +91,11 @@
             android:id="@+id/rlMyStore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/div1"
-            android:layout_margin="@dimen/checkbox_margin"
-            android:background="?android:attr/selectableItemBackground">
+            android:layout_marginLeft="@dimen/checkbox_margin"
+            android:layout_marginRight="@dimen/checkbox_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:id="@+id/textView7"
