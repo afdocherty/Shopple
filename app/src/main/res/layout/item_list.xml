@@ -25,12 +25,14 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"/>
 
+
         <LinearLayout
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginStart="8dp"
-            android:layout_weight="1.0">
+            android:layout_weight="1.0"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvListName"
@@ -47,19 +49,20 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/ivCollaborators"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:srcCompat="@drawable/ic_people"
-                    android:tint="@color/black"/>
+                    android:tint="@color/black"
+                    app:srcCompat="@drawable/ic_people" />
 
                 <TextView
                     android:id="@+id/tvCollaborators"
-                    android:layout_width="match_parent"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="?android:attr/selectableItemBackground"
