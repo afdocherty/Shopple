@@ -139,7 +139,7 @@ public class ShopList extends BaseParseObject {
         query.orderByAscending("name");
         query.findInBackground(callback);
     }
-
+    
     public void getUsersNotInList(final FindCallback<ParseUser> callback){
         ParseQuery<ParseUser> allUsersQuery = ParseUser.getQuery();
         ParseQuery<ParseUser> usersInListQuery = getUsersRelation().getQuery();

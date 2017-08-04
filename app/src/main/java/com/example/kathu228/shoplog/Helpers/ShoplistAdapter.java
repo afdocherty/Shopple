@@ -10,19 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Fragments.IconPickerDialogFragment;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
+import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.List;
+
+import static com.example.kathu228.shoplog.Models.ShopList.SHOPLIST_TAG;
 
 /**
  * Created by afdoch on 7/13/17.
@@ -44,10 +49,51 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         ShopList shopList = mlist.get(position);
 
+        // Arranges users into the format "Personal"/"John Smith"/"John, Karen"
+        shopList.getUserList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                String names = "";
+                int len = objects.size();
+                if (len==1){
+                    holder.ivCollaborators.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_outline));
+                    names = "Personal";
+                    holder.tvCollaborators.setText(names);
+                }
+                else{
+                    String username = Query.getNameOfUser(ParseUser.getCurrentUser());
+                    for (ParseUser user: objects){
+                        String name = Query.getNameOfUser(user);
+                        if (name.equals(username)){
+                            continue;
+                        }
+                        else if (names.length()==0){
+                            if (len==2){
+                                names += name;
+                            }
+                            else {
+                                names += firstName(name);
+                            }
+                        }
+//                        else if (user.equals(objects.get(len-1))){
+//                            names += (" and " + Query.getNameOfUser(user));
+//                        }
+                        else{
+                            names += (", " + firstName(name));
+                        }
+                    }
+                    holder.ivCollaborators.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_people_outline));
+                    holder.tvCollaborators.setText(names);
+
+                }
+
+            }
+        });
         holder.tvListName.setText(shopList.getName());
+
 
         setListIcon(shopList, holder);
     }
@@ -87,6 +133,10 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
         public ImageView ivListIcon;
 
+        public TextView tvCollaborators;
+
+        public ImageView ivCollaborators;
+
         private RippleDrawable rippleDrawable;
 
         public ViewHolder(View itemView){
@@ -101,6 +151,10 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
             ivListIcon = (ImageView) itemView.findViewById(R.id.ivListIcon);
 
+            tvCollaborators = (TextView) itemView.findViewById(R.id.tvCollaborators);
+
+            ivCollaborators = (ImageView) itemView.findViewById(R.id.ivCollaborators);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,7 +168,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         // create intent for the new activity
                         Intent intent = new Intent(context, ItemListActivity.class);
                         // Pass in ShopList ObjectId
-                        intent.putExtra(ShopList.SHOPLIST_TAG, shopList.getObjectId());
+                        intent.putExtra(SHOPLIST_TAG, shopList.getObjectId());
                         intent.putExtra(ShopList.SHOPLIST_NEW_TAG, false);
                         context.startActivity(intent);
                     }
@@ -142,4 +196,11 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
             notifyItemChanged(position);
         }
     }
+
+    // finds substring with only first name
+    private String firstName(String name){
+        int space = name.indexOf(" ");
+        return name.substring(0,space);
+    }
+
 }

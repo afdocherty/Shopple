@@ -65,7 +65,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Person, Person, Person, Person, Person"
+                    android:text="Person, Person"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
