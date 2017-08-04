@@ -356,6 +356,6 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
 
     @Override
     public void onFinishOcrItemListDialog(List<String> addItems) {
-        itemlistFragment.addItems(addItems);
+        itemlistFragment.addOCRItems(addItems);
     }
 }

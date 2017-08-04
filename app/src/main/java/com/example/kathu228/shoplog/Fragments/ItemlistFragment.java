@@ -300,9 +300,22 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
     }
 
-    //TODO- FOX BUG WHERE ITEMS ARE ADDED TO THE UI TWICE
+    public void addOCRItems(List<String> newItems){
+        if (isEditing!=null){
+            if (isEditing){
+                addItemsToSegment(newItems);
+            }
+            else {
+                addItems(newItems);
+            }
+        }
+        else {
+            addItems(newItems);
+        }
+    }
+
+    // Adds a list of items to uncategorized
     public void addItems(List<String> newItems){
-        final ArrayList<Item> itemsCopy = items;
         for (String itemName : newItems){
             shopList.addItem(itemName, new Item.ItemCallback() {
                 @Override
@@ -314,6 +327,20 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
 
     }
+
+    // Adds list of items to segment
+     public void addItemsToSegment(List<String> newItems){
+         final int pos = getItemIndex(addingSegment.getHeader())+1;
+         for (String itemName : newItems){
+             addingSegment.addItem(itemName, new Item.ItemCallback() {
+                 @Override
+                 public void done(Item item) {
+                     items.add(pos, item);
+                     itemAdapter.notifyItemInserted(pos);
+                 }
+             });
+         }
+     }
 
     private void startLiveQueries() {
         //Live Queries
