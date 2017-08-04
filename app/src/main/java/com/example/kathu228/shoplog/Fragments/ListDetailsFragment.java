@@ -142,6 +142,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
                 boolean result = NotificationHandler.toggleNotifications(shopListObjectId, getActivity());
                 // Set the notification text to the new notification state
                 tvNotifications.setText(toggleNotificationText(result));
+                setNotificationIcon(result);
             }
         });
 
