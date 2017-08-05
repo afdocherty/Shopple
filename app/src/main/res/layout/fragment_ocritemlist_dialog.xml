@@ -56,7 +56,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvOCRItem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:layout_below="@+id/cbSelect" />
 
     </RelativeLayout>
@@ -80,8 +80,19 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/bRetry"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/bAdd"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Retry"
+            android:textColor="@color/colorPrimaryLight"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/bAdd"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"

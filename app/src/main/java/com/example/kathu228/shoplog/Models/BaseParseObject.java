@@ -21,12 +21,18 @@ public class BaseParseObject extends ParseObject {
         else
             saveInBackground();
     }
-    public void nullableDeleteInBackground(@Nullable DeleteCallback callback){
+    public void nullableDeleteInBackground(@Nullable final DeleteCallback callback){
         put("edit_session", ParseUser.getCurrentUser().getSessionToken());
-        if (callback != null)
-            deleteInBackground(callback);
-        else
-            deleteInBackground();
+        nullableSaveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (callback != null)
+                    deleteInBackground(callback);
+                else
+                    deleteInBackground();
+            }
+        });
+
     }
 
     public void fetchWhenNeeded(){

@@ -13,6 +13,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SubscriptionHandling;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.example.kathu228.shoplog.ParseApplication.parseLiveQueryClient;
@@ -43,38 +44,37 @@ public class ShopList extends BaseParseObject {
         //required for Parse
     }
 
-    @Deprecated
-    public ShopList(String name, @Nullable final SaveCallback callback){
-        put("icon_number",0);
-        put("name", name);
-        put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
-                    @Override
-                        public void done(ParseException e) {
-                            getUsersRelation().add(ParseUser.getCurrentUser());
-                            nullableSaveInBackground(callback);
-                    }
-                }));
-                }
-        }));
-    }
+//    @Deprecated
+//    public ShopList(String name, @Nullable final SaveCallback callback){
+//        getObjectId();
+//        put("icon_number",0);
+//        put("name", name);
+//        put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new Date(), new SaveCallback() {
+//                    @Override
+//                        public void done(ParseException e) {
+//                            getUsersRelation().add(ParseUser.getCurrentUser());
+//                            nullableSaveInBackground(callback);
+//                    }
+//                }));
+//                }
+//        }));
+//    }
 
     private void initializeVariables(String name, @Nullable final SaveCallback callback){
+        put("users_string","Personal");
         put("icon_number",0);
         put("name", name);
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new Date(), new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if(e == null){
-                            getUsersRelation().add(ParseUser.getCurrentUser());
-                            nullableSaveInBackground(callback);
-                        } else
-                            e.printStackTrace();
+                        getUsersRelation().add(ParseUser.getCurrentUser());
+                        nullableSaveInBackground(callback);
                     }
                 }));
             }
@@ -99,12 +99,12 @@ public class ShopList extends BaseParseObject {
         return getRelation("users");
     }
 
-    // Add a user to the relation
-    public void addUser(ParseUser user, @Nullable SaveCallback callback) {
-        getPreviousUserRelation().remove(user);
-        getUsersRelation().add(user);
-        nullableSaveInBackground(callback);
-    }
+//    // Add a user to the relation
+//    public void addUser(ParseUser user, @Nullable SaveCallback callback) {
+//        getPreviousUserRelation().remove(user);
+//        getUsersRelation().add(user);
+//        nullableSaveInBackground(callback);
+//    }
 
     public void addUsers(List<ParseUser> users, @Nullable SaveCallback callback){
         for (ParseUser user : users){
@@ -121,13 +121,13 @@ public class ShopList extends BaseParseObject {
         nullableSaveInBackground(callback);
     }
 
-    public void removeUsers(List<ParseUser> users, @Nullable SaveCallback callback){
-        for (ParseUser user : users){
-            getUsersRelation().remove(user);
-            getPreviousUserRelation().add(user);
-        }
-        nullableSaveInBackground(callback);
-    }
+//    public void removeUsers(List<ParseUser> users, @Nullable SaveCallback callback){
+//        for (ParseUser user : users){
+//            getUsersRelation().remove(user);
+//            getPreviousUserRelation().add(user);
+//        }
+//        nullableSaveInBackground(callback);
+//    }
 
     private ParseRelation<ParseUser> getPreviousUserRelation(){
         fetchWhenNeeded();
@@ -148,14 +148,14 @@ public class ShopList extends BaseParseObject {
         allUsersQuery.findInBackground(callback);
     }
 
-    public void getItems(FindCallback<Item> callback){
-        ParseQuery<Item> query = new ParseQuery<>(Item.class);
-        query.whereEqualTo("parent",this);
-        query.whereEqualTo("visible",true);
-        query.whereEqualTo("type",Item.ITEM);
-        query.orderByDescending("_updated_at");
-        query.findInBackground(callback);
-    }
+//    public void getItems(FindCallback<Item> callback){
+//        ParseQuery<Item> query = new ParseQuery<>(Item.class);
+//        query.whereEqualTo("parent",this);
+//        query.whereEqualTo("visible",true);
+//        query.whereEqualTo("type",Item.ITEM);
+//        query.orderByDescending("_updated_at");
+//        query.findInBackground(callback);
+//    }
 
     public void getCheckedItems(final FindCallback<Item> callback){
         ParseQuery<Item> query = new ParseQuery<>(Item.class);
@@ -186,10 +186,10 @@ public class ShopList extends BaseParseObject {
         query.findInBackground(callback);
     }
 
-    @Deprecated
-    public Item addItem(String itemName, @Nullable SaveCallback callback){
-        return new Item(itemName,this,getUncategorizedSegment(),Item.ITEM,callback);
-    }
+//    @Deprecated
+//    public Item addItem(String itemName, @Nullable SaveCallback callback){
+//        return new Item(itemName,this,getUncategorizedSegment(),Item.ITEM,callback);
+//    }
 
     public void addItem(String itemName, @NonNull final Item.ItemCallback callback){
         final Item item = new Item();
@@ -209,17 +209,17 @@ public class ShopList extends BaseParseObject {
         item.nullableDeleteInBackground(callback);
     }
 
-    public void removeItemsFromCompleted(){
-        getCheckedItems(new FindCallback<Item>() {
-            @Override
-            public void done(List<Item> objects, ParseException e) {
-                for(Item object : objects){
-                    if(object.isItem())
-                        object.setVisible(false,null);
-                }
-            }
-        });
-    }
+//    public void removeItemsFromCompleted(){
+//        getCheckedItems(new FindCallback<Item>() {
+//            @Override
+//            public void done(List<Item> objects, ParseException e) {
+//                for(Item object : objects){
+//                    if(object.isItem())
+//                        object.setVisible(false,null);
+//                }
+//            }
+//        });
+//    }
 
     public void getSegments(FindCallback<Segment> callback){
         ParseQuery<Segment> query = new ParseQuery<>(Segment.class);
@@ -239,10 +239,10 @@ public class ShopList extends BaseParseObject {
         return (Item) getParseObject("completed_header");
     }
 
-    @Deprecated
-    public Segment addSegment(String name, @Nullable SaveCallback callback){
-        return new Segment(name,this,Segment.ADDITIONAL_SEGMENT,callback);
-    }
+//    @Deprecated
+//    public Segment addSegment(String name, @Nullable SaveCallback callback){
+//        return new Segment(name,this,Segment.ADDITIONAL_SEGMENT,callback);
+//    }
 
     public void addSegment(String name, @NonNull final Segment.SegmentCallback callback){
         final Segment segment = new Segment();
@@ -264,7 +264,7 @@ public class ShopList extends BaseParseObject {
         for (Item item : items){
             item.setSegment(getUncategorizedSegment(),null);
         }
-        segment.deleteInBackground();
+        segment.nullableDeleteInBackground(null);
     }
 
     public void incrementColorNum(@Nullable SaveCallback callback){
@@ -285,6 +285,11 @@ public class ShopList extends BaseParseObject {
     public int getIconNum(){
         fetchWhenNeeded();
         return getInt("icon_number");
+    }
+
+    public String getUsersString(){
+        fetchWhenNeeded();
+        return getString("users_string");
     }
 
     public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
@@ -308,8 +313,6 @@ public class ShopList extends BaseParseObject {
         parseLiveQueryClient.unsubscribe(currentItemLiveQuery);
         parseLiveQueryClient.unsubscribe(currentSegmentLiveQuery);
     }
-
-
 
     public static void getInstance(String name, @NonNull final ShoplistCallback callback){
         final ShopList list = new ShopList();

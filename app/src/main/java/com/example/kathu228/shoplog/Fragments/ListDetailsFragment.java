@@ -280,6 +280,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
         if (yes){
             removeUserFromShoplist();
             Intent i = new Intent(getActivity(), ShopListsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
     }

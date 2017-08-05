@@ -6,6 +6,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
+import java.util.Date;
+
 /**
  * Created by kathu228 on 7/11/17.
  *
@@ -28,9 +30,9 @@ public class Item extends BaseParseObject{
         //Needed for Parse
     }
 
-    Item(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
+    Item(String body, ShopList parent, Segment segment, int type, Date date, @Nullable SaveCallback callback){
         if (segment != null)
-            put("segment_created_at",segment.getCreatedAt());
+            put("segment_created_at",date);
         setBody(body);
         setParent(parent);
         if (segment != null)
@@ -43,7 +45,7 @@ public class Item extends BaseParseObject{
 
     void initializeVariables(String body, ShopList parent, Segment segment, int type, @Nullable SaveCallback callback){
         if (segment != null )
-            put("segment_created_at",segment.getCreatedAt());
+            put("segment_created_at",segment.getCreatedTime());
         setBody(body);
         setParent(parent);
         put("segment",segment);
@@ -121,7 +123,7 @@ public class Item extends BaseParseObject{
     public void setSegment(Segment segment, @Nullable SaveCallback callback) {
         if (isCompletedHeader())
             throw new NullPointerException("CompleteHeader doesn't have a segment");
-        put("segment_created_at",segment.getCreatedAt());
+        put("segment_created_at",segment.getCreatedTime());
         put("segment",segment);
         nullableSaveInBackground(callback);
     }
@@ -131,6 +133,13 @@ public class Item extends BaseParseObject{
             throw new NullPointerException("CompleteHeader doesn't have a segment");
         fetchWhenNeeded();
         return (Segment) getParseObject("segment");
+    }
+
+    public int getColorNum(){
+        if(!isHeader())
+            throw new NullPointerException("Only headers have colors");
+        fetchWhenNeeded();
+        return getInt("color_number");
     }
 
     public static Item getItemById(String id){
