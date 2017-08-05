@@ -36,7 +36,7 @@
             app:srcCompat="@drawable/dialog_circle" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/ivIcon"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_alignParentBottom="true"
@@ -57,8 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view"
         android:background="@color/white"
-        android:layout_margin="@dimen/checkbox_margin"
-        android:layout_marginTop="-8dp">
+        android:layout_marginLeft="@dimen/checkbox_margin"
+        android:layout_marginRight="@dimen/checkbox_margin">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -82,7 +82,6 @@
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
             android:layout_marginTop="@dimen/checkbox_margin"
-            android:layout_marginBottom="@dimen/checkbox_margin"
             android:backgroundTint="@color/colorPrimaryLight"
             android:text="Are you sure?"
             android:textColor="@color/primary_text"

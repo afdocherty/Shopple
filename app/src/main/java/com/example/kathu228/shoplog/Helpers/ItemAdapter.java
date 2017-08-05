@@ -165,7 +165,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         else if (item.isHeader()){
-            showYesNoDialog("Clear Category", "Are you sure you want to delete the category, "+item.getBody()+"?", item);
+            showYesNoDialog("Clear Category", "Are you sure you want to delete the category, "+item.getBody()+"?", item,YesNoDialogFragment.CLEARCATEGORY);
         }
 
     }
@@ -359,7 +359,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    showYesNoDialog("Empty Completed","Are you sure you want to delete all completed items?", mlist.get(getAdapterPosition()));
+                    showYesNoDialog("Empty Completed","Are you sure you want to delete all completed items?", mlist.get(getAdapterPosition()),YesNoDialogFragment.DELETECOMPLETED);
                 }
             });
         }
@@ -518,9 +518,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     // shows yes/no dialog
-    public void showYesNoDialog(String title, String question, final Item mitem){
+    public void showYesNoDialog(String title, String question, final Item mitem, int type){
         FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem,null);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,mitem,null,type);
         yesNoDialogFragment.setListener(ItemAdapter.this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }

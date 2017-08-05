@@ -93,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/people_list"
-            android:layout_marginRight="@dimen/checkbox_margin"
             android:layout_weight="1"
             android:background="@color/white"
             android:minWidth="@dimen/confirm_button_width"

@@ -180,7 +180,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
     // shows yes/no dialog
     public void showYesNoDialog(String title, String question, final ShopList mshopList){
         FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,null,mshopList);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(title,question,null,mshopList,YesNoDialogFragment.LEAVELIST);
         yesNoDialogFragment.setListener(ShoplistAdapter.this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }

@@ -3,10 +3,12 @@ package com.example.kathu228.shoplog.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kathu228.shoplog.Models.Item;
@@ -23,11 +25,18 @@ public class YesNoDialogFragment extends DialogFragment{
     private Button mYes;
     private Button mNo;
     private YesNoDialogListener mListener;
+    private ImageView mIcon;
 
     public static final String TITLE = "title";
     public static final String QUESTION = "question";
     public static final String ITEM = "item";
     public static final String SHOPLIST = "shoplist";
+    public static final String TYPE = "type";
+
+    public static final int DELETECOMPLETED = 0;
+    public static final int LOGOUT = 1;
+    public static final int LEAVELIST = 2;
+    public static final int CLEARCATEGORY = 3;
 
     public void setListener(YesNoDialogListener listener) {
         mListener = listener;
@@ -49,13 +58,14 @@ public class YesNoDialogFragment extends DialogFragment{
 //    public YesNoDialogFragment(){
 //    }
 
-    public static YesNoDialogFragment newInstance(String title, String question, @Nullable Item mitem, @Nullable ShopList mshopList) {
+    public static YesNoDialogFragment newInstance(String title, String question, @Nullable Item mitem, @Nullable ShopList mshopList, int mtype) {
         YesNoDialogFragment frag = new YesNoDialogFragment();
         Bundle args = new Bundle();
         args.putString(TITLE, title);
         args.putString(QUESTION, question);
         args.putParcelable(ITEM, mitem);
         args.putParcelable(SHOPLIST, mshopList);
+        args.putInt(TYPE, mtype);
         frag.setArguments(args);
         return frag;
     }
@@ -75,6 +85,7 @@ public class YesNoDialogFragment extends DialogFragment{
         mQuestion = (TextView) view.findViewById(R.id.tvQuestion);
         mNo = (Button) view.findViewById(R.id.bNo);
         mYes = (Button) view.findViewById(R.id.bYes);
+        mIcon = (ImageView) view.findViewById(R.id.ivIcon);
         // Fetch arguments from bundle and set title/question
         final String title = getArguments().getString(TITLE);
         String question = getArguments().getString(QUESTION);
@@ -82,6 +93,21 @@ public class YesNoDialogFragment extends DialogFragment{
         final ShopList shopList = getArguments().getParcelable(SHOPLIST);
         mTitle.setText(title);
         mQuestion.setText(question);
+        switch (getArguments().getInt(TYPE)){
+            case 0:
+                mIcon.setImageResource(R.drawable.ic_delete_sweep);
+                break;
+            case 1:
+                mIcon.setImageResource(R.drawable.logout_variant);
+                break;
+            case 2:
+                mIcon.setImageResource(R.drawable.account_remove);
+                break;
+            case 3:
+                mIcon.setImageResource(R.drawable.folder_remove);
+                break;
+        }
+        mIcon.setColorFilter(ContextCompat.getColor(getActivity(),R.color.white));
         // See if user selects yes or no
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override

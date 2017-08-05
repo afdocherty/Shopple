@@ -236,7 +236,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
 
     private void showYesNoDialog(String name, ShopList shopList){
         FragmentManager fm = getFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance("Leaving "+name, "Are you sure you want to leave?",null,shopList);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance("Leaving "+name, "Are you sure you want to leave?",null,shopList,YesNoDialogFragment.LEAVELIST);
         yesNoDialogFragment.setListener(this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
