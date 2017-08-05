@@ -12,10 +12,10 @@ import com.parse.ParseUser;
 
 public class Query {
 
-    public static void getAllUsers(FindCallback<ParseUser> callback){
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.findInBackground(callback);
-    }
+//    public static void getAllUsers(FindCallback<ParseUser> callback){
+//        ParseQuery<ParseUser> query = ParseUser.getQuery();
+//        query.findInBackground(callback);
+//    }
 
     public static void findShoplistsForUser(ParseUser user, FindCallback<ShopList> callback) {
         ParseQuery<ShopList> query = ParseQuery.getQuery(ShopList.class);

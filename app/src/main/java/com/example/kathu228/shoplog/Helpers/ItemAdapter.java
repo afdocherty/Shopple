@@ -39,6 +39,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public Context context;
 
+    Snackbar snackbar;
+
     private List<Item> mlist;
     ShopList listTest;
     View mview;
@@ -53,6 +55,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         this.categorySegment = null;
         this.categoryHeader = null;
         this.mFragment = fragment;
+    }
+
+    public void stopEditing(Segment mSegment){
+        if (categorySegment!=null && mSegment.getObjectId().equals(categorySegment.getObjectId())){
+            categorySegment = null;
+            categoryHeader = null;
+            snackbar.dismiss();
+            mFragment.changeAddHintText(false,null,null);
+        }
+
     }
 
     @Override
@@ -91,10 +103,16 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 1:
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
-//                    int colorNum = item.getSegment().getColorNum();
-//                    ((HeaderViewHolder) holder).viewColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
-//                    ((HeaderViewHolder) holder).ivFinishEdit.setColorFilter(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
-
+                    int colorNum = item.getColorNum();
+                    ((HeaderViewHolder) holder).viewColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    ((HeaderViewHolder) holder).ivFinishEdit.setColorFilter(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    if(categorySegment==null) {
+                        ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
+                        ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);
+                    }else{
+                        ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.GONE);
+                        ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.VISIBLE);
+                    }
                     break;
                 case 2:
                     ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
@@ -429,7 +447,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void categorizing(final String categoryName, final ImageView ivEdit, final ImageView ivDone, View v){
         ivEdit.setVisibility(View.GONE);
         ivDone.setVisibility(View.VISIBLE);
-       final Snackbar snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(v, "Editing "+categoryName+ " category", Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Done", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
@@ -459,6 +477,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Removes segment and make all items uncategorized
     private void removeSegment(Item item, int pos) {
         Segment curSegment = item.getSegment();
+        stopEditing(curSegment);
         deleteItem(pos);
         List<Item> segItems = curSegment.getItems();
         for (Item segItem : segItems) {

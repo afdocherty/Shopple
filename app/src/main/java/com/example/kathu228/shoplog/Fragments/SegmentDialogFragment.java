@@ -1,8 +1,8 @@
 package com.example.kathu228.shoplog.Fragments;
 
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.kathu228.shoplog.Helpers.ColorPicker;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
 import com.example.kathu228.shoplog.Models.ShopList;
@@ -114,8 +113,6 @@ public class SegmentDialogFragment extends DialogFragment {
         shopList.addSegment(segmentName, new Segment.SegmentCallback() {
             @Override
             public void done(Segment segment) {
-                int colorNum = ColorPicker.getNewColor(getArguments().getString("shopListId"))[0];
-                segment.setColorNum(colorNum,null);
                 sendBackResult(segment.getHeader());
             }
         });

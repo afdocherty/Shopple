@@ -358,4 +358,9 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
     public void onFinishOcrItemListDialog(List<String> addItems) {
         itemlistFragment.addOCRItems(addItems);
     }
+
+    @Override
+    public void onRetryOcr() {
+        dispatchTakePictureIntent();
+    }
 }

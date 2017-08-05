@@ -400,6 +400,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                                     updateSegmentInUI(object);
                                     break;
                                 case DELETE:
+                                    itemAdapter.stopEditing(object);
                                     deleteItemFromUI(object.getHeader());
                                     break;
                             }
@@ -428,9 +429,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private void updateSegmentInUI(Segment segment){
         int index = getItemIndex(segment.getHeader());
         if (index != -1){
-            items.remove(index);
-            items.add(index,segment.getHeader());
-            itemAdapter.notifyItemChanged(index);
+            if (!items.get(index).getBody().equals(segment.getName())){
+                items.remove(index);
+                items.add(index,segment.getHeader());
+                itemAdapter.notifyItemChanged(index);
+            }
         }
         else
             Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
@@ -484,6 +487,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         else {
             etAddItem.setHint("e.g. Apples");
             isEditing = false;
+            addingSegment = null;
         }
     }
 

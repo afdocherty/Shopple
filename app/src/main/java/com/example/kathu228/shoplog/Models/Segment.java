@@ -3,12 +3,14 @@ package com.example.kathu228.shoplog.Models;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.kathu228.shoplog.Helpers.ColorPicker;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,13 +34,21 @@ public class Segment extends BaseParseObject {
         //required for Parse
     }
 
+    //TODO- Finish this (After presentation)
+//    public static Segment createUncategorizedSegment() {
+//        Segment s = new Segment();
+//
+//    }
+
     Segment(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
         put("name", name);
+        Date date = new Date();
+        put("created_time",date);
         setParent(parentList);
 
         switch (segmentType){
             case ADDITIONAL_SEGMENT:
-                addHeaderItem(name, parentList, callback);
+                addHeaderItem(name, parentList, date, callback);
                 break;
             default:
                 nullableSaveInBackground(callback);
@@ -46,22 +56,22 @@ public class Segment extends BaseParseObject {
         }
     }
 
-    void initializeVariables(final String name, final ShopList parentList, final int segmentType, @Nullable final SaveCallback callback){
+    void initializeVariables(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
         put("name", name);
+        Date date = new Date();
+        put("created_time",date);
         setParent(parentList);
-        saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                switch (segmentType){
-                    case ADDITIONAL_SEGMENT:
-                        addHeaderItem(name, parentList, callback);
-                        break;
-                    default:
-                        nullableSaveInBackground(callback);
-                        break;
-                }
-            }
-        });
+
+        switch (segmentType){
+            case ADDITIONAL_SEGMENT:
+                int colorNum = ColorPicker.getNewColor(parentList.getObjectId())[0];
+                put("color_number", colorNum);
+                addHeaderItem(name, parentList, date, callback);
+                break;
+            default:
+                nullableSaveInBackground(callback);
+                break;
+        }
     }
 
     // Get the name of the Segment
@@ -134,10 +144,10 @@ public class Segment extends BaseParseObject {
         }
     }
 
-    @Deprecated
-    public Item addItem(String name, @Nullable SaveCallback callback){
-        return new Item(name,getParent(), this, Item.ITEM,callback);
-    }
+//    @Deprecated
+//    public Item addItem(String name, @Nullable SaveCallback callback){
+//        return new Item(name,getParent(), this, Item.ITEM,callback);
+//    }
 
     public void addItem(String itemName, @NonNull final Item.ItemCallback callback){
         final Item item = new Item();
@@ -148,13 +158,12 @@ public class Segment extends BaseParseObject {
                     callback.done(item);
                 else
                     e.printStackTrace();
-
             }
         });
     }
 
-    private void addHeaderItem(String name, ShopList parent, final SaveCallback callback){
-        put("header",new Item(name, parent, this, Item.HEADER, new SaveCallback() {
+    private void addHeaderItem(String name, ShopList parent, Date date, final SaveCallback callback){
+        put("header",new Item(name, parent, this, Item.HEADER, date, new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 nullableSaveInBackground(callback);
@@ -170,14 +179,14 @@ public class Segment extends BaseParseObject {
             throw new NullPointerException("uncategorized segment doesn't have a header");
     }
 
+    Date getCreatedTime(){
+        fetchWhenNeeded();
+        return getDate("created_time");
+    }
+
     public int getColorNum(){
         fetchWhenNeeded();
         return getInt("color_number");
-    }
-
-    public void setColorNum(int colorNum, @Nullable SaveCallback callback){
-        put("color_number", colorNum);
-        nullableSaveInBackground(callback);
     }
 
     @Nullable

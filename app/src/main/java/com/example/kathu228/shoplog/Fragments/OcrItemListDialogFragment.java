@@ -27,6 +27,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
     private Button cancelBtn;
     private Button addBtn;
+    private Button retryBtn;
     private CheckBox selectBox;
 
     private List<String> namesAdded;
@@ -40,6 +41,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
     // Defines the listener interface
     public interface OcrItemListDialogListener {
         void onFinishOcrItemListDialog(List<String> addItems);
+        void onRetryOcr();
     }
 
 
@@ -88,6 +90,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
         cancelBtn = (Button) v.findViewById(R.id.bCancelAdd);
         addBtn = (Button) v.findViewById(R.id.bAdd);
+        retryBtn = (Button) v.findViewById(R.id.bRetry);
         selectBox = (CheckBox) v.findViewById(R.id.cbSelect);
 
         adapter.selectAll();
@@ -121,6 +124,15 @@ public class OcrItemListDialogFragment extends DialogFragment{
 //                sendBackResult(itemsAdded);
             }
         });
+
+        retryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onRetryOcr();
+                dismiss();
+            }
+        });
+
         return v;
     }
 
