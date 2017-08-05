@@ -75,7 +75,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
         rvOcrItems = (RecyclerView) v.findViewById(R.id.rvOCRItem);
 
         //setadapter
-        adapter = new OcrItemAdapter(items, R.layout.item, OcrItemListDialogFragment.this, getActivity());
+        adapter = new OcrItemAdapter(items, R.layout.item_ocr, OcrItemListDialogFragment.this, getActivity());
         rvOcrItems.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOcrItems.setAdapter(adapter);
 

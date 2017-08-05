@@ -11,7 +11,7 @@
         android:layout_marginLeft="@dimen/checkbox_margin"
         android:layout_marginTop="@dimen/padding"
         android:text="Name"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="@dimen/sub_size"
-        app:buttonTint="@color/secondary_text" />
+        app:buttonTint="@color/primary_text" />
 </LinearLayout>
