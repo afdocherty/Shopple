@@ -55,6 +55,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
     private ProgressBar pbLoading;
+    private Boolean isEditing;
+    private Segment addingSegment;
 
     ShopList shopList;
 
@@ -115,7 +117,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         items = new ArrayList<>();
 
         // construct the adapter
-        itemAdapter = new ItemAdapter(items, shopList, v);
+        itemAdapter = new ItemAdapter(items, shopList, v, this);
         // Set layout manager to position the items
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         // Attach the adapter to the recyclerview to populate items
@@ -137,7 +139,17 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         ivAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addItem();
+                if (isEditing!=null){
+                    if (isEditing){
+                        addItemToSegment();
+                    }
+                    else {
+                        addItem();
+                    }
+                }
+                else {
+                    addItem();
+                }
             }
         });
 
@@ -155,7 +167,17 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    addItem();
+                    if (isEditing!=null){
+                        if (isEditing){
+                            addItemToSegment();
+                        }
+                        else {
+                            addItem();
+                        }
+                    }
+                    else {
+                        addItem();
+                    }
                 }
                 return false;
             }
@@ -267,11 +289,43 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 }
             });
         }
+
     }
 
-    //TODO- FOX BUG WHERE ITEMS ARE ADDED TO THE UI TWICE
+    // add item to segment
+    public void addItemToSegment() {
+        String body = etAddItem.getText().toString();
+        // Does not add empty item
+        if (!body.equals("")) {
+            final int pos = getItemIndex(addingSegment.getHeader())+1;
+            addingSegment.addItem(body, new Item.ItemCallback() {
+                @Override
+                public void done(Item item) {
+                    etAddItem.setText("");
+                    items.add(pos, item);
+                    itemAdapter.notifyItemInserted(pos);
+                    rvItems.scrollToPosition(pos);
+                }
+            });
+        }
+    }
+
+    public void addOCRItems(List<String> newItems){
+        if (isEditing!=null){
+            if (isEditing){
+                addItemsToSegment(newItems);
+            }
+            else {
+                addItems(newItems);
+            }
+        }
+        else {
+            addItems(newItems);
+        }
+    }
+
+    // Adds a list of items to uncategorized
     public void addItems(List<String> newItems){
-        final ArrayList<Item> itemsCopy = items;
         for (String itemName : newItems){
             shopList.addItem(itemName, new Item.ItemCallback() {
                 @Override
@@ -283,6 +337,20 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
 
     }
+
+    // Adds list of items to segment
+     public void addItemsToSegment(List<String> newItems){
+         final int pos = getItemIndex(addingSegment.getHeader())+1;
+         for (String itemName : newItems){
+             addingSegment.addItem(itemName, new Item.ItemCallback() {
+                 @Override
+                 public void done(Item item) {
+                     items.add(pos, item);
+                     itemAdapter.notifyItemInserted(pos);
+                 }
+             });
+         }
+     }
 
     private void startLiveQueries() {
         //Live Queries
@@ -408,6 +476,18 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         }
         return -1;
 
+    }
+
+    public void changeAddHintText(Boolean isCategorizing, @Nullable String segmentName, @Nullable Segment segment){
+        if (isCategorizing) {
+            etAddItem.setHint("e.g. Apples to " + segmentName);
+            isEditing = true;
+            addingSegment = segment;
+        }
+        else {
+            etAddItem.setHint("e.g. Apples");
+            isEditing = false;
+        }
     }
 
 }

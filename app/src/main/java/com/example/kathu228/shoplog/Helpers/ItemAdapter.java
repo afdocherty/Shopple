@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
 import com.example.kathu228.shoplog.Models.Item;
 import com.example.kathu228.shoplog.Models.Segment;
@@ -45,15 +46,15 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     View mview;
     Segment categorySegment;
     Item categoryHeader;
-    Boolean isEditing;
+    ItemlistFragment mFragment;
 
-    public ItemAdapter(List<Item> mlist, ShopList listTest, View v) {
+    public ItemAdapter(List<Item> mlist, ShopList listTest, View v, ItemlistFragment fragment) {
         this.mlist = mlist;
         this.listTest = listTest;
         this.mview = v;
         this.categorySegment = null;
         this.categoryHeader = null;
-        this.isEditing = false;
+        this.mFragment = fragment;
     }
 
     public void stopEditing(Segment mSegment){
@@ -298,9 +299,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if (categorySegment ==null){
                         categoryHeader = mlist.get(getAdapterPosition());
                         categorySegment = categoryHeader.getSegment();
+                        String name = categorySegment.getName();
                         //int segColor = ColorPicker.getColor(categorySegment.getColorNum());
                         //ivFinishEdit.setColorFilter(ContextCompat.getColor(context,segColor));
-                        categorizing(categorySegment.getName(),ivCategorize,ivFinishEdit,mview);
+                        mFragment.changeAddHintText(true,name,categorySegment);
+                        categorizing(name,ivCategorize,ivFinishEdit,mview);
                     }
                     else {
                         return;
@@ -454,6 +457,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                        categoryHeader = null;
                        ivDone.setVisibility(View.GONE);
                        ivEdit.setVisibility(View.VISIBLE);
+                       mFragment.changeAddHintText(false,null,null);
                    }
                })
                 .show();
@@ -465,14 +469,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 categoryHeader = null;
                 ivDone.setVisibility(View.GONE);
                 ivEdit.setVisibility(View.VISIBLE);
+                mFragment.changeAddHintText(false,null,null);
                 snackbar.dismiss();
             }
         });
-    }
-
-    private void closeSnackbar(Snackbar snackbar, ImageButton ibEdit){
-        snackbar.dismiss();
-        ibEdit = null;
     }
 
     // Removes segment and make all items uncategorized
