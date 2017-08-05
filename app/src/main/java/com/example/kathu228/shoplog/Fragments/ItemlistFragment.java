@@ -487,6 +487,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         else {
             etAddItem.setHint("e.g. Apples");
             isEditing = false;
+            addingSegment = null;
         }
     }
 

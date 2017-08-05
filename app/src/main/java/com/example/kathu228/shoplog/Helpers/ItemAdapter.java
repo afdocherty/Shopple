@@ -61,9 +61,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (categorySegment!=null && mSegment.getObjectId().equals(categorySegment.getObjectId())){
             categorySegment = null;
             categoryHeader = null;
-            if (snackbar != null) {
-                snackbar.dismiss();
-            }
+            snackbar.dismiss();
+            mFragment.changeAddHintText(false,null,null);
         }
 
     }
