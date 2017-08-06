@@ -55,5 +55,5 @@
         android:text="@string/login_button_message"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:textSize="14sp"/>
+        android:textSize="14sp" />
 </RelativeLayout>

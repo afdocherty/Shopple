@@ -25,26 +25,37 @@
         android:id="@+id/tvDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fabAddShopList"
+        android:layout_above="@+id/ivDirection"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="@dimen/trash_margin"
-        android:layout_toEndOf="@+id/ivDirection"
-        android:text="Add a new list!"
+        android:text="Start a new list!"
         android:textAlignment="center"
-        android:textColor="@color/divider"
+        android:textColor="@color/secondary_text"
         android:textSize="32sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
     <ImageView
         android:id="@+id/ivDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDirection"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:layout_marginRight="-36dp"
         android:layout_toStartOf="@+id/fabAddShopList"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_subdirectory_arrow_right" />
+        app:srcCompat="@drawable/arrow_bottom_right" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="EmptyState.json"
+        app:lottie_loop="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddShopList"
