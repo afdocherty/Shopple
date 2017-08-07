@@ -1,6 +1,7 @@
 package com.example.kathu228.shoplog.Fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private ProgressBar pbLoading;
     private Boolean isEditing;
     private Segment addingSegment;
+    private RelativeLayout emptyState;
+    private ImageView ivNotification;
 
     ShopList shopList;
 
@@ -123,6 +127,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         // Attach the adapter to the recyclerview to populate items
         rvItems.setAdapter(itemAdapter);
 
+        emptyState = (RelativeLayout) v.findViewById(R.id.rlNoLists);
+
         // Shift focus to dummy view to prevent auto-focusing on EditText
         llDummy = (LinearLayout) v.findViewById(R.id.llDummy);
         llDummy.setFocusableInTouchMode(true);
@@ -133,6 +139,9 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ivAddItem = (ImageView) v.findViewById(R.id.ivAddItem);
         pbLoading = (ProgressBar) v.findViewById(R.id.pbLoading);
+        ivNotification = (ImageView) v.findViewById(R.id.ivBar);
+
+        ivNotification.setVisibility(View.GONE);
 
         //pbLoading.setVisibility(View.VISIBLE);
         // Put onclicklistener onto add button to add item to list
@@ -263,6 +272,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                                 //pbLoading.setVisibility(View.INVISIBLE);
                                 itemAdapter.notifyDataSetChanged();
                                 startLiveQueries();
+                                addEmptyState();
                             }
                         });
                     }
@@ -286,6 +296,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     items.add(0, item);
                     itemAdapter.notifyItemInserted(0);
                     rvItems.scrollToPosition(0);
+                    addEmptyState();
                 }
             });
         }
@@ -305,6 +316,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     items.add(pos, item);
                     itemAdapter.notifyItemInserted(pos);
                     rvItems.scrollToPosition(pos);
+                    addEmptyState();
                 }
             });
         }
@@ -332,6 +344,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 public void done(final Item item) {
                     items.add(0,item);
                     itemAdapter.notifyDataSetChanged();
+                    addEmptyState();
                 }
             });
         }
@@ -364,6 +377,18 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                             switch (event){
                                 case CREATE:
                                     addItemToUI(object);
+                                    ivNotification.setVisibility(View.VISIBLE);
+                                    ivNotification.animate()
+                                            .translationY(ivNotification.getHeight());
+                                    Handler handler1 = new Handler();
+                                    handler1.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ivNotification.animate().translationY(0);
+                                            ivNotification.setVisibility(View.GONE);
+                                        }
+                                    }, 1000);
+
                                     break;
                                 case UPDATE:
                                     deleteItemFromUI(object);
@@ -488,6 +513,16 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             etAddItem.setHint("e.g. Apples");
             isEditing = false;
             addingSegment = null;
+        }
+    }
+
+    // shows sempty state if no items and hides if there are
+    private void addEmptyState(){
+        if (items.size()<=1){
+            emptyState.setVisibility(View.VISIBLE);
+        }
+        else{
+            emptyState.setVisibility(View.GONE);
         }
     }
 

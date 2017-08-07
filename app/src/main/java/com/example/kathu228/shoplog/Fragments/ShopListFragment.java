@@ -13,9 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
@@ -45,8 +44,7 @@ public class ShopListFragment extends Fragment {
     private RecyclerView rvShopList;
     private SwipeRefreshLayout swipeContainer;
     private FloatingActionButton fabAddShopList;
-    private TextView tvDirection;
-    private ImageView ivDirection;
+    private RelativeLayout emptyState;
     private LinearLayout llDummy;
 
     @Override
@@ -78,8 +76,7 @@ public class ShopListFragment extends Fragment {
         touchHelper.attachToRecyclerView(rvShopList);
 
         // Add directions to make new list
-        tvDirection = (TextView) v.findViewById(R.id.tvDirection);
-        ivDirection = (ImageView) v.findViewById(R.id.ivDirection);
+        emptyState = (RelativeLayout) v.findViewById(R.id.rlNoLists);
 
         // Add ShopList FAB
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
@@ -162,12 +159,10 @@ public class ShopListFragment extends Fragment {
     // shows directions if no lists and hides if there are
     private void addDirections(){
         if (shopLists.size()==0){
-            tvDirection.setVisibility(View.VISIBLE);
-            ivDirection.setVisibility(View.VISIBLE);
+            emptyState.setVisibility(View.VISIBLE);
         }
         else{
-            tvDirection.setVisibility(View.GONE);
-            ivDirection.setVisibility(View.GONE);
+            emptyState.setVisibility(View.GONE);
         }
     }
 

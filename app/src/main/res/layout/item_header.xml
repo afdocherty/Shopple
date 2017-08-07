@@ -8,16 +8,14 @@
     android:gravity="center_vertical">
 
     <View
-        android:layout_width="4dp"
-        android:layout_height="20dp"
-        android:background="@color/colorPrimaryLight"
         android:id="@+id/vColor"
-        android:layout_marginStart="@dimen/checkbox_margin"
-        android:layout_marginEnd="@dimen/checkbox_margin"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
+        android:layout_width="4dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/checkbox_margin"
+        android:layout_marginStart="@dimen/checkbox_margin"
+        android:background="@color/colorPrimaryLight" />
 
 
 

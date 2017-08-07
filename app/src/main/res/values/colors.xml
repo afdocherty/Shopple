@@ -5,7 +5,7 @@
     <color name="colorPrimaryLight">@color/lightOrange</color>
     <color name="colorAccent">@color/lightOrange</color>
     <color name="white">#ffffff</color>
-    <color name="lightGray">#d3c9c5</color>
+    <color name="lightGray">#8e827f</color>
     <color name="lighterGray">#f2f0ef</color>
     <color name="divider">@color/lighterOrange</color>
     <color name="primary_text">#2e2624</color>
@@ -14,9 +14,10 @@
     <color name="lighterOrange">#ffa470</color>
     <color name="lightOrange">#ff8039</color>
     <color name="orange">#ff5c00</color>
-    <color name="darkOrange">#F53B00</color>
+    <color name="darkOrange">#EA3511</color>
     <color name="darkerOrange">#B72C00</color>
     <color name="yellow">#FFD500</color>
+    <color name="opaque_orange">#80ffa470</color>
 
     <!-- Kelly's 20 distinct colors
     <color name="kelly_1">#C10020</color>
