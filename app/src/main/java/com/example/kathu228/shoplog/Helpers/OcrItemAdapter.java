@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import com.example.kathu228.shoplog.Fragments.OcrItemListDialogFragment;
 import com.example.kathu228.shoplog.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +20,14 @@ import java.util.List;
 public class OcrItemAdapter extends BaseAdapter<OcrItemAdapter.ViewHolder, String> {
     OcrItemListDialogFragment fragmentInstance;
     public Context context;
-    private boolean isEditing;
+    public ArrayList<Boolean> isChecked;
 
-    public OcrItemAdapter(List<String> mlist, int itemViewReference, OcrItemListDialogFragment fragmentInstance, Context context) {
+    public Boolean lastItemIsChecked;
+    public CheckBox lastItem;
+
+    public OcrItemAdapter(List<String> mlist, ArrayList<Boolean> checked, int itemViewReference, OcrItemListDialogFragment fragmentInstance, Context context) {
         super(mlist, itemViewReference);
+        this.isChecked = checked;
         this.fragmentInstance=fragmentInstance;
         this.context = context;
     }
@@ -46,6 +51,7 @@ public class OcrItemAdapter extends BaseAdapter<OcrItemAdapter.ViewHolder, Strin
         String name = mlist.get(position);
         holder.cbItem.setText(name);
         holder.ibEdit.setVisibility(View.VISIBLE);
+        holder.cbItem.setChecked(isChecked.get(position));
     }
 
 
@@ -65,13 +71,14 @@ public class OcrItemAdapter extends BaseAdapter<OcrItemAdapter.ViewHolder, Strin
             cbItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    fragmentInstance.unselect();
                     if (((CheckBox)v).isChecked()){
                         cbItem.setChecked(true);
-                        fragmentInstance.addItem(mlist.get(getAdapterPosition()));
+                        isChecked.set(getAdapterPosition(),true);
                     }
                     else{
                         cbItem.setChecked(false);
-                        fragmentInstance.removeItem(mlist.get(getAdapterPosition()));
+                        isChecked.set(getAdapterPosition(),false);
                     }
                 }
             });
@@ -95,5 +102,22 @@ public class OcrItemAdapter extends BaseAdapter<OcrItemAdapter.ViewHolder, Strin
         mlist.remove(pos);
         mlist.add(pos,newItem);
         notifyItemChanged(pos);
+    }
+
+    public void selectUnselect(Boolean allSelected){
+        for (int i = 0; i < isChecked.size(); i++){
+            isChecked.set(i,allSelected);
+        }
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<String> getAddedItems(){
+        ArrayList<String> addedItems = new ArrayList<String>();
+        for (int i = 0; i < mlist.size(); i++){
+            if (isChecked.get(i)){
+                addedItems.add(0,mlist.get(i));
+            }
+        }
+        return addedItems;
     }
 }

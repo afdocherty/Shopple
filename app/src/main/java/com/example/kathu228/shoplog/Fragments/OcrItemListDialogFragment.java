@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -27,6 +28,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
     private RecyclerView rvOcrItems;
     private OcrItemAdapter adapter;
     private ArrayList<String> items;
+    private ArrayList<Boolean> isChecked;
 
     private RelativeLayout rlSuccess;
     private RelativeLayout rlFailure;
@@ -35,13 +37,13 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
     private EditText etEditItemName;
 
+    private CheckBox allSelected;
+
     private Button cancelBtn;
     private Button addBtn;
     private Button retryBtn;
     private Button cancelEditBtn;
     private Button doneEditBtn;
-
-    private List<String> namesAdded;
 
     private OcrItemListDialogListener mListener;
 
@@ -85,14 +87,19 @@ public class OcrItemListDialogFragment extends DialogFragment{
         items = new ArrayList<String>();
         items = getArguments().getStringArrayList("newItems");
 
+        isChecked = new ArrayList<Boolean>();
+
         rvOcrItems = (RecyclerView) v.findViewById(R.id.rvOCRItem);
 
+        rlFailure = (RelativeLayout) v.findViewById(R.id.rlFailure);
+        rlSuccess = (RelativeLayout) v.findViewById(R.id.rlAddItems);
+
+        btns = (RelativeLayout) v.findViewById(R.id.rlButtons);
         cancelBtn = (Button) v.findViewById(R.id.bCancelAdd);
         addBtn = (Button) v.findViewById(R.id.bAdd);
         retryBtn = (Button) v.findViewById(R.id.bRetry);
-        rlFailure = (RelativeLayout) v.findViewById(R.id.rlFailure);
-        rlSuccess = (RelativeLayout) v.findViewById(R.id.rlAddItems);
-        btns = (RelativeLayout) v.findViewById(R.id.rlButtons);
+
+        allSelected = (CheckBox) v.findViewById(R.id.cbSelect);
 
         editView = (RelativeLayout) v.findViewById(R.id.rlEditItem);
         etEditItemName = (EditText) v.findViewById(R.id.etEditItem);
@@ -106,18 +113,18 @@ public class OcrItemListDialogFragment extends DialogFragment{
         else{
             rlSuccess.setVisibility(View.VISIBLE);
             rlFailure.setVisibility(View.GONE);
+
+            for (String item: items){
+                isChecked.add(Boolean.TRUE);
+            }
+
             //setadapter
-            adapter = new OcrItemAdapter(items, R.layout.item_ocr, OcrItemListDialogFragment.this, getActivity());
+            adapter = new OcrItemAdapter(items, isChecked, R.layout.item_ocr, OcrItemListDialogFragment.this, getActivity());
             rvOcrItems.setLayoutManager(new LinearLayoutManager(getContext()));
             rvOcrItems.setAdapter(adapter);
         }
 
-        // namesAdded are all the names of the items selected
-        namesAdded = new ArrayList<String>();
 
-        for (String item: items){
-            namesAdded.add(item);
-        }
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +136,7 @@ public class OcrItemListDialogFragment extends DialogFragment{
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(namesAdded);
+                sendBackResult(adapter.getAddedItems());
 //                addItems();
 //                sendBackResult(itemsAdded);
             }
@@ -143,27 +150,15 @@ public class OcrItemListDialogFragment extends DialogFragment{
             }
         });
 
+        allSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeSelectedText(allSelected.isChecked());
+                adapter.selectUnselect(allSelected.isChecked());
+            }
+        });
+
         return v;
-    }
-
-    // add item name to namesAdded list
-    public void addItem(String itemName) {
-        if (namesAdded.indexOf(itemName)!=(-1))
-            namesAdded.add(itemName);
-    }
-
-    // change item name
-    public void changeItem(String oldName, String newName) {
-        int pos = namesAdded.indexOf(oldName);
-        if (pos!=-1) {
-            namesAdded.remove(pos);
-            namesAdded.add(pos, newName);
-        }
-    }
-
-    // remove item from namesAdded list
-    public void removeItem(String itemName){
-        namesAdded.remove(itemName);
     }
 
     // makes editing layout visible for editing item
@@ -195,7 +190,6 @@ public class OcrItemListDialogFragment extends DialogFragment{
             public void onClick(View v) {
                 String body = etEditItemName.getText().toString();
                 if (!body.equals("")){
-                    changeItem(item,body);
                     adapter.changeItemName(item,body);
                     imm.hideSoftInputFromWindow(etEditItemName.getWindowToken(), 0);
                     editView.setVisibility(View.GONE);
@@ -204,5 +198,20 @@ public class OcrItemListDialogFragment extends DialogFragment{
                 }
             }
         });
+    }
+
+    public void changeSelectedText(Boolean isSelected){
+        if (isSelected){
+            allSelected.setText("Unselect All");
+        }
+        else{
+            allSelected.setText("Select All");
+        }
+
+    }
+
+    public void unselect(){
+        allSelected.setChecked(false);
+        allSelected.setText("Select All");
     }
 }

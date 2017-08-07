@@ -162,12 +162,24 @@
             android:textSize="@dimen/sub_size"
             android:textStyle="bold" />
 
+        <CheckBox
+            android:id="@+id/cbSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:layout_margin="@dimen/checkbox_margin"
+            android:checked="true"
+            android:text="Unselect All"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold"
+            app:buttonTint="@color/secondary_text" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvOCRItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tvTitle" />
+            android:layout_below="@+id/cbSelect" />
 
     </RelativeLayout>
 
