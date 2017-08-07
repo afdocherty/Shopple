@@ -24,7 +24,9 @@ import com.example.kathu228.shoplog.Models.ShopList;
 import com.example.kathu228.shoplog.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SubscriptionHandling;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,11 +124,13 @@ public class ShopListFragment extends Fragment {
         super.onResume();
         // Populate the ShopList array
         addShopListsFromDatabase();
+        startLiveQueries();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Query.stopShoplistsLiveQuery();
     }
 
     // Add the ShopLists for the current user to the database
@@ -174,6 +178,27 @@ public class ShopListFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
         // (3) create a new String using the date format we want
         return formatter.format(today);
+    }
+
+    private void startLiveQueries(){
+        Query.startShoplistsLiveQuery(new SubscriptionHandling.HandleEventsCallback<ShopList>() {
+            @Override
+            public void onEvents(ParseQuery<ShopList> query, final SubscriptionHandling.Event event, final ShopList object) {
+                object.containsUser(ParseUser.getCurrentUser(), new ShopList.BooleanCallback() {
+                    @Override
+                    public void done(boolean bool) {
+                        if (bool){
+                            ShopListFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addShopListsFromDatabase();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
     }
 }
 
