@@ -311,7 +311,13 @@ public class ShopList extends BaseParseObject {
 
     public String getUsersString(){
         fetchWhenNeeded();
-        return getString("users_string");
+        String userString = getString("users_string");
+        String find = firstName(Query.getNameOfUser(ParseUser.getCurrentUser())) + ", ";
+        if (userString.contains(find)) {
+            return userString.replace(find, "");
+        } else {
+            return userString.replace(", " + firstName(Query.getNameOfUser(ParseUser.getCurrentUser())), "");
+        }
     }
 
     private void setUsersString(final SaveCallback callback){
@@ -384,23 +390,14 @@ public class ShopList extends BaseParseObject {
                 if (len==1){
                     names.append("Personal");
                 }
-                else{
-                    String username = Query.getNameOfUser(ParseUser.getCurrentUser());
-                    for (ParseUser user: objects){
+                else {
+                    for (ParseUser user : objects) {
                         String name = Query.getNameOfUser(user);
-                        if (name.equals(username)){
-                            continue;
-                        }
-                        else if (names.length()==0){
-                            if (len==2){
-                                names.append(name);
-                            }
-                            else {
-                                names.append(firstName(name));
-                            }
-                        }
-                        else{
-                            names.append(", " + firstName(name));
+                        if (names.length() == 0) {
+                            names.append(firstName(name));
+                        } else {
+                            names.append(", ");
+                            names.append(firstName(name));
                         }
                     }
                 }
