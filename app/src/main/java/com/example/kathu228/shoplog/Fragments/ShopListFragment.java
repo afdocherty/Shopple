@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
 import com.example.kathu228.shoplog.Helpers.ShoplistAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -46,6 +47,7 @@ public class ShopListFragment extends Fragment {
     private FloatingActionButton fabAddShopList;
     private RelativeLayout emptyState;
     private LinearLayout llDummy;
+    private LottieAnimationView animationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class ShopListFragment extends Fragment {
 
         // Add directions to make new list
         emptyState = (RelativeLayout) v.findViewById(R.id.rlNoLists);
+        animationView = (LottieAnimationView) v.findViewById(R.id.animation_view);
 
         // Add ShopList FAB
         fabAddShopList = (FloatingActionButton) v.findViewById(R.id.fabAddShopList);
