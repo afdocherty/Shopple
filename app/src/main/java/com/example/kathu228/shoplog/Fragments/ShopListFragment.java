@@ -176,3 +176,4 @@ public class ShopListFragment extends Fragment {
         return formatter.format(today);
     }
 }
+

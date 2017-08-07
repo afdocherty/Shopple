@@ -26,43 +26,48 @@
             <ImageView
                 android:id="@+id/ivAddItem"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/add_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:tint="@color/colorPrimaryLight"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
                 app:srcCompat="@drawable/ic_add" />
 
             <EditText
                 android:id="@+id/etAddItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:background="@android:color/transparent"
                 android:backgroundTint="@color/colorPrimaryLight"
                 android:hint="@string/item_hint"
                 android:inputType="textCapSentences"
+                android:padding="8dp"
                 android:textColor="@color/secondary_text"
-                android:textSize="@dimen/body_size"
-                android:layout_weight="1.0"/>
+                android:textSize="@dimen/body_size" />
 
             <ImageView
                 android:id="@+id/ivOCR"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/add_margin"
-                android:layout_marginStart="@dimen/checkbox_margin"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginEnd="16dp"
                 android:onClick="launchCamera"
                 android:tint="@color/colorPrimaryLight"
                 app:srcCompat="@drawable/ic_add_a_photo" />
 
         </LinearLayout>
 
-        <!--<ImageView-->
-            <!--android:id="@+id/divider"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/add_new"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--app:srcCompat="@drawable/divider" />-->
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_new"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@drawable/divider" />
 
         <ImageView
             android:id="@+id/ivBar"
@@ -70,7 +75,7 @@
             android:layout_height="8dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/add_new"
+            android:layout_below="@+id/divider"
             android:visibility="gone"
             app:srcCompat="@drawable/bar" />
 
@@ -108,7 +113,7 @@
                 android:layout_height="160dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="@dimen/add_margin"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="72dp"
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_grocery_bag" />
 

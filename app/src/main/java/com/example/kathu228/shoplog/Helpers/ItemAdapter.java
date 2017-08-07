@@ -240,11 +240,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     newPos = 0;
                 }
                 else{
-                    // TODO: replace with finding header position
                     mlist.remove(fromPos);
                     newSeg= categorySegment;
                     newPos = getItemIndex(categorySegment.getHeader())+1;
-                    //newPos=mlist.indexOf(categoryHeader)+1;
+
 
                 }
                 item.setSegment(newSeg,null);
@@ -300,7 +299,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         categoryHeader = mlist.get(getAdapterPosition());
                         categorySegment = categoryHeader.getSegment();
                         String name = categorySegment.getName();
-                        //int segColor = ColorPicker.getColor(categorySegment.getColorNum());
+                        int segColor = ColorPicker.getColor(categorySegment.getColorNum());
+                        mFragment.changeToEditColor(segColor,segColor);
                         //ivFinishEdit.setColorFilter(ContextCompat.getColor(context,segColor));
                         mFragment.changeAddHintText(true,name,categorySegment);
                         categorizing(name,ivCategorize,ivFinishEdit,mview);

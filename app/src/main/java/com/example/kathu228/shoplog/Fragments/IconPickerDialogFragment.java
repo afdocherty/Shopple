@@ -114,6 +114,7 @@ public class IconPickerDialogFragment extends DialogFragment {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mConfirm.setEnabled(false);
                 sendBackResult(true, iconNum, title, shopList);
             }
         });

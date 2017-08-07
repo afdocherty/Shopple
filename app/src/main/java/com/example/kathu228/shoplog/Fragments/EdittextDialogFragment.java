@@ -105,6 +105,7 @@ public class EdittextDialogFragment extends DialogFragment{
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mOk.setEnabled(false);
                 String name = mText.getText().toString();
                 if (!(name.replaceAll("\\s+","")).equals("")) {
                     sendBackResult(true, title, shopList, name);
@@ -139,6 +140,7 @@ public class EdittextDialogFragment extends DialogFragment{
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mOk.setEnabled(false);
                 String name = mText.getText().toString();
                 if (!(name.replaceAll("\\s+","")).equals("")) {
                     sendBackResult(true, title, shopList, name);

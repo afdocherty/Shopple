@@ -94,6 +94,8 @@ public class TripDialogFragment extends DialogFragment {
         rlNearby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rlNearby.setClickable(false);
+                rlFavStore.setClickable(false);
                 rippleDrawable1.setColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.lightGray)));
                 sendBackResult(false);
             }
@@ -101,6 +103,8 @@ public class TripDialogFragment extends DialogFragment {
         rlFavStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rlFavStore.setClickable(false);
+                rlNearby.setClickable(false);
                 rippleDrawable2.setColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.lightGray)));
                 sendBackResult(true);
             }

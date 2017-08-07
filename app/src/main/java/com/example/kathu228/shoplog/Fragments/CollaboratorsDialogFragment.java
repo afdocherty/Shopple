@@ -110,6 +110,7 @@ public class CollaboratorsDialogFragment extends DialogFragment {
                 shopList.addUsers(peopleAdded, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        confirmBtn.setEnabled(false);
                         // Return new people back to activity through the implemented listener
                         CollaboratorsDialogListener listener = (CollaboratorsDialogListener) getActivity();
                         listener.onFinishCollaboratorsDialog(peopleAdded);
