@@ -40,9 +40,9 @@ public class ShopListsActivity extends AppCompatActivity implements YesNoDialogF
     private void logout(Boolean logOut){
         if (logOut){
             //TODO - Push
-//            ParseInstallation.getCurrentInstallation().deleteInBackground();
-//            //ParseInstallation.getCurrentInstallation().remove("user");
-//            ParsePush.unsubscribeInBackground("test");
+            //ParseInstallation.getCurrentInstallation().deleteInBackground();
+            //ParseInstallation.getCurrentInstallation().remove("user");
+            //ParsePush.unsubscribeInBackground("test");
             ParseUser.logOut();
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
