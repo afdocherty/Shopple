@@ -36,6 +36,7 @@ public class SegmentDialogFragment extends DialogFragment {
 
     // Call this method to send the data back to the parent fragment
     public void sendBackResult(Item segHeader) {
+
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         SegmentDialogListener listener = (SegmentDialogListener) getTargetFragment();
         listener.onFinishSegmentDialog(segHeader);
@@ -73,6 +74,8 @@ public class SegmentDialogFragment extends DialogFragment {
         bCancelSegment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bAddSegment.setEnabled(false);
+                bCancelSegment.setEnabled(false);
                 dismiss();
             }
         });
@@ -80,6 +83,8 @@ public class SegmentDialogFragment extends DialogFragment {
         bAddSegment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bAddSegment.setEnabled(false);
+                bCancelSegment.setEnabled(false);
                 String segmentName = etNewSegment.getText().toString();
                 if (!segmentName.replaceAll("\\s","").equals("")){
                     addSegment(segmentName);

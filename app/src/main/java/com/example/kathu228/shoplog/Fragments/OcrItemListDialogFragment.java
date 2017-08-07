@@ -129,6 +129,8 @@ public class OcrItemListDialogFragment extends DialogFragment{
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancelBtn.setEnabled(false);
+                addBtn.setEnabled(false);
                 dismiss();
             }
         });
@@ -136,6 +138,8 @@ public class OcrItemListDialogFragment extends DialogFragment{
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancelBtn.setEnabled(false);
+                addBtn.setEnabled(false);
                 sendBackResult(adapter.getAddedItems());
 //                addItems();
 //                sendBackResult(itemsAdded);
