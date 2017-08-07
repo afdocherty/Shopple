@@ -3,7 +3,6 @@ package com.example.kathu228.shoplog.Activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -107,10 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void launchAppWithUser() {
         Intent intent = new Intent(LoginActivity.this, ShopListsActivity.class);
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, (View)animationView, "icon");
-        startActivity(intent, options.toBundle());
-        //startActivity(intent);
+        startActivity(intent);
         finish();
     }
 

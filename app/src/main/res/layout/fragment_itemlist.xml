@@ -44,7 +44,8 @@
                 android:inputType="textCapSentences"
                 android:padding="8dp"
                 android:textColor="@color/secondary_text"
-                android:textSize="@dimen/body_size" />
+                android:textSize="@dimen/body_size"
+                android:ellipsize="end"/>
 
             <ImageView
                 android:id="@+id/ivOCR"
