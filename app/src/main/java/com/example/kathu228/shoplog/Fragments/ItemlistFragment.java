@@ -95,8 +95,8 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public void onFinishSegmentDialog(Item segHeader) {
         // find completed header and add segment header right above
         addSegmentToUI(segHeader);
+        llDummy.requestFocus();
     }
-
 
     @Nullable
     @Override
