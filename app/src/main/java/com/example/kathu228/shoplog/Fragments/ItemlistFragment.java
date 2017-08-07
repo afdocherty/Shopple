@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,7 +18,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +56,12 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     public String shopListObjectId;
     private FloatingActionButton fabAddSegment;
     private LinearLayout llDummy;
-    private ProgressBar pbLoading;
+    //private ProgressBar pbLoading;
     private Boolean isEditing;
     private Segment addingSegment;
     private RelativeLayout emptyState;
     private ImageView ivNotification;
+    private ImageView ivOCR;
 
     ShopList shopList;
 
@@ -138,10 +139,12 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
         etAddItem = (EditText) v.findViewById(R.id.etAddItem);
         ivAddItem = (ImageView) v.findViewById(R.id.ivAddItem);
-        pbLoading = (ProgressBar) v.findViewById(R.id.pbLoading);
+        //pbLoading = (ProgressBar) v.findViewById(R.id.pbLoading);
         ivNotification = (ImageView) v.findViewById(R.id.ivBar);
 
         ivNotification.setVisibility(View.GONE);
+
+        ivOCR = (ImageView) v.findViewById(R.id.ivOCR);
 
         //pbLoading.setVisibility(View.VISIBLE);
         // Put onclicklistener onto add button to add item to list
@@ -296,7 +299,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     items.add(0, item);
                     itemAdapter.notifyItemInserted(0);
                     rvItems.scrollToPosition(0);
-                    addEmptyState();
+                    hideEmptyState();
                 }
             });
         }
@@ -316,7 +319,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                     items.add(pos, item);
                     itemAdapter.notifyItemInserted(pos);
                     rvItems.scrollToPosition(pos);
-                    addEmptyState();
+                    hideEmptyState();
                 }
             });
         }
@@ -344,7 +347,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 public void done(final Item item) {
                     items.add(0,item);
                     itemAdapter.notifyDataSetChanged();
-                    addEmptyState();
+                    hideEmptyState();
                 }
             });
         }
@@ -360,6 +363,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                  public void done(Item item) {
                      items.add(pos, item);
                      itemAdapter.notifyItemInserted(pos);
+                     hideEmptyState();
                  }
              });
          }
@@ -388,7 +392,6 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                                             ivNotification.setVisibility(View.GONE);
                                         }
                                     }, 1000);
-
                                     break;
                                 case UPDATE:
                                     deleteItemFromUI(object);
@@ -447,6 +450,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 int pos = getItemIndex(header);
                 items.add(pos, newSegHeader);
                 itemAdapter.notifyItemInserted(pos);
+                hideEmptyState();
             }
         });
     }
@@ -513,10 +517,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             etAddItem.setHint("e.g. Apples");
             isEditing = false;
             addingSegment = null;
+            changeToEditColor(R.color.colorPrimaryLight, R.color.lighterOrange);
         }
     }
 
-    // shows sempty state if no items and hides if there are
+    // shows empty state if no items and hides if there are
     private void addEmptyState(){
         if (items.size()<=1){
             emptyState.setVisibility(View.VISIBLE);
@@ -524,6 +529,18 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
         else{
             emptyState.setVisibility(View.GONE);
         }
+    }
+
+    // change to category color
+    public void changeToEditColor(int colorID, int hintColorID){
+        int color = ContextCompat.getColor(getContext(), colorID);
+        ivAddItem.setColorFilter(color);
+        ivOCR.setColorFilter(color);
+        etAddItem.setHintTextColor(ContextCompat.getColor(getContext(), hintColorID));
+    }
+
+    private void hideEmptyState(){
+        emptyState.setVisibility(View.GONE);
     }
 
 }
