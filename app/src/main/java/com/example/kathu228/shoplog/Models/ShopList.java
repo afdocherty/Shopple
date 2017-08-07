@@ -106,19 +106,41 @@ public class ShopList extends BaseParseObject {
 //        nullableSaveInBackground(callback);
 //    }
 
-    public void addUsers(List<ParseUser> users, @Nullable SaveCallback callback){
+    public void addUsers(List<ParseUser> users, final @Nullable SaveCallback callback){
         for (ParseUser user : users){
             getPreviousUserRelation().remove(user);
             getUsersRelation().add(user);
         }
-        nullableSaveInBackground(callback);
+        //TODO - Clean this up so that we only save once (After tuesday)
+        nullableSaveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                setUsersString(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        nullableSaveInBackground(callback);
+                    }
+                });
+            }
+        });
     }
 
     // Remove a user from the relation
-    public void removeUser(ParseUser user, @Nullable SaveCallback callback) {
+    public void removeUser(ParseUser user, final @Nullable SaveCallback callback) {
         getUsersRelation().remove(user);
         getPreviousUserRelation().add(user);
-        nullableSaveInBackground(callback);
+        //TODO - Clean this up so that we only save once (After tuesday)
+        nullableSaveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                setUsersString(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        nullableSaveInBackground(callback);
+                    }
+                });
+            }
+        });
     }
 
 //    public void removeUsers(List<ParseUser> users, @Nullable SaveCallback callback){
@@ -292,6 +314,16 @@ public class ShopList extends BaseParseObject {
         return getString("users_string");
     }
 
+    private void setUsersString(final SaveCallback callback){
+        generateUsersString(new StringCallback() {
+            @Override
+            public void done(String names) {
+                put("users_string",names);
+                callback.done(null);
+            }
+        });
+    }
+
     public void startItemLiveQuery(SubscriptionHandling.HandleEventsCallback<Item> callback){
         currentItemLiveQuery = ParseQuery.getQuery(Item.class);
         currentItemLiveQuery.whereEqualTo("parent",this);
@@ -336,6 +368,51 @@ public class ShopList extends BaseParseObject {
             e.printStackTrace();
             return null;
         }
+    }
+
+    interface StringCallback{
+        void done(String names);
+    }
+
+    private void generateUsersString(final StringCallback callback){
+        // Arranges users into the format "Personal"/"John Smith"/"John, Karen"
+        getUserList(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                StringBuilder names = new StringBuilder();
+                int len = objects.size();
+                if (len==1){
+                    names.append("Personal");
+                }
+                else{
+                    String username = Query.getNameOfUser(ParseUser.getCurrentUser());
+                    for (ParseUser user: objects){
+                        String name = Query.getNameOfUser(user);
+                        if (name.equals(username)){
+                            continue;
+                        }
+                        else if (names.length()==0){
+                            if (len==2){
+                                names.append(name);
+                            }
+                            else {
+                                names.append(firstName(name));
+                            }
+                        }
+                        else{
+                            names.append(", " + firstName(name));
+                        }
+                    }
+                }
+                callback.done(names.toString());
+            }
+        });
+    }
+
+    // finds substring with only first name
+    private String firstName(String name){
+        int space = name.indexOf(" ");
+        return name.substring(0,space);
     }
 
 }
