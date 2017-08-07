@@ -206,16 +206,16 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
     public void changeSelectedText(Boolean isSelected){
         if (isSelected){
-            allSelected.setText("Unselect All");
+            allSelected.setText(getActivity().getString(R.string.unselect_all));
         }
         else{
-            allSelected.setText("Select All");
+            allSelected.setText(getActivity().getString(R.string.select_all));
         }
 
     }
 
     public void unselect(){
         allSelected.setChecked(false);
-        allSelected.setText("Select All");
+        allSelected.setText(getActivity().getString(R.string.select_all));
     }
 }

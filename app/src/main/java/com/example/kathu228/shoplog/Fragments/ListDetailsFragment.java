@@ -205,9 +205,9 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
 
     private String toggleNotificationText(boolean enabled) {
         if (enabled) {
-            return "Disable Notifications";
+            return getActivity().getString(R.string.enable_notifications);
         } else {
-            return "Enable Notifications";
+            return getActivity().getString(R.string.disable_notifications);
         }
     }
 
@@ -222,21 +222,21 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
 
     private void showEdittextDialog(String listName, ShopList shopList){
         FragmentManager fm = getFragmentManager();
-        EdittextDialogFragment edittextDialogFragment = EdittextDialogFragment.newInstance("Change List Name", shopList);
+        EdittextDialogFragment edittextDialogFragment = EdittextDialogFragment.newInstance(getActivity().getString(R.string.change_list_name), shopList);
         edittextDialogFragment.setListener(this);
         edittextDialogFragment.show(fm, "fragment_edittext_dialog");
     }
 
     private void showIconPickerDialog(ShopList shopList){
         FragmentManager fm = getFragmentManager();
-        IconPickerDialogFragment iconPickerDialogFragment = IconPickerDialogFragment.newInstance("Change List Icon", shopList);
+        IconPickerDialogFragment iconPickerDialogFragment = IconPickerDialogFragment.newInstance(getActivity().getString(R.string.change_list_icon), shopList);
         iconPickerDialogFragment.setListener(this);
         iconPickerDialogFragment.show(fm, "fragment_icon_picker_dialog");
     }
 
     private void showYesNoDialog(String name, ShopList shopList){
         FragmentManager fm = getFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance("Leaving "+name, "Are you sure you want to leave?",null,shopList,YesNoDialogFragment.LEAVELIST);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(getActivity().getString(R.string.leaving) + name, getActivity().getString(R.string.confirm_leave),null,shopList,YesNoDialogFragment.LEAVELIST);
         yesNoDialogFragment.setListener(this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }

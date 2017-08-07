@@ -82,7 +82,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
-            android:text="Add Collaborators"
+            android:text="@string/add_collaborators"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size"
             android:textStyle="bold" />
@@ -98,7 +98,7 @@
             android:minWidth="@dimen/confirm_button_width"
             android:onClick="onSubmit"
             android:stateListAnimator="@null"
-            android:text="Confirm"
+            android:text="@string/confirm"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text_size"
             android:textStyle="bold" />
@@ -107,7 +107,7 @@
             android:id="@+id/tvPeopleAdded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/title"
             android:textColor="@color/secondary_text"
             android:textSize="18sp"
             android:textStyle="bold"

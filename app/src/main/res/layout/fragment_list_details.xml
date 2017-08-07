@@ -40,7 +40,7 @@
                 android:layout_weight="1.0"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="List Name"
+                android:text="@string/list_name"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_list_name" />
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:text="Edit Collaborators"
+                android:text="@string/edit_collaborators"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_list_details" />
 
@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Enable Notifications"
+            android:text="@string/enable_notifications"
             android:textColor="@color/black"
             android:textSize="@dimen/text_list_details" />
 
@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Change List Icon"
+            android:text="@string/change_list_icon"
             android:textColor="@color/black"
             android:textSize="@dimen/text_list_details" />
 
@@ -213,7 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Leave List"
+            android:text="@string/leave_list"
             android:textColor="@color/black"
             android:textSize="@dimen/text_list_details" />
 

@@ -465,6 +465,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             }
         }
         else
+            // TODO remove?
             Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
                     segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
     }
@@ -489,6 +490,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     private void deleteItemFromUI(Item item){
         int pos = getItemIndex(item);
         if (pos == -1)
+            // TODO remove?
             Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
             //throw new IndexOutOfBoundsException(String.format("Item %s wasn't found on the local arraylist", item.getBody()));
         else {
@@ -509,12 +511,12 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     public void changeAddHintText(Boolean isCategorizing, @Nullable String segmentName, @Nullable Segment segment){
         if (isCategorizing) {
-            etAddItem.setHint("e.g. Apples to " + segmentName);
+            etAddItem.setHint(getActivity().getString(R.string.item_hint_category) + segmentName);
             isEditing = true;
             addingSegment = segment;
         }
         else {
-            etAddItem.setHint("e.g. Apples");
+            etAddItem.setHint(getActivity().getString(R.string.item_hint));
             isEditing = false;
             addingSegment = null;
             changeToEditColor(R.color.colorPrimaryLight, R.color.lighterOrange);

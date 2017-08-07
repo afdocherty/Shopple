@@ -64,7 +64,7 @@
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
             android:layout_marginStart="16dp"
-            android:text="Edit Item Name"
+            android:text="@string/edit_item_name"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size"
@@ -94,7 +94,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/bConfirmEdit"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/secondary_text"
                 android:textStyle="bold" />
 
@@ -105,7 +105,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="Done"
+                android:text="@string/done"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -125,7 +125,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
-            android:text="Add Items From Camera"
+            android:text="@string/add_items_from_camera"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size"
@@ -139,7 +139,7 @@
             android:layout_below="@+id/tvFailTitle"
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
-            android:text="Sorry, no items were found. Please try again!"
+            android:text="@string/sorry_no_items_were_found_please_try_again"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size" />
     </RelativeLayout>
@@ -156,7 +156,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/add_margin"
             android:layout_marginRight="@dimen/add_margin"
-            android:text="Add Items From Camera"
+            android:text="@string/add_items_from_camera"
             android:textAlignment="viewStart"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/sub_size"
@@ -169,7 +169,7 @@
             android:layout_below="@id/tvTitle"
             android:layout_margin="@dimen/checkbox_margin"
             android:checked="true"
-            android:text="Unselect All"
+            android:text="@string/unselect_all"
             android:textColor="@color/secondary_text"
             android:textStyle="bold"
             app:buttonTint="@color/secondary_text" />
@@ -198,7 +198,7 @@
             android:layout_alignEnd="@+id/bAddSegment"
             android:layout_marginEnd="84dp"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/secondary_text"
             android:textStyle="bold" />
 
@@ -209,7 +209,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/bAdd"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Retry"
+            android:text="@string/retry"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
 
@@ -220,7 +220,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Add"
+            android:text="@string/add"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
     </RelativeLayout>

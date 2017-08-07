@@ -38,7 +38,7 @@
                 android:layout_toEndOf="@+id/imageView"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="List Name"
+                android:text="@string/list_name"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_textSize"
                 android:transitionName="listname"/>

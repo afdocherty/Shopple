@@ -85,7 +85,7 @@ public class ShopListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Create a new list as the current user, automatically naming it w/ date
-                ShopList.getInstance("List on " + formatNewListDate(), new ShopList.ShoplistCallback() {
+                ShopList.getInstance(getString(R.string.list_temp_name) + formatNewListDate(), new ShopList.ShoplistCallback() {
                     @Override
                     public void done(ShopList list) {
                         //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);
@@ -171,7 +171,13 @@ public class ShopListFragment extends Fragment {
         // (1) get today's date
         Date today = Calendar.getInstance().getTime();
         // (2) create a date "formatter" (the date format we want)
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        SimpleDateFormat formatter;
+        if (Locale.getDefault().getLanguage().equals("es")) {
+            formatter = new SimpleDateFormat("dd/MM/yy", Locale.forLanguageTag("es"));
+        } else {
+            formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        }
+
         // (3) create a new String using the date format we want
         return formatter.format(today);
     }

@@ -151,7 +151,7 @@
                 android:paddingEnd="36dp"
                 android:layout_margin="8dp"
                 android:paddingTop="24dp"
-                android:text="Add a new item by taking a picture or typing!"
+                android:text="@string/add_a_new_item_by_taking_a_picture_or_typing"
                 android:textAlignment="center"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"

@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/add_margin"
         android:layout_marginRight="@dimen/add_margin"
-        android:text="Change List Icon"
+        android:text="@string/change_list_icon"
         android:textAlignment="viewStart"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/sub_size"
@@ -110,7 +110,7 @@
                 android:layout_toStartOf="@+id/bConfirm"
                 android:background="?android:attr/selectableItemBackground"
                 android:minWidth="@dimen/cancel_button_width"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/secondary_text"
                 android:textStyle="bold"
                 android:textSize="@dimen/button_text_size"/>
@@ -123,7 +123,7 @@
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:minWidth="@dimen/confirm_button_width"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/button_text_size"/>

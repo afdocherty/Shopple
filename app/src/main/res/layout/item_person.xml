@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/checkbox_margin"
         android:layout_marginTop="@dimen/padding"
-        android:text="Name"
+        android:text="@string/name"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/sub_size"
         app:buttonTint="@color/primary_text" />

@@ -103,7 +103,7 @@ public class CollaboratorsDialogFragment extends DialogFragment {
         tvPeopleAdded = (TextView) v.findViewById(R.id.tvPeopleAdded);
         confirmBtn = (Button) v.findViewById(R.id.confirmBtn);
 
-        tvPeopleAdded.setText("No people added");
+        tvPeopleAdded.setText(getActivity().getString(R.string.no_people_added));
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,10 +136,10 @@ public class CollaboratorsDialogFragment extends DialogFragment {
 
     private String formatNumPeople(int numPeople) {
         if (numPeople == 1)
-            return "1 person added";
+            return getActivity().getString(R.string.one_person_added);
         else if (numPeople == 0)
-            return "No people added";
+            return getActivity().getString(R.string.no_people_added);
         else
-            return String.format("%s people added", numPeople);
+            return String.format("%s " + getActivity().getString(R.string.people_added), numPeople);
     }
 }

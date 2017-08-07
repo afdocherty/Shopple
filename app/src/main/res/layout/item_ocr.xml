@@ -14,7 +14,7 @@
         android:layout_toStartOf="@+id/ibMarker1"
         android:background="?android:attr/selectableItemBackground"
         android:checked="true"
-        android:text="Item"
+        android:text="@string/item"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/sub_size"
         app:buttonTint="@color/primary_text" />
