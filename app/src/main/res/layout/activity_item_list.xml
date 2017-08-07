@@ -40,7 +40,8 @@
                 android:maxLines="1"
                 android:text="List Name"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_textSize" />
+                android:textSize="@dimen/toolbar_textSize"
+                android:transitionName="listname"/>
 
             <ImageView
                 android:id="@+id/ivMapsBtn"

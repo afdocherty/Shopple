@@ -42,7 +42,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignTop="@+id/imageView5"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/logout_variant" />
+            app:srcCompat="@drawable/logout_variant"
+            android:transitionName="icon"/>
 
     </RelativeLayout>
 

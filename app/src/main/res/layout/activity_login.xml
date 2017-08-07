@@ -24,12 +24,21 @@
             android:textSize="56sp"
             android:layout_marginEnd="8dp"/>
 
-        <ImageView
+        <!--<ImageView-->
+            <!--android:id="@+id/ivLogo"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:tint="@color/white"-->
+            <!--app:srcCompat="@drawable/ic_double_check" />-->
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/ivLogo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/ic_double_check" />
+            app:lottie_fileName="done_all.json"
+            app:lottie_colorFilter="@color/white"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:transitionName="icon"/>
 
     </LinearLayout>
 

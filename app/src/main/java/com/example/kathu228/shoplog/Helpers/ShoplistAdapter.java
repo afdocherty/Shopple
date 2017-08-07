@@ -139,7 +139,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
 
         private RippleDrawable rippleDrawable;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(final View itemView){
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
@@ -170,6 +170,9 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
                         // Pass in ShopList ObjectId
                         intent.putExtra(SHOPLIST_TAG, shopList.getObjectId());
                         intent.putExtra(ShopList.SHOPLIST_NEW_TAG, false);
+//                        ActivityOptionsCompat options = ActivityOptionsCompat.
+//                                makeSceneTransitionAnimation((Activity)context, (View)tvListName, "listname");
+//                        context.startActivity(intent,options.toBundle());
                         context.startActivity(intent);
                     }
                 }

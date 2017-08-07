@@ -3,6 +3,7 @@ package com.example.kathu228.shoplog.Activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.kathu228.shoplog.Models.Query;
 import com.example.kathu228.shoplog.R;
 import com.facebook.AccessToken;
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     public Button loginButton;
     public ProgressBar pbLoading;
     private TextView tvTitle;
+    private LottieAnimationView animationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.login);
         pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
+        animationView = (LottieAnimationView) findViewById(R.id.ivLogo);
 
         // Set button invisible and progress bar visible
         loginButton.setVisibility(View.INVISIBLE);
@@ -103,7 +107,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void launchAppWithUser() {
         Intent intent = new Intent(LoginActivity.this, ShopListsActivity.class);
-        startActivity(intent);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, (View)animationView, "icon");
+        startActivity(intent, options.toBundle());
+        //startActivity(intent);
         finish();
     }
 

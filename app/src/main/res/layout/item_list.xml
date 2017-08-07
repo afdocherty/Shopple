@@ -44,7 +44,8 @@
                 android:text="List Name name name name "
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/text_list_name" />
+                android:textSize="@dimen/text_list_name"
+                android:transitionName="listname"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

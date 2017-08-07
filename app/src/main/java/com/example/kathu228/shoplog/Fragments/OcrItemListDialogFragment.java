@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.example.kathu228.shoplog.Helpers.OcrItemAdapter;
 import com.example.kathu228.shoplog.R;
@@ -25,10 +28,18 @@ public class OcrItemListDialogFragment extends DialogFragment{
     private OcrItemAdapter adapter;
     private ArrayList<String> items;
 
+    private RelativeLayout rlSuccess;
+    private RelativeLayout rlFailure;
+    private RelativeLayout editView;
+    private RelativeLayout btns;
+
+    private EditText etEditItemName;
+
     private Button cancelBtn;
     private Button addBtn;
     private Button retryBtn;
-    private CheckBox selectBox;
+    private Button cancelEditBtn;
+    private Button doneEditBtn;
 
     private List<String> namesAdded;
 
@@ -76,10 +87,30 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
         rvOcrItems = (RecyclerView) v.findViewById(R.id.rvOCRItem);
 
-        //setadapter
-        adapter = new OcrItemAdapter(items, R.layout.item_ocr, OcrItemListDialogFragment.this, getActivity());
-        rvOcrItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvOcrItems.setAdapter(adapter);
+        cancelBtn = (Button) v.findViewById(R.id.bCancelAdd);
+        addBtn = (Button) v.findViewById(R.id.bAdd);
+        retryBtn = (Button) v.findViewById(R.id.bRetry);
+        rlFailure = (RelativeLayout) v.findViewById(R.id.rlFailure);
+        rlSuccess = (RelativeLayout) v.findViewById(R.id.rlAddItems);
+        btns = (RelativeLayout) v.findViewById(R.id.rlButtons);
+
+        editView = (RelativeLayout) v.findViewById(R.id.rlEditItem);
+        etEditItemName = (EditText) v.findViewById(R.id.etEditItem);
+        cancelEditBtn = (Button) v.findViewById(R.id.bCancelEdit);
+        doneEditBtn = (Button) v.findViewById(R.id.bConfirmEdit);
+
+        if (items.size()==0){
+            rlSuccess.setVisibility(View.GONE);
+            rlFailure.setVisibility(View.VISIBLE);
+        }
+        else{
+            rlSuccess.setVisibility(View.VISIBLE);
+            rlFailure.setVisibility(View.GONE);
+            //setadapter
+            adapter = new OcrItemAdapter(items, R.layout.item_ocr, OcrItemListDialogFragment.this, getActivity());
+            rvOcrItems.setLayoutManager(new LinearLayoutManager(getContext()));
+            rvOcrItems.setAdapter(adapter);
+        }
 
         // namesAdded are all the names of the items selected
         namesAdded = new ArrayList<String>();
@@ -87,27 +118,6 @@ public class OcrItemListDialogFragment extends DialogFragment{
         for (String item: items){
             namesAdded.add(item);
         }
-
-        cancelBtn = (Button) v.findViewById(R.id.bCancelAdd);
-        addBtn = (Button) v.findViewById(R.id.bAdd);
-        retryBtn = (Button) v.findViewById(R.id.bRetry);
-        selectBox = (CheckBox) v.findViewById(R.id.cbSelect);
-
-        adapter.selectAll();
-
-        selectBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectBox.isChecked()){
-                    selectBox.setText("Unselect All");
-                    adapter.selectAll();
-                }
-                else{
-                    selectBox.setText("Select All");
-                    adapter.unselectAll();
-                }
-            }
-        });
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,13 +148,17 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
     // add item name to namesAdded list
     public void addItem(String itemName) {
-        namesAdded.add(itemName);
+        if (namesAdded.indexOf(itemName)!=(-1))
+            namesAdded.add(itemName);
     }
 
     // change item name
-    public void changeItem(int pos, String newName) {
-        namesAdded.remove(pos);
-        namesAdded.add(pos, newName);
+    public void changeItem(String oldName, String newName) {
+        int pos = namesAdded.indexOf(oldName);
+        if (pos!=-1) {
+            namesAdded.remove(pos);
+            namesAdded.add(pos, newName);
+        }
     }
 
     // remove item from namesAdded list
@@ -152,9 +166,43 @@ public class OcrItemListDialogFragment extends DialogFragment{
         namesAdded.remove(itemName);
     }
 
-    // if click something, change to unselected
-    public void turnSelectOff(){
-        selectBox.setChecked(false);
-        selectBox.setText("Select All");
+    // makes editing layout visible for editing item
+    public void editMode(final String item){
+        etEditItemName.setText(item);
+        editView.setVisibility(View.VISIBLE);
+        rlSuccess.setVisibility(View.GONE);
+        btns.setVisibility(View.GONE);
+        etEditItemName.requestFocus();
+        etEditItemName.selectAll();
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etEditItemName, InputMethodManager.SHOW_IMPLICIT);
+
+        // Itemclicklistener on done and cancel
+        // If press cancel, go back to view with items
+        cancelEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(etEditItemName.getWindowToken(), 0);
+                editView.setVisibility(View.GONE);
+                rlSuccess.setVisibility(View.VISIBLE);
+                btns.setVisibility(View.VISIBLE);
+
+            }
+        });
+        // If press done, go back to view with item changed
+        doneEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String body = etEditItemName.getText().toString();
+                if (!body.equals("")){
+                    changeItem(item,body);
+                    adapter.changeItemName(item,body);
+                    imm.hideSoftInputFromWindow(etEditItemName.getWindowToken(), 0);
+                    editView.setVisibility(View.GONE);
+                    rlSuccess.setVisibility(View.VISIBLE);
+                    btns.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 }
