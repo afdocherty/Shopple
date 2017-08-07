@@ -115,14 +115,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookLoginResponse(ParseUser user, ParseException err){
+//        ParseInstallation installation = getCurrentInstallation();
         if (err != null) {
             Log.d("MyApp", "Uh oh. Error occurred " + err.toString());
         } else if (user == null) {
             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
         } else if (user.isNew()) {
+            //TODO- Push
+//            installation.put("user",ParseUser.getCurrentUser());
+//            installation.saveInBackground();
             fillUserInfo(user);
 
         } else {
+            //TODO- Push
+//            installation.put("user",ParseUser.getCurrentUser());
+//            installation.saveInBackground();
+//            ParsePush.subscribeInBackground("test");
             Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
                     .show();
             Log.d("MyApp", String.format("User %s logged in through Facebook!", Query.getNameOfUser(user)));

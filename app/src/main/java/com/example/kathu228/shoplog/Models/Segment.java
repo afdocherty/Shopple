@@ -40,20 +40,13 @@ public class Segment extends BaseParseObject {
 //
 //    }
 
+    //ONLY USE FOR UNCATEGORIZED SEGMENT
     Segment(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
         put("name", name);
         Date date = new Date();
         put("created_time",date);
         setParent(parentList);
-
-        switch (segmentType){
-            case ADDITIONAL_SEGMENT:
-                addHeaderItem(name, parentList, date, callback);
-                break;
-            default:
-                nullableSaveInBackground(callback);
-                break;
-        }
+        nullableSaveInBackground(callback);
     }
 
     void initializeVariables(String name, ShopList parentList, int segmentType, @Nullable SaveCallback callback){
@@ -66,7 +59,7 @@ public class Segment extends BaseParseObject {
             case ADDITIONAL_SEGMENT:
                 int colorNum = ColorPicker.getNewColor(parentList.getObjectId())[0];
                 put("color_number", colorNum);
-                addHeaderItem(name, parentList, date, callback);
+                addHeaderItem(name, parentList, date, colorNum, callback);
                 break;
             default:
                 nullableSaveInBackground(callback);
@@ -162,8 +155,8 @@ public class Segment extends BaseParseObject {
         });
     }
 
-    private void addHeaderItem(String name, ShopList parent, Date date, final SaveCallback callback){
-        put("header",new Item(name, parent, this, Item.HEADER, date, new SaveCallback() {
+    private void addHeaderItem(String name, ShopList parent, Date date, int colorNum, final SaveCallback callback){
+        put("header",new Item(name, parent, this, Item.HEADER, date, colorNum, new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 nullableSaveInBackground(callback);

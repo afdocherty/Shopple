@@ -70,7 +70,7 @@ public class ShopList extends BaseParseObject {
         put("uncategorized_segment",new Segment("Uncategorized", this, Segment.UNCATEGORIZED_SEGMENT, new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new Date(), new SaveCallback() {
+                put("completed_header",new Item("Completed Items", ShopList.this, null, Item.COMPLETED_HEADER, new Date(), 0, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         getUsersRelation().add(ParseUser.getCurrentUser());
@@ -107,6 +107,25 @@ public class ShopList extends BaseParseObject {
 //    }
 
     public void addUsers(List<ParseUser> users, final @Nullable SaveCallback callback){
+        // TODO- PUSH Send push notification to query
+//        HashMap<String,List> map = new HashMap<String, List>();
+//        List<String> userIds = new ArrayList<>();
+//        for (ParseUser user : users){
+//            userIds.add(user.getObjectId());
+//        }
+//        map.put("users",users);
+//        //map.put("list_name",getName());
+//        // here you can send parameters to your cloud code functions
+//        // such parameters can be the channel name, array of users to send a push to and more...
+//
+//        ParseCloud.callFunctionInBackground("SendPush",map, new FunctionCallback<Object>() {
+//
+//            @Override
+//            public void done(Object object, ParseException e) {
+//                Log.d("test","success");
+//            }
+//        });
+
         for (ParseUser user : users){
             getPreviousUserRelation().remove(user);
             getUsersRelation().add(user);

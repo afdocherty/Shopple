@@ -16,4 +16,7 @@
     <string name="enable_notifications">Enable Notifications</string>
     <string name="disable_notifications">Disable Notifications</string>
 
+    <!-- apply the GCM Sender ID XXXXXXX for your ID -->
+    <string name="gcm_sender_id">id:347827425804</string>
+
 </resources>

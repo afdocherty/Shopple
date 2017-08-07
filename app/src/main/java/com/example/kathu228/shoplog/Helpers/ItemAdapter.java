@@ -104,8 +104,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     ((HeaderViewHolder) holder).tvHeader.setText(item.getBody());
                     //((HeaderViewHolder) holder).etHeader.setText(item.getBody());
                     int colorNum = item.getColorNum();
-                    ((HeaderViewHolder) holder).viewColor.setBackgroundColor(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
-                    ((HeaderViewHolder) holder).ivFinishEdit.setColorFilter(ContextCompat.getColor(context, ColorPicker.getColor(colorNum)));
+                    int color = ColorPicker.getColor(colorNum);
+                    ((HeaderViewHolder) holder).viewColor.setBackgroundColor(ContextCompat.getColor(context, color));
+                    ((HeaderViewHolder) holder).ivFinishEdit.setColorFilter(ContextCompat.getColor(context, color));
                     if(categorySegment==null) {
                         ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
                         ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);

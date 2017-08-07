@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,7 +20,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.*;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Fragments.OcrItemListDialogFragment;
@@ -128,51 +128,41 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
 
     // Initialize dialog to start map for My Store or Nearby Stores
     public void initMaps(View view) {
+        //TODO - Push
+//        ParseUser user = ParseInstallation.getCurrentInstallation().getParseUser("user");
+//        if (user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId()))
+//            Log.d("trst","test");
+//        ParseQuery pushQuery = ParseInstallation.getQuery();
+//        pushQuery.whereEqualTo("user_name", Query.getNameOfUser(ParseUser.getCurrentUser()));
+//        pushQuery.findInBackground(new FindCallback() {
+//            @Override
+//            public void done(List objects, ParseException e) {
+//                for (Object object : objects){
+//                    Log.d("Installation",((ParseInstallation) object ).getInstallationId());
+//                }
+//            }
+//
+//            @Override
+//            public void done(Object o, Throwable throwable) {
+//                Log.d("Installation","trial");
+//            }
+//        });
+
+//        // Send push notification to query
+//        HashMap<String,String> map = new HashMap<String, String>();
+//        map.put("PARAM1KEY","PARAM1VALUE");
+//        // here you can send parameters to your cloud code functions
+//        // such parameters can be the channel name, array of users to send a push to and more...
+//
+//        ParseCloud.callFunctionInBackground("SendPush",map, new FunctionCallback<Object>() {
+//
+//            @Override
+//            public void done(Object object, ParseException e) {
+//                Log.d("test","success");
+//            }
+//        });
+
         showTripDialog();
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//
-//        // set titlexw
-//        alertDialogBuilder.setTitle("Start my Trip");
-//
-//        // set dialog message
-//        alertDialogBuilder
-//                .setMessage("Route me to:")
-//                .setCancelable(true)
-//                .setPositiveButton("My Store",new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        // Activate notifications automatically
-//                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
-//                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
-//
-//                        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
-//                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
-//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                        mapIntent.setPackage("com.google.android.apps.maps");
-//                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-//                            startActivity(mapIntent);
-//                        }
-//                    }
-//                })
-//                .setNegativeButton("Nearby Stores",new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        // Activate notifications automatically
-//                        NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
-//                        Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
-//
-//                        // Search grocery stores that are nearby FB Seattle Office
-//                        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
-//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                        mapIntent.setPackage("com.google.android.apps.maps");
-//                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-//                            startActivity(mapIntent);
-//                        }
-//                    }
-//                });
-//        // create alert dialog
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // show it
-//        alertDialog.show();
     }
 
     public void launchCamera(View view) {

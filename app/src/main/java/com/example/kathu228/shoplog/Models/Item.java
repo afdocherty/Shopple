@@ -30,13 +30,14 @@ public class Item extends BaseParseObject{
         //Needed for Parse
     }
 
-    Item(String body, ShopList parent, Segment segment, int type, Date date, @Nullable SaveCallback callback){
-        if (segment != null)
+    Item(String body, ShopList parent, Segment segment, int type, Date date, int colorNum, @Nullable SaveCallback callback){
+        if (segment != null){
             put("segment_created_at",date);
+            put("segment",segment);
+            put("color_number", colorNum);
+        }
         setBody(body);
         setParent(parent);
-        if (segment != null)
-            put("segment",segment);
         put("checked",false);
         put("visible",true);
         setType(type);
