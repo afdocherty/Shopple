@@ -105,9 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider"
+            android:layout_marginTop="@dimen/empty_state_top_margin"
             android:padding="8dp"
-            android:visibility="visible"
-            android:layout_marginTop="@dimen/empty_state_top_margin">
+            android:visibility="gone">
 
             <!--<TextView-->
             <!--android:id="@+id/textView2"-->
@@ -161,14 +161,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/checkbox_margin"
+                        android:layout_marginStart="@dimen/checkbox_margin"
+                        android:layout_marginTop="@dimen/checkbox_margin"
                         android:text="Your Shopple Cart is Empty"
                         android:textAlignment="textStart"
                         android:textColor="@color/primary_text"
                         android:textSize="@dimen/sub_size"
-                        android:textStyle="bold"
-                        android:layout_marginTop="@dimen/checkbox_margin"
-                        android:layout_marginStart="@dimen/checkbox_margin"
-                        android:layout_marginEnd="@dimen/checkbox_margin" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvSub"
