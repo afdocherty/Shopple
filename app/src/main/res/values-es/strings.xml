@@ -3,7 +3,7 @@
     <string name="fragment_friendlist_text">Test</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="login_button_message">Iniciar Sesión con Facebook</string>
-    <string name="item_hint"> e.g. Manzanas</string>
+    <string name="item_hint"> ej. Manzanas</string>
     <string name="edit_collaborators">Editar Colaboradores</string>
     <string name="leave_list">Abandonar Lista</string>
     <string name="your_lists">Tus Listas</string>
@@ -34,7 +34,6 @@
     <string name="add_items_from_camera">Añadir artículos con la cámara</string>
     <string name="retry">Volver a intentar</string>
     <string name="add">Agregar</string>
-    <string name="add_a_new_item_by_taking_a_picture_or_typing">¡Añade un nuevo artículo tomando una foto o escribiendolo en tu teclado!</string>
     <string name="confirm">Confirmar</string>
     <string name="ok">OK</string>
     <string name="add_collaborators">Añadir Colaboradores</string>
@@ -50,5 +49,8 @@
     <string name="people_added"> personas añadidas</string>
     <string name="you_have_no_shopple_lists">Todavía no tienes listas de Shopple</string>
     <string name="list_help">¡Haz clic en el botón de abajo para empezar una nueva lista!</string>
+    <string name="your_shopple_cart_is_empty">Todavía no tienes artículos</string>
+    <string name="add_a_new_item_by_typing_or_taking_a_picture">¡Añade nuevos artículos tomando una foto o escribiendo en tu teclado!</string>
+    <!--Tu Carro de Compras de Shopple está Vacío-->
 
 </resources>
