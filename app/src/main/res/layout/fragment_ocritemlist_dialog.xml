@@ -118,6 +118,30 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+        <Button
+            android:id="@+id/bRetry2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvFailMessage"
+            android:layout_marginEnd="@dimen/checkbox_margin"
+            android:layout_marginStart="@dimen/checkbox_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Retry"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bCancel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFailMessage"
+            android:layout_toStartOf="@+id/bRetry2"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Cancel"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tvFailTitle"
             android:layout_width="wrap_content"
@@ -206,12 +230,14 @@
             android:id="@+id/bRetry"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/bAdd"
             android:background="?android:attr/selectableItemBackground"
             android:text="Retry"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/bAdd"
+            android:layout_marginStart="@dimen/checkbox_margin"
+            android:layout_marginEnd="@dimen/checkbox_margin"/>
 
         <Button
             android:id="@+id/bAdd"

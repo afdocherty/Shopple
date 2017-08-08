@@ -110,9 +110,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if(categorySegment==null) {
                         ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
                         ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);
-                    }else{
+                    }else if (item.getObjectId().equals(categoryHeader.getObjectId())){
                         ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.GONE);
                         ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.VISIBLE);
+                    }else{
+                        ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
+                        ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);
                     }
                     break;
                 case 2:
