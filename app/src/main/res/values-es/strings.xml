@@ -56,5 +56,7 @@
     <string name="confirm_delete_category">¿Estás seguro que quieres eliminar la categoría</string>
     <string name="empty_completed">Vaciar Completados</string>
     <string name="confirm_empty">¿Estás seguro que quieres vaciar los artículos completados?</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="confirm_logout">¿Estás seguro que quieres cerrar esta sesión?</string>
 
 </resources>

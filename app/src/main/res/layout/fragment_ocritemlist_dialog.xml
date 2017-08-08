@@ -228,7 +228,7 @@
 
         <Button
             android:id="@+id/bRetry"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/retry"
