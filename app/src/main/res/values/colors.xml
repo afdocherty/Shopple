@@ -6,6 +6,7 @@
     <color name="colorAccent">@color/lightOrange</color>
     <color name="white">#ffffff</color>
     <color name="lightGray">#8e827f</color>
+    <color name="lightishGray">#80baa8a3</color>
     <color name="lighterGray">#f2f0ef</color>
     <color name="divider">@color/lighterOrange</color>
     <color name="primary_text">#2e2624</color>

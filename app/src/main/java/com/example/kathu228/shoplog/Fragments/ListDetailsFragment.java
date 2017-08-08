@@ -164,6 +164,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
             }
         });
 
+
         return v;
     }
 

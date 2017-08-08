@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Fragments;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -174,6 +175,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             }
         });
 
+        etAddItem.getBackground().setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
         // Adds item from edittext if press enter or done on keyboard
         etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -535,9 +537,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     // change to category color
     public void changeToEditColor(int colorID, int hintColorID){
         int color = ContextCompat.getColor(getContext(), colorID);
+        int hintColor = ContextCompat.getColor(getContext(), hintColorID);
         ivAddItem.setColorFilter(color);
         ivOCR.setColorFilter(color);
-        etAddItem.setHintTextColor(ContextCompat.getColor(getContext(), hintColorID));
+        etAddItem.setHintTextColor(hintColor);
+        etAddItem.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     private void hideEmptyState(){
