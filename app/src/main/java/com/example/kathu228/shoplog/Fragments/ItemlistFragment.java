@@ -512,7 +512,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     public void changeAddHintText(Boolean isCategorizing, @Nullable String segmentName, @Nullable Segment segment){
         if (isCategorizing) {
-            etAddItem.setHint(getActivity().getString(R.string.item_hint_category) + segmentName);
+            etAddItem.setHint(getActivity().getString(R.string.item_hint_category) + " " + segmentName);
             isEditing = true;
             addingSegment = segment;
         }
