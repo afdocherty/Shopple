@@ -15,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
@@ -207,8 +206,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
                         int adapterPos = getAdapterPosition();
                         if (adapterPos<0) {
-                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
-                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+//                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
                         }else {
                             handleCategorizing(mlist.get(adapterPos), adapterPos);
                         }
@@ -217,8 +216,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
                         int adapterPos = getAdapterPosition();
                         if (adapterPos<0) {
-                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
-                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+//                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
                         }else {
                             handleCheckbox(mlist.get(adapterPos), adapterPos);
                         }

@@ -24,7 +24,7 @@ public class Query {
     public static void findShoplistsForUser(ParseUser user, FindCallback<ShopList> callback) {
         ParseQuery<ShopList> query = ParseQuery.getQuery(ShopList.class);
         query.whereEqualTo("users", user);
-        query.orderByDescending("_created_at");
+        query.orderByDescending("_updated_at");
         query.findInBackground(callback);
     }
 

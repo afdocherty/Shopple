@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -464,10 +463,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 itemAdapter.notifyItemChanged(index);
             }
         }
-        else
-            // TODO remove?
-            Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
-                    segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
+        else {
+//            Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
+//                    segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
+        }
+
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
@@ -489,11 +489,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     // delete item from UI
     private void deleteItemFromUI(Item item){
         int pos = getItemIndex(item);
-        if (pos == -1)
-            // TODO remove?
-            Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
+        if (pos == -1) {
+//            Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
             //throw new IndexOutOfBoundsException(String.format("Item %s wasn't found on the local arraylist", item.getBody()));
-        else {
+        } else {
             items.remove(pos);
             itemAdapter.notifyItemRemoved(pos);
         }
