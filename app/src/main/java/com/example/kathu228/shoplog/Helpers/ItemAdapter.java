@@ -166,7 +166,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }
         else if (item.isHeader()){
-            showYesNoDialog("Clear Category", "Are you sure you want to delete the category, "+item.getBody()+"?", item,YesNoDialogFragment.CLEARCATEGORY);
+            showYesNoDialog(context.getString(R.string.clear_category), context.getString(R.string.confirm_delete_category) + " " + item.getBody() + "?", item,YesNoDialogFragment.CLEARCATEGORY);
         }
 
     }
@@ -360,7 +360,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    showYesNoDialog("Empty Completed","Are you sure you want to delete all completed items?", mlist.get(getAdapterPosition()),YesNoDialogFragment.DELETECOMPLETED);
+                    showYesNoDialog(context.getString(R.string.empty_completed),context.getString(R.string.confirm_empty), mlist.get(getAdapterPosition()),YesNoDialogFragment.DELETECOMPLETED);
                 }
             });
         }
