@@ -38,7 +38,6 @@
     <string name="sorry_no_items_were_found_please_try_again">Sorry, no items were found. Please try again!</string>
     <string name="retry">Retry</string>
     <string name="add">Add</string>
-    <string name="add_a_new_item_by_taking_a_picture_or_typing">Add a new item by taking a picture or typing!</string>
     <string name="confirm">Confirm</string>
     <string name="ok">OK</string>
     <string name="add_collaborators">Add Collaborators</string>
@@ -55,6 +54,8 @@
     <string name="item_hint_category">e.g. Apples to</string>
     <string name="you_have_no_shopple_lists">You Have No Shopple Lists</string>
     <string name="list_help">Click on the button below to get started on a new list!</string>
+    <string name="your_shopple_cart_is_empty">Your Shopple Cart is Empty</string>
+    <string name="add_a_new_item_by_typing_or_taking_a_picture">Add a new item by typing or taking a picture!</string>
     <string name="notification_desc">Click to go to</string>
     <string name="clear_category">Clear Category</string>
     <string name="confirm_delete_category">Are you sure you want to delete the category</string>

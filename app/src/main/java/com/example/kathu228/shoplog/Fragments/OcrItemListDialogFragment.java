@@ -45,6 +45,9 @@ public class OcrItemListDialogFragment extends DialogFragment{
     private Button cancelEditBtn;
     private Button doneEditBtn;
 
+    private Button retry2Btn;
+    private Button cancel2Btn;
+
     private OcrItemListDialogListener mListener;
 
     public void setListener(OcrItemListDialogListener listener) {
@@ -99,6 +102,9 @@ public class OcrItemListDialogFragment extends DialogFragment{
         addBtn = (Button) v.findViewById(R.id.bAdd);
         retryBtn = (Button) v.findViewById(R.id.bRetry);
 
+        retry2Btn = (Button) v.findViewById(R.id.bRetry2);
+        cancel2Btn = (Button) v.findViewById(R.id.bCancel2);
+
         allSelected = (CheckBox) v.findViewById(R.id.cbSelect);
 
         editView = (RelativeLayout) v.findViewById(R.id.rlEditItem);
@@ -108,10 +114,12 @@ public class OcrItemListDialogFragment extends DialogFragment{
 
         if (items.size()==0){
             rlSuccess.setVisibility(View.GONE);
+            btns.setVisibility(View.GONE);
             rlFailure.setVisibility(View.VISIBLE);
         }
         else{
             rlSuccess.setVisibility(View.VISIBLE);
+            btns.setVisibility(View.VISIBLE);
             rlFailure.setVisibility(View.GONE);
 
             for (String item: items){
@@ -135,6 +143,14 @@ public class OcrItemListDialogFragment extends DialogFragment{
             }
         });
 
+        cancel2Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel2Btn.setEnabled(false);
+                dismiss();
+            }
+        });
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +163,14 @@ public class OcrItemListDialogFragment extends DialogFragment{
         });
 
         retryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onRetryOcr();
+                dismiss();
+            }
+        });
+
+        retry2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onRetryOcr();
