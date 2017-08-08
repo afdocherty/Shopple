@@ -230,7 +230,7 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
                 });
 
             }catch (Exception e){
-                Toast.makeText(this,"Oops. Something went wrong.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error, Toast.LENGTH_LONG).show();
             }
 
 //            Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -266,7 +266,7 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
                 boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
 
                 if (hasLowStorage) {
-                    Toast.makeText(this,"Low Storage", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.low_storage), Toast.LENGTH_LONG).show();
                     Log.d("OCR", "Low Storage");
                 }
             }

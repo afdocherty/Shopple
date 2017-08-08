@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseSession object, ParseException e) {
                 // If user is already logged in, welcome them back and launch app
                 if (user != null && object != null) {
-                    Toast.makeText(LoginActivity.this, "Welcome back " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
                     launchAppWithUser();
                 }
                 // Otherwise show the login button and hide the progress bar
@@ -120,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
             //TODO- Push (after Tuesday)
 //            installation.put("user",ParseUser.getCurrentUser());
 //            installation.saveInBackground();
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_new), Toast.LENGTH_SHORT).show();
+
             fillUserInfo(user);
 
         } else {
@@ -127,8 +128,8 @@ public class LoginActivity extends AppCompatActivity {
 //            installation.put("user",ParseUser.getCurrentUser());
 //            installation.saveInBackground();
 //            ParsePush.subscribeInBackground("test");
-            Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_login) + " " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
+
             Log.d("MyApp", String.format("User %s logged in through Facebook!", Query.getNameOfUser(user)));
             launchAppWithUser();
         }

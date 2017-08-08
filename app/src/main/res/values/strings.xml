@@ -4,8 +4,6 @@
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="login_button_message">Log in with Facebook</string>
     <string name="item_hint"> e.g. Apples</string>
-    <string name="list_hint"> e.g. BBQ Checklist</string>
-    <string name="change_color">Change Color</string>
     <string name="edit_collaborators">Edit Collaborators</string>
     <string name="leave_list">Leave List</string>
     <string name="your_lists">Your Lists</string>
@@ -15,8 +13,53 @@
     <string name="notifications_enabled">Notifications auto-enabled. Happy Shopping!</string>
     <string name="enable_notifications">Enable Notifications</string>
     <string name="disable_notifications">Disable Notifications</string>
-
-    <!-- apply the GCM Sender ID XXXXXXX for your ID -->
-    <string name="gcm_sender_id">id:347827425804</string>
+    <string name="change_list_icon">Change List Icon</string>
+    <string name="list_name">List Name</string>
+    <string name="intro_new">Welcome to Shopple!</string>
+    <string name="intro_login">Welcome back</string>
+    <string name="list_temp_name">List on</string>
+    <string name="leaving">Leaving</string>
+    <string name="confirm_leave">Are you sure you want to leave?</string>
+    <string name="change_list_name">Change List Name</string>
+    <string name="unselect_all">Unselect All</string>
+    <string name="select_all">Select All</string>
+    <string name="low_storage">Low Storage</string>
+    <string name="error">Oops. Something went wrong.</string>
+    <string name="start_my_trip">Start My Trip</string>
+    <string name="nearby_stores">Nearby Stores</string>
+    <string name="my_favorite_store">My Favorite Store</string>
+    <string name="create_new_category">Create New Category</string>
+    <string name="hint_fruits_and_vegetables">e.g. Fruits and Vegetables</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
+    <string name="edit_item_name">Edit Item Name</string>
+    <string name="done">Done</string>
+    <string name="add_items_from_camera">Add Items From Camera</string>
+    <string name="sorry_no_items_were_found_please_try_again">Sorry, no items were found. Please try again!</string>
+    <string name="retry">Retry</string>
+    <string name="add">Add</string>
+    <string name="confirm">Confirm</string>
+    <string name="ok">OK</string>
+    <string name="add_collaborators">Add Collaborators</string>
+    <string name="list_details">List Details</string>
+    <string name="item">Item</string>
+    <string name="name">Name</string>
+    <string name="completed_items">Completed Items</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="title">Title</string>
+    <string name="no_people_added">No people added</string>
+    <string name="one_person_added">1 person added</string>
+    <string name="people_added">people added</string>
+    <string name="item_hint_category">e.g. Apples to</string>
+    <string name="you_have_no_shopple_lists">You Have No Shopple Lists</string>
+    <string name="list_help">Click on the button below to get started on a new list!</string>
+    <string name="your_shopple_cart_is_empty">Your Shopple Cart is Empty</string>
+    <string name="add_a_new_item_by_typing_or_taking_a_picture">Add a new item by typing or taking a picture!</string>
+    <string name="notification_desc">Click to go to</string>
+    <string name="clear_category">Clear Category</string>
+    <string name="confirm_delete_category">Are you sure you want to delete the category</string>
+    <string name="empty_completed">Empty Completed</string>
+    <string name="confirm_empty">Are you sure you want to delete all completed items?</string>
 
 </resources>

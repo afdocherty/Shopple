@@ -164,7 +164,7 @@
                         android:layout_marginEnd="@dimen/checkbox_margin"
                         android:layout_marginStart="@dimen/checkbox_margin"
                         android:layout_marginTop="@dimen/checkbox_margin"
-                        android:text="Your Shopple Cart is Empty"
+                        android:text="@string/your_shopple_cart_is_empty"
                         android:textAlignment="textStart"
                         android:textColor="@color/primary_text"
                         android:textSize="@dimen/sub_size"
@@ -178,15 +178,16 @@
                         android:layout_below="@id/tvClickNew"
                         android:layout_margin="@dimen/checkbox_margin"
                         android:paddingEnd="@dimen/add_margin"
-                        android:text="Add a new item by typing or taking a picture!"
+                        android:text="@string/add_a_new_item_by_typing_or_taking_a_picture"
                         android:textAlignment="textStart"
                         android:textColor="@color/secondary_text"
-                        android:textSize="@dimen/sub_sub_textSize"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
 
             </LinearLayout>
+
 
         </RelativeLayout>
 

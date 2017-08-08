@@ -91,7 +91,7 @@ public class ShopListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Create a new list as the current user, automatically naming it w/ date
-                ShopList.getInstance("List on " + formatNewListDate(), new ShopList.ShoplistCallback() {
+                ShopList.getInstance(getString(R.string.list_temp_name) + " " + formatNewListDate(), new ShopList.ShoplistCallback() {
                     @Override
                     public void done(ShopList list) {
                         //Query.addUserToShoplist(ParseUser.getCurrentUser(), shopList);

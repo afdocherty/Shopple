@@ -13,7 +13,7 @@
         android:layout_marginLeft="@dimen/checkbox_margin"
         android:layout_marginRight="@dimen/checkbox_margin"
         android:background="?android:attr/selectableItemBackground"
-        android:text="Item"
+        android:text="@string/item"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/body_size"
         app:buttonTint="@color/primary_text" />
