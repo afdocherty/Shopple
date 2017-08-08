@@ -113,7 +113,7 @@ public class ShopList extends BaseParseObject {
 //        for (ParseUser user : users){
 //            userIds.add(user.getObjectId());
 //        }
-//        map.put("users",users);
+//        map.put("users",userIds);
 //        //map.put("list_name",getName());
 //        // here you can send parameters to your cloud code functions
 //        // such parameters can be the channel name, array of users to send a push to and more...
@@ -187,6 +187,22 @@ public class ShopList extends BaseParseObject {
         allUsersQuery.whereDoesNotMatchKeyInQuery("username","username",usersInListQuery);
         allUsersQuery.orderByAscending("name");
         allUsersQuery.findInBackground(callback);
+    }
+
+    public interface BooleanCallback{
+        void done (boolean bool);
+    }
+
+    public void containsUser(ParseUser user, final BooleanCallback callback){
+        getUsersRelation().getQuery().whereEqualTo("username" , user.getUsername()).findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if(objects.size()>0)
+                    callback.done(true);
+                else
+                    callback.done(false);
+            }
+        });
     }
 
 //    public void getItems(FindCallback<Item> callback){

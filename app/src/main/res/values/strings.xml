@@ -29,7 +29,7 @@
     <string name="nearby_stores">Nearby Stores</string>
     <string name="my_favorite_store">My Favorite Store</string>
     <string name="create_new_category">Create New Category</string>
-    <string name="e_g_fruits_and_vegetables">e.g. Fruits and Vegetables</string>
+    <string name="hint_fruits_and_vegetables">e.g. Fruits and Vegetables</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="edit_item_name">Edit Item Name</string>
@@ -49,11 +49,11 @@
     <string name="collaborator">Collaborator</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="title">Title</string>
-    <string name="click_here_to_start_a_new_list_now">Click here to start a new list now!</string>
-    <string name="your_shopple_cart_is_empty">Your Shopple Cart Is Empty</string>
     <string name="no_people_added">No people added</string>
     <string name="one_person_added">1 person added</string>
     <string name="people_added">people added</string>
     <string name="item_hint_category">e.g. Apples to</string>
+    <string name="you_have_no_shopple_lists">You Have No Shopple Lists</string>
+    <string name="list_help">Click on the button below to get started on a new list!</string>
 
 </resources>

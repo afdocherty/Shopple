@@ -28,4 +28,6 @@
     <dimen name="button_text_size">14sp</dimen>
     <dimen name="confirm_button_width">104dp</dimen>
     <dimen name="cancel_button_width">88dp</dimen>
+    <dimen name="sub_sub_textSize">16sp</dimen>
+    <dimen name="empty_state_top_margin">44dp</dimen>
 </resources>

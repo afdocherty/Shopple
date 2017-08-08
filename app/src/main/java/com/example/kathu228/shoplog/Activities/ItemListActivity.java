@@ -218,8 +218,6 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
             try{
                 Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
                 final List<String> newItems = callMobileVisionOcr(imageBitmap);
-                //TODO - CREATE A MODAL OVERLAY WHERE THE USER CAN SELECT WHICH ITEMS TO ADD,
-                //TODO - WHICH TO EDIT OR WHICH TO DELETE (OR CAN RETAKE THE PICTURE)
 
                 final FragmentManager fm = getSupportFragmentManager();
                 final OcrItemListDialogFragment ocrItemListDialogFragment = OcrItemListDialogFragment.newInstance(listToArrayList(newItems));

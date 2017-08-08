@@ -36,7 +36,6 @@
             android:layout_height="50dp"
             app:lottie_fileName="done_all.json"
             app:lottie_colorFilter="@color/white"
-            app:lottie_loop="true"
             app:lottie_autoPlay="true"
             android:transitionName="icon"/>
 

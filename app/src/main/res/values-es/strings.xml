@@ -28,7 +28,7 @@
     <string name="nearby_stores">Mercados Cercanos</string>
     <string name="my_favorite_store">Mi Mercado Favorito</string>
     <string name="create_new_category">Crear una Nueva Categoría</string>
-    <string name="e_g_fruits_and_vegetables"> e.g. Frutas y Vegetales</string>
+    <string name="hint_fruits_and_vegetables"> e.g. Frutas y Vegetales</string>
     <string name="edit_item_name">Editar el Nombre de la Lista</string> <!-- el ?-->
     <string name="done">Done</string>
     <string name="add_items_from_camera">Añadir artículos desde la cámara</string>
@@ -45,10 +45,10 @@
     <string name="collaborator">Colaborador</string>
     <string name="are_you_sure">¿Estás seguro?</string>
     <string name="title">Título</string>
-    <string name="click_here_to_start_a_new_list_now">Click here to start a new list now!</string>
-    <string name="your_shopple_cart_is_empty">Your Shopple Cart Is Empty</string>
     <string name="no_people_added">No hay personas añadidas</string>
     <string name="one_person_added">1 persona añadida</string>
     <string name="people_added"> personas añadieron</string>
+    <string name="you_have_no_shopple_lists">Todavía no tienes listas de Shopple</string>
+    <string name="list_help">¡Haga clic en el botón de abajo para empezar una nueva lista!</string>
 
 </resources>
