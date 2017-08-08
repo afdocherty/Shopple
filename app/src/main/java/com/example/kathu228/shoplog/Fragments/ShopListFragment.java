@@ -52,6 +52,8 @@ public class ShopListFragment extends Fragment {
     private LinearLayout llDummy;
     private LottieAnimationView animationView;
 
+    private View disable_touch;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,9 @@ public class ShopListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_shoplist,container,false);
+
+        disable_touch = v.findViewById(R.id.click_disabler);
+        disable_touch.setClickable(false);
 
         Log.d("debug","hello");
 
@@ -89,7 +94,8 @@ public class ShopListFragment extends Fragment {
         // On click, create the list and jump into it
         fabAddShopList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                disable_touch.setClickable(true);
                 // Create a new list as the current user, automatically naming it w/ date
                 ShopList.getInstance(getString(R.string.list_temp_name) + " " + formatNewListDate(), new ShopList.ShoplistCallback() {
                     @Override
@@ -102,6 +108,7 @@ public class ShopListFragment extends Fragment {
                         intent.putExtra(ShopList.SHOPLIST_TAG, list.getObjectId());
                         intent.putExtra(ShopList.SHOPLIST_NEW_TAG, true);
                         startActivity(intent);
+                        disable_touch.setClickable(false);
                     }
                 });
             }
@@ -231,5 +238,7 @@ public class ShopListFragment extends Fragment {
         return -1;
 
     }
+
+
 }
 

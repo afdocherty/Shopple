@@ -32,7 +32,10 @@
     <string name="edit_item_name">Editar el Nombre de la Lista</string>
     <string name="done">Listo</string>
     <string name="add_items_from_camera">Añadir artículos con la cámara</string>
-    <string name="retry">Volver a intentar</string>
+    <string name="sorry_no_items_were_found_please_try_again">¡Lo sentimos! No encontramos artículos. Por favor vuelva a intentarlo.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="create">Crear</string>
+    <string name="retry">Rever</string>
     <string name="add">Agregar</string>
     <string name="confirm">Confirmar</string>
     <string name="ok">OK</string>

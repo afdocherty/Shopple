@@ -179,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/cbSelect" />
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
@@ -200,6 +200,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/cancel"
             android:textColor="@color/secondary_text"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <Button
@@ -209,8 +210,10 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/bAdd"
             android:background="?android:attr/selectableItemBackground"
+            android:maxLines="1"
             android:text="@string/retry"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <Button
@@ -222,6 +225,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/add"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </RelativeLayout>
 </LinearLayout>
