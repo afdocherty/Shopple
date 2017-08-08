@@ -15,7 +15,7 @@
     <string name="disable_notifications">Disable Notifications</string>
     <string name="change_list_icon">Change List Icon</string>
     <string name="list_name">List Name</string>
-    <string name="intro_new">Welcome to Shopple</string>
+    <string name="intro_new">Welcome to Shopple!</string>
     <string name="intro_login">Welcome back</string>
     <string name="list_temp_name">List on</string>
     <string name="leaving">Leaving</string>
@@ -56,5 +56,10 @@
     <string name="list_help">Click on the button below to get started on a new list!</string>
     <string name="your_shopple_cart_is_empty">Your Shopple Cart is Empty</string>
     <string name="add_a_new_item_by_typing_or_taking_a_picture">Add a new item by typing or taking a picture!</string>
+    <string name="notification_desc">Click to go to</string>
+    <string name="clear_category">Clear Category</string>
+    <string name="confirm_delete_category">Are you sure you want to delete the category</string>
+    <string name="empty_completed">Empty Completed</string>
+    <string name="confirm_empty">Are you sure you want to delete all completed items?</string>
 
 </resources>

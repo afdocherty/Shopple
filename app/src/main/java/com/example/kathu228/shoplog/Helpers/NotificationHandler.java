@@ -117,7 +117,7 @@ public class NotificationHandler {
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_double_check)
                         .setContentTitle(context.getResources().getString(R.string.app_name))
-                        .setContentText("Click to go to " + shopListName)
+                        .setContentText(context.getString(R.string.notification_desc) + " " + shopListName)
                         .setOngoing(true)
                         .setCategory(Notification.CATEGORY_SERVICE)
                         .setPriority(1);

@@ -15,7 +15,7 @@
     <string name="disable_notifications">Desactivar Notificaciones</string>
     <string name="change_list_icon">Cambiar Icono de la Lista</string>
     <string name="list_name">Nombre de la Lista</string>
-    <string name="intro_new">¡Bienvenido a Shopple</string>
+    <string name="intro_new">¡Bienvenido a Shopple!</string>
     <string name="intro_login">Bienvenido</string>
     <string name="leaving">Abandonando</string>
     <string name="confirm_leave">¿Estás seguro que quieres salir de la lista?</string>
@@ -51,6 +51,10 @@
     <string name="list_help">¡Haz clic en el botón de abajo para empezar una nueva lista!</string>
     <string name="your_shopple_cart_is_empty">Todavía no tienes artículos</string>
     <string name="add_a_new_item_by_typing_or_taking_a_picture">¡Añade nuevos artículos tomando una foto o escribiendo en tu teclado!</string>
-    <!--Tu Carro de Compras de Shopple está Vacío-->
+    <string name="notification_desc">Haz clic para ir a</string>
+    <string name="clear_category">Eliminar Categoría</string>
+    <string name="confirm_delete_category">¿Estás seguro que quieres eliminar la categoría</string>
+    <string name="empty_completed">Vaciar Completados</string>
+    <string name="confirm_empty">¿Estás seguro que quieres vaciar los artículos completados?</string>
 
 </resources>
