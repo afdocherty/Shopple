@@ -53,13 +53,13 @@ public class ShopListsActivity extends AppCompatActivity implements YesNoDialogF
 
     private void showYesNoDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance("Log Out", "Are you sure you want to log out of Shopple?", null, null,YesNoDialogFragment.LOGOUT);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(getString(R.string.log_out), getString(R.string.confirm_logout), null, null,YesNoDialogFragment.LOGOUT);
         yesNoDialogFragment.setListener(this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
 
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
         logout(yes);
     }
 }

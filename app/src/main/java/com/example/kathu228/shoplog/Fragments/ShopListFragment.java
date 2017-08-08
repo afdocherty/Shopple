@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
@@ -223,7 +222,7 @@ public class ShopListFragment extends Fragment {
                     });
                 } catch(IndexOutOfBoundsException e){
                     e.printStackTrace();
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG);
+//                    Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG);
                 }
             }
         });

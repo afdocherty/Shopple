@@ -1,5 +1,6 @@
 package com.example.kathu228.shoplog.Fragments;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Helpers.ItemAdapter;
 import com.example.kathu228.shoplog.Helpers.SimpleItemTouchHelperCallback;
@@ -175,6 +175,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
             }
         });
 
+        etAddItem.getBackground().setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorPrimaryLight), PorterDuff.Mode.SRC_IN);
         // Adds item from edittext if press enter or done on keyboard
         etAddItem.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -464,10 +465,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
                 itemAdapter.notifyItemChanged(index);
             }
         }
-        else
-            // TODO remove?
-            Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
-                    segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
+        else {
+//            Toast.makeText(getContext(), String.format("Header %s not found in local ArrayList",
+//                    segment.getHeader().getBody()),Toast.LENGTH_LONG).show();
+        }
+
     }
 
     // add item to segment if passed, else add to uncategorized (front-end)
@@ -489,11 +491,10 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     // delete item from UI
     private void deleteItemFromUI(Item item){
         int pos = getItemIndex(item);
-        if (pos == -1)
-            // TODO remove?
-            Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
+        if (pos == -1) {
+//            Toast.makeText(getContext(),String.format("Item %s wasn't found on the local arraylist", item.getBody()), Toast.LENGTH_LONG).show();
             //throw new IndexOutOfBoundsException(String.format("Item %s wasn't found on the local arraylist", item.getBody()));
-        else {
+        } else {
             items.remove(pos);
             itemAdapter.notifyItemRemoved(pos);
         }
@@ -511,7 +512,7 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
 
     public void changeAddHintText(Boolean isCategorizing, @Nullable String segmentName, @Nullable Segment segment){
         if (isCategorizing) {
-            etAddItem.setHint(getActivity().getString(R.string.item_hint_category) + segmentName);
+            etAddItem.setHint(getActivity().getString(R.string.item_hint_category) + " " + segmentName);
             isEditing = true;
             addingSegment = segment;
         }
@@ -536,9 +537,11 @@ public class ItemlistFragment extends Fragment implements SegmentDialogFragment.
     // change to category color
     public void changeToEditColor(int colorID, int hintColorID){
         int color = ContextCompat.getColor(getContext(), colorID);
+        int hintColor = ContextCompat.getColor(getContext(), hintColorID);
         ivAddItem.setColorFilter(color);
         ivOCR.setColorFilter(color);
-        etAddItem.setHintTextColor(ContextCompat.getColor(getContext(), hintColorID));
+        etAddItem.setHintTextColor(hintColor);
+        etAddItem.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     private void hideEmptyState(){

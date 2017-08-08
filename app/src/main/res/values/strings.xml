@@ -61,5 +61,7 @@
     <string name="confirm_delete_category">Are you sure you want to delete the category</string>
     <string name="empty_completed">Empty Completed</string>
     <string name="confirm_empty">Are you sure you want to delete all completed items?</string>
+    <string name="log_out">Log Out</string>
+    <string name="confirm_logout">Are you sure you want to log out of Shopple?</string>
 
 </resources>

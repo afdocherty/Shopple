@@ -15,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kathu228.shoplog.Fragments.ItemlistFragment;
 import com.example.kathu228.shoplog.Fragments.YesNoDialogFragment;
@@ -58,7 +57,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public void stopEditing(Segment mSegment){
-        if (categorySegment!=null && mSegment.getObjectId().equals(categorySegment.getObjectId())){
+        if ((categorySegment!=null) && (mSegment.getObjectId().equals(categorySegment.getObjectId()))){
             categorySegment = null;
             categoryHeader = null;
             snackbar.dismiss();
@@ -110,9 +109,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if(categorySegment==null) {
                         ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
                         ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);
-                    }else{
+                    }else if (item.getObjectId().equals(categoryHeader.getObjectId())){
                         ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.GONE);
                         ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.VISIBLE);
+                    }else{
+                        ((HeaderViewHolder) holder).ivCategorize.setVisibility(View.VISIBLE);
+                        ((HeaderViewHolder) holder).ivFinishEdit.setVisibility(View.GONE);
                     }
                     break;
                 case 2:
@@ -204,8 +206,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
                         int adapterPos = getAdapterPosition();
                         if (adapterPos<0) {
-                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
-                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+//                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
                         }else {
                             handleCategorizing(mlist.get(adapterPos), adapterPos);
                         }
@@ -214,8 +216,8 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         rippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.lightGray)));
                         int adapterPos = getAdapterPosition();
                         if (adapterPos<0) {
-                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
-                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, String.format("ERROR: There was a problem with the " +
+//                                    "adapter. Position %s doesn't exist.", adapterPos), Toast.LENGTH_LONG).show();
                         }else {
                             handleCheckbox(mlist.get(adapterPos), adapterPos);
                         }
@@ -526,10 +528,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
-        if (title.equals("Clear Category"))
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
+        if (type==YesNoDialogFragment.CLEARCATEGORY)
             clearCategory(yes,mitem);
-        else if (title.equals("Empty Completed"))
+        else if (type==YesNoDialogFragment.DELETECOMPLETED)
             deleteCompleted(yes,mitem);
     }
 
