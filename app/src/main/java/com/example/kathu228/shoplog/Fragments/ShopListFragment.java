@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.kathu228.shoplog.Activities.ItemListActivity;
@@ -143,12 +144,18 @@ public class ShopListFragment extends Fragment {
         // Populate shopLists with the Lists associated with the current user
         Query.findShoplistsForUser(ParseUser.getCurrentUser(), new FindCallback<ShopList>() {
             @Override
-            public void done(List<ShopList> objects, ParseException e) {
+            public void done(final List<ShopList> objects, ParseException e) {
                 if (e == null) {
                     Log.d("ShopListFragment", "User lists loaded");
-                    shopLists.addAll(objects);
-                    shoplistAdapter.notifyDataSetChanged();
-                    addDirections();
+                    ShopListFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            shopLists.addAll(objects);
+                            shoplistAdapter.notifyDataSetChanged();
+                            addDirections();
+                        }
+                    });
+
                 } else {
                     Log.d("ShopListFragment", "User lists not loaded. Error: " + e.toString());
                 }
@@ -187,21 +194,42 @@ public class ShopListFragment extends Fragment {
         Query.startShoplistsLiveQuery(new SubscriptionHandling.HandleEventsCallback<ShopList>() {
             @Override
             public void onEvents(ParseQuery<ShopList> query, final SubscriptionHandling.Event event, final ShopList object) {
-                object.containsUser(ParseUser.getCurrentUser(), new ShopList.BooleanCallback() {
-                    @Override
-                    public void done(boolean bool) {
-                        if (bool){
-                            ShopListFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    addShopListsFromDatabase();
-                                }
-                            });
+                try{
+                    object.containsUser(ParseUser.getCurrentUser(), new ShopList.BooleanCallback() {
+                        @Override
+                        public void done(boolean bool) {
+                            if (bool){
+                                ShopListFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (getItemIndex(object) == -1){
+                                            shopLists.add(0,object);
+                                            shoplistAdapter.notifyItemInserted(0);
+                                            rvShopList.scrollToPosition(0);
+                                        }else{
+                                            addShopListsFromDatabase();
+                                        }
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                } catch(IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                    Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG);
+                }
             }
         });
+    }
+
+    private int getItemIndex(ShopList shopList){
+        for (int i=0; i<shopLists.size(); i++){
+            shopList.fetchWhenNeeded();
+            if (shopList.getObjectId().equals(shopLists.get(i).getObjectId()))
+                return i;
+        }
+        return -1;
+
     }
 }
 
