@@ -205,9 +205,9 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
 
     private String toggleNotificationText(boolean enabled) {
         if (enabled) {
-            return getActivity().getString(R.string.enable_notifications);
-        } else {
             return getActivity().getString(R.string.disable_notifications);
+        } else {
+            return getActivity().getString(R.string.enable_notifications);
         }
     }
 
@@ -236,7 +236,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
 
     private void showYesNoDialog(String name, ShopList shopList){
         FragmentManager fm = getFragmentManager();
-        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(getActivity().getString(R.string.leaving) + name, getActivity().getString(R.string.confirm_leave),null,shopList,YesNoDialogFragment.LEAVELIST);
+        YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(getActivity().getString(R.string.leaving) + " " + name, getActivity().getString(R.string.confirm_leave),null,shopList,YesNoDialogFragment.LEAVELIST);
         yesNoDialogFragment.setListener(this);
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }

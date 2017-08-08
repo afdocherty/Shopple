@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             //TODO- Push (after Tuesday)
 //            installation.put("user",ParseUser.getCurrentUser());
 //            installation.saveInBackground();
-            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_new) + Query.getNameOfUser(user) + "!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_new) + " " + Query.getNameOfUser(user) + "!", Toast.LENGTH_SHORT).show();
 
             fillUserInfo(user);
 
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
 //            installation.put("user",ParseUser.getCurrentUser());
 //            installation.saveInBackground();
 //            ParsePush.subscribeInBackground("test");
-            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_login) + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.intro_login) + " " + Query.getNameOfUser(user), Toast.LENGTH_SHORT).show();
 
             Log.d("MyApp", String.format("User %s logged in through Facebook!", Query.getNameOfUser(user)));
             launchAppWithUser();

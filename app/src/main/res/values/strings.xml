@@ -15,8 +15,8 @@
     <string name="disable_notifications">Disable Notifications</string>
     <string name="change_list_icon">Change List Icon</string>
     <string name="list_name">List Name</string>
-    <string name="intro_new">Welcome to Shopple </string>
-    <string name="intro_login">Welcome back </string>
+    <string name="intro_new">Welcome to Shopple</string>
+    <string name="intro_login">Welcome back</string>
     <string name="list_temp_name">List on</string>
     <string name="leaving">Leaving</string>
     <string name="confirm_leave">Are you sure you want to leave?</string>
