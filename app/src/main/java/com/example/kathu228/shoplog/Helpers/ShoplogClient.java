@@ -4,6 +4,7 @@ package com.example.kathu228.shoplog.Helpers;
  * Created by fmonsalve on 7/11/17.
  */
 
+@Deprecated
 public class ShoplogClient {
 
     public static String[] getPeople(){

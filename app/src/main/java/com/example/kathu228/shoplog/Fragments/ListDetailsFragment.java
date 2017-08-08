@@ -234,6 +234,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
         iconPickerDialogFragment.show(fm, "fragment_icon_picker_dialog");
     }
 
+    // Leave List Dialog
     private void showYesNoDialog(String name, ShopList shopList){
         FragmentManager fm = getFragmentManager();
         YesNoDialogFragment yesNoDialogFragment = YesNoDialogFragment.newInstance(getActivity().getString(R.string.leaving) + " " + name, getActivity().getString(R.string.confirm_leave),null,shopList,YesNoDialogFragment.LEAVELIST);
@@ -279,6 +280,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
     public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
         if (yes){
             removeUserFromShoplist();
+            NotificationHandler.forceDisableNotifications(shopList.getObjectId(), getActivity());
             Intent i = new Intent(getActivity(), ShopListsActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
