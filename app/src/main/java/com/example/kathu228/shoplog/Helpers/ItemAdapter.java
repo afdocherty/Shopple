@@ -116,7 +116,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     }
                     break;
                 case 2:
-                    ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(item.getBody());
+                    ((CompletedHeaderViewHolder) holder).tvCompletedHeader.setText(context.getString(R.string.completed_items));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid itemtype," + item.getType());
