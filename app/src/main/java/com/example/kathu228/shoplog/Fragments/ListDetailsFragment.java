@@ -277,7 +277,7 @@ public class ListDetailsFragment extends Fragment implements EdittextDialogFragm
     }
 
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
         if (yes){
             removeUserFromShoplist();
             NotificationHandler.forceDisableNotifications(shopList.getObjectId(), getActivity());

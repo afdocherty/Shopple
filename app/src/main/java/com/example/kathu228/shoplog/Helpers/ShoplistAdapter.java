@@ -149,7 +149,7 @@ public class ShoplistAdapter extends BaseAdapter<ShoplistAdapter.ViewHolder, Sho
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
         int position = mlist.indexOf(mshopList);
         if (yes){
             mshopList.removeUser(ParseUser.getCurrentUser(),null);
