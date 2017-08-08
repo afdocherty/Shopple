@@ -58,7 +58,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public void stopEditing(Segment mSegment){
-        if (categorySegment!=null && mSegment.getObjectId().equals(categorySegment.getObjectId())){
+        if ((categorySegment!=null) && (mSegment.getObjectId().equals(categorySegment.getObjectId()))){
             categorySegment = null;
             categoryHeader = null;
             snackbar.dismiss();
@@ -529,10 +529,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         yesNoDialogFragment.show(fm, "fragment_yesno_dialog");
     }
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
-        if (title.equals("Clear Category"))
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
+        if (type==YesNoDialogFragment.CLEARCATEGORY)
             clearCategory(yes,mitem);
-        else if (title.equals("Empty Completed"))
+        else if (type==YesNoDialogFragment.DELETECOMPLETED)
             deleteCompleted(yes,mitem);
     }
 

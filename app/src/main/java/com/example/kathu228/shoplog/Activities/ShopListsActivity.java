@@ -59,7 +59,7 @@ public class ShopListsActivity extends AppCompatActivity implements YesNoDialogF
     }
 
     @Override
-    public void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList) {
+    public void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList) {
         logout(yes);
     }
 }

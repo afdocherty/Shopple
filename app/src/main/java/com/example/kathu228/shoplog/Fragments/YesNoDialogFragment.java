@@ -44,14 +44,14 @@ public class YesNoDialogFragment extends DialogFragment{
 
     // Defines the listener interface
     public interface YesNoDialogListener {
-        void onFinishYesNoDialog(Boolean yes, String title, Item mitem, ShopList mshopList);
+        void onFinishYesNoDialog(Boolean yes, int type, Item mitem, ShopList mshopList);
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult(Boolean yes, String title, @Nullable Item mitem, @Nullable ShopList mshopList) {
+    public void sendBackResult(Boolean yes, int type, @Nullable Item mitem, @Nullable ShopList mshopList) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         //YesNoDialogListener listener = (YesNoDialogListener) getTargetFragment();
-        mListener.onFinishYesNoDialog(yes, title, mitem, mshopList);
+        mListener.onFinishYesNoDialog(yes, type, mitem, mshopList);
         dismiss();
     }
 
@@ -91,6 +91,7 @@ public class YesNoDialogFragment extends DialogFragment{
         String question = getArguments().getString(QUESTION);
         final Item item = getArguments().getParcelable(ITEM);
         final ShopList shopList = getArguments().getParcelable(SHOPLIST);
+        final int type = getArguments().getInt(TYPE);
         mTitle.setText(title);
         mQuestion.setText(question);
         switch (getArguments().getInt(TYPE)){
@@ -112,13 +113,13 @@ public class YesNoDialogFragment extends DialogFragment{
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(false, title, item, shopList);
+                sendBackResult(false, type, item, shopList);
             }
         });
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(true, title, item, shopList);
+                sendBackResult(true, type, item, shopList);
             }
         });
     }
@@ -128,17 +129,18 @@ public class YesNoDialogFragment extends DialogFragment{
         final String title = getArguments().getString(TITLE);
         final Item item = getArguments().getParcelable(ITEM);
         final ShopList shopList = getArguments().getParcelable(SHOPLIST);
+        final int type = getArguments().getInt(TYPE);
         mNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(false,title,item,shopList);
+                sendBackResult(false,type,item,shopList);
                 //mListener.onFinishYesNoDialog(false,title, item);
             }
         });
         mYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult(true,title,item,shopList);
+                sendBackResult(true,type,item,shopList);
 //                mListener.onFinishYesNoDialog(true, title, item);
             }
         });
