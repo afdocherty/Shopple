@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/fragment_padding"
-    tools:context="com.example.kathu228.shoplog.Fragments.ListDetailsFragment">
+    tools:context="com.example.kathu228.shopple.Fragments.ListDetailsFragment">
 
     <LinearLayout
         android:id="@+id/llListName"

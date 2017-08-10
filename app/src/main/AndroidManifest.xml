@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kathu228.shoplog">
+    package="com.example.kathu228.shopple">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,7 +14,7 @@
     <uses-permission android:name="${packageName}.permission.C2D_MESSAGE" />
 
     <application
-        android:name=".ParseApplication"
+        android:name="com.example.kathu228.shopple.ParseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -63,12 +63,12 @@
         </provider>
 
         <activity
-            android:name=".Activities.ItemListActivity"
-            android:parentActivityName=".Activities.ShopListsActivity"
+            android:name="com.example.kathu228.shopple.Activities.ItemListActivity"
+            android:parentActivityName="com.example.kathu228.shopple.Activities.ShopListsActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.ShopListsActivity" />
+                android:value="com.example.kathu228.shopple.Activities.ShopListsActivity" />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -76,7 +76,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name="com.example.kathu228.shopple.Activities.LoginActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <intent-filter>
@@ -86,10 +86,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.ShopListsActivity"
+            android:name="com.example.kathu228.shopple.Activities.ShopListsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.ListDetailsActivity"
+            android:name="com.example.kathu228.shopple.Activities.ListDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
     </application>
