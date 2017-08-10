@@ -71,9 +71,6 @@
                 android:value=".Activities.ShopListsActivity" />
         </activity>
         <activity
-            android:name=".Activities.AddPeopleActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"

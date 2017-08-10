@@ -15,6 +15,7 @@ import java.util.List;
  * Created by fmonsalve on 7/25/17.
  */
 
+@Deprecated
 public class DEBUGGING {
 
     public static void test1(){
