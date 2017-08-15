@@ -1,4 +1,1 @@
-Shopple
-Shopping, Made Simple.
-
-Info
+Description
