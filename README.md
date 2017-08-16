@@ -8,7 +8,7 @@ Coming to the Play Store soon!
 # **Screenshots**
  View Your Lists           | Your Upgraded Shopping List | Inspect and Edit List Details
 :-------------------------:|:---------------------------:|:------------------------:
- ![](shopple-1.png)        | ![](shopple-2.png)          | ![](shopple-2.png)
+ ![](shopple-1.png)        | ![](shopple-2.png)          | ![](shopple-3.png)
 
 # **Team** 
 
