@@ -6,9 +6,10 @@ Using your Facebook account, you can download the app and start making lists in 
 Coming to the Play Store soon!
 
 # **Screenshots**
-<img src='shopple-1.png' title='Shopple Screenshot 1' width='30%' alt='Shopple Screenshot 1' />
-<img src='shopple-2.png' title='Shopple Screenshot 2' width='30%' alt='Shopple Screenshot 2' />
-<img src='shopple-3.png' title='Shopple Screenshot 3' width='30%' alt='Shopple Screenshot 3' />
+
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](shopple-1.png)         |  ![](shopple-2.png)
 
 # **Team** 
 
