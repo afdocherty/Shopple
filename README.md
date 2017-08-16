@@ -7,9 +7,8 @@ Coming to the Play Store soon!
 
 # **Screenshots**
 
-Solarized dark             |  Solarized Ocean
-:-------------------------:|:-------------------------:
-![](shopple-1.png)         |  ![](shopple-2.png)
+:-------------------------:|:------------------------:|:------------------------:
+![](shopple-1.png)         |  ![](shopple-2.png)      |  ![](shopple-2.png)
 
 # **Team** 
 
