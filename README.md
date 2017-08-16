@@ -6,9 +6,9 @@ Using your Facebook account, you can download the app and start making lists in 
 Coming to the Play Store soon!
 
 # **Screenshots**
-<img src='' title='Shopple Screenshot 1' width='' alt='Shopple Screenshot 1' />
-<img src='' title='Shopple Screenshot 2' width='' alt='Shopple Screenshot 2' />
-<img src='' title='Shopple Screenshot 3' width='' alt='Shopple Screenshot 3' />
+<img src='shopple-1.png' title='Shopple Screenshot 1' width='' alt='Shopple Screenshot 1' />
+<img src='shopple-2.png' title='Shopple Screenshot 2' width='' alt='Shopple Screenshot 2' />
+<img src='shopple-3.png' title='Shopple Screenshot 3' width='' alt='Shopple Screenshot 3' />
 
 # **Team** 
 
