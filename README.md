@@ -7,7 +7,9 @@ Coming to the Play Store soon!
 <img src='' title='Shopple Screenshot 1' width='' alt='Shopple Screenshot 1' />
 <img src='' title='Shopple Screenshot 2' width='' alt='Shopple Screenshot 2' />
 <img src='' title='Shopple Screenshot 3' width='' alt='Shopple Screenshot 3' />
+
 # **Team** 
+
 [Foster Docherty, Stanford University](https://www.linkedin.com/in/andrew-foster-docherty-81a1b1133/)
 
 [Felipe Monsalve, Massachusetts Institute of Technology](https://www.linkedin.com/in/felipe-monsalve-44a97812a/)
