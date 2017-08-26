@@ -181,13 +181,20 @@ public class ShopList extends BaseParseObject {
         query.findInBackground(callback);
     }
     
-    public void getUsersNotInList(final FindCallback<ParseUser> callback){
-        ParseQuery<ParseUser> allUsersQuery = ParseUser.getQuery();
-        ParseQuery<ParseUser> usersInListQuery = getUsersRelation().getQuery();
-        allUsersQuery.whereDoesNotMatchKeyInQuery("username","username",usersInListQuery);
-        allUsersQuery.orderByAscending("name");
-        allUsersQuery.findInBackground(callback);
+    public void getFriendUsersNotInList(final FindCallback<ParseUser> callback){
+        Query.getFacebookFriendsList(new Query.ListCallback() {
+            @Override
+            public void onDone(List list) {
+                ParseQuery<ParseUser> allUsersQuery = ParseUser.getQuery();
+                ParseQuery<ParseUser> usersInListQuery = getUsersRelation().getQuery();
+                allUsersQuery.whereDoesNotMatchKeyInQuery("username","username",usersInListQuery);
+                allUsersQuery.whereContainedIn("fb_id",list);
+                allUsersQuery.orderByAscending("name");
+                allUsersQuery.findInBackground(callback);
+            }
+        });
     }
+
 
     public interface BooleanCallback{
         void done (boolean bool);

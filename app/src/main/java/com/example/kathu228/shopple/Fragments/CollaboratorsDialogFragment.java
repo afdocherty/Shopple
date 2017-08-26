@@ -79,7 +79,7 @@ public class CollaboratorsDialogFragment extends DialogFragment {
         //find recycler view
         rvPeople = (RecyclerView) v.findViewById(R.id.people_list);
         //init the ArrayList (data source) to users not in shoplist
-        shopList.getUsersNotInList(new FindCallback<ParseUser>() {
+        shopList.getFriendUsersNotInList(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 people = objects;
