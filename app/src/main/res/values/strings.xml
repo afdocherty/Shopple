@@ -27,7 +27,7 @@
     <string name="error">Oops. Something went wrong.</string>
     <string name="start_my_trip">Start My Trip</string>
     <string name="nearby_stores">Nearby Stores</string>
-    <string name="my_favorite_store">My Favorite Store</string>
+    <string name="our_favorite_store">Our Favorite Store</string>
     <string name="create_new_category">Create New Category</string>
     <string name="hint_fruits_and_vegetables">e.g. Fruits and Vegetables</string>
     <string name="cancel">Cancel</string>

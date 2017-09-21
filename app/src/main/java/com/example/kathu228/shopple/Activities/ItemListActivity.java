@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -45,6 +48,8 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
     ArrayList<Item> items;
     private ItemlistFragment itemlistFragment;
     private Context context;
+    private double longitute;
+    private double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,23 +296,27 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
     }
 
     private ArrayList<String> listToArrayList(List<String> list){
-        ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<String> arrayList = new ArrayList<>();
         arrayList.addAll(list);
         return arrayList;
     }
 
     private void showMyStore(){
+        Toast.makeText(context, "Feature Coming Soon!", Toast.LENGTH_SHORT).show();
+
+        // Re-add when favorite store feature returns
+        /*
         // Activate notifications automatically
         NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
         Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
 
-        // Route to hardcoded address (Safeway in Queen Anne, Seattle, WA), avoiding ferries if possible
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(getResources().getString(R.string.my_store_address)) + "&avoid=f");
+        // Route to hardcoded address (Queen Anne, Seattle, WA), avoiding ferries if possible
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode("") + "&avoid=f");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(mapIntent);
-        }
+        }*/
     }
 
     private void showNearbyStores(){
@@ -315,13 +324,42 @@ public class ItemListActivity extends AppCompatActivity implements TripDialogFra
         NotificationHandler.forceEnableNotifications(itemlistFragment.shopListObjectId, context);
         Toast.makeText(context, context.getResources().getString(R.string.notifications_enabled), Toast.LENGTH_SHORT).show();
 
-        // Search grocery stores that are nearby FB Seattle Office
-        Uri gmmIntentUri = Uri.parse("geo:" + getResources().getString(R.string.FB_lat_long) + "?q=" + getResources().getString(R.string.search_entry));
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        // Search grocery stores that are nearby
+        final LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                longitute = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        try {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+            Uri gmmIntentUri = Uri.parse("geo:" + longitute + "," + latitude + "?q=" + getResources().getString(R.string.search_entry));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            }
+        } catch (SecurityException e) {
+            throw new SecurityException();
         }
+
+        // TODO - Verify this works
+        lm.removeUpdates(locationListener);
     }
 
     private void showTripDialog() {

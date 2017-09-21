@@ -26,7 +26,7 @@
     <string name="error">¡Ups! Algo salió mal.</string>
     <string name="start_my_trip">Iniciar mi viaje</string>
     <string name="nearby_stores">Mercados Cercanos</string>
-    <string name="my_favorite_store">Mi Mercado Favorito</string>
+    <string name="our_favorite_store">Nuestro Mercado Favorito</string>
     <string name="create_new_category">Crear una Nueva Categoría</string>
     <string name="hint_fruits_and_vegetables"> e.g. Frutas y Vegetales</string>
     <string name="edit_item_name">Editar el Nombre de la Lista</string>
