@@ -4,7 +4,6 @@ Making a shopping list shouldn't be hard. People today use lists on a fridge, re
 Using your Facebook account, you can download the app and start making lists in seconds. It's incredibly easy to create, organize, and check off the items you are buying. Furthermore, you can collaborate with friends and family on lists, seeing *live updates* of what you are adding and buying. With amazing features such as directions to nearby stores, notifications to jump straight to your lists, and even Camera OCR to add items by just taking a picture, Shopple is a true upgrade to the shopping experience.
 
 Available in English and Spanish.
-Coming to the Play Store soon!
 
 # **Screenshots**
 ![](shopple.png)
